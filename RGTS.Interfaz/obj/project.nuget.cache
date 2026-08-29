@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "A+aUxPI/ByA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Benito\\source\\repos\\RGTS-Manager\\RGTS.Interfaz\\RGTS.Interfaz.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Benito\\.nuget\\packages\\materialskin.2\\2.3.1\\materialskin.2.2.3.1.nupkg.sha512"
+  ],
+  "logs": []
+}

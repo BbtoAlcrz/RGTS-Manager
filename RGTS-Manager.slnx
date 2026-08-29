@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="RGTS.AccesoDatos/RGTS.AccesoDatos.csproj" />
+  <Project Path="RGTS.Entidades/RGTS.Entidades.csproj" />
+  <Project Path="RGTS.Interfaz/RGTS.Interfaz.csproj" />
+  <Project Path="RGTS.LogicaNegocio/RGTS.LogicaNegocio.csproj" />
+</Solution>

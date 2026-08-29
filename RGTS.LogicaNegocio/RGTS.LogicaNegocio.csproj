@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RGTS.AccesoDatos\RGTS.AccesoDatos.csproj" />
+    <ProjectReference Include="..\RGTS.Entidades\RGTS.Entidades.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Servicios\" />
+    <Folder Include="Validaciones\" />
+  </ItemGroup>
+
+</Project>

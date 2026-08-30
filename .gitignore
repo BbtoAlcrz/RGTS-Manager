@@ -1,0 +1,16 @@
+# Carpetas de compilación
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# NuGet
+packages/
+*.nupkg
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db

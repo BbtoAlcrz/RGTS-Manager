@@ -17,3 +17,11 @@ C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-window
 C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-windows\RGTS.Interfaz.pdb
 C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-windows\RGTS.Interfaz.genruntimeconfig.cache
 C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-windows\ref\RGTS.Interfaz.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.AccesoDatos.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.Entidades.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.LogicaNegocio.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.Entidades.pdb
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.LogicaNegocio.pdb
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\bin\Debug\net10.0-windows\RGTS.AccesoDatos.pdb
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-windows\RGTS.Interfaz.sourcelink.json
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Interfaz\obj\Debug\net10.0-windows\RGTS.Interfaz.Properties.Resources.resources

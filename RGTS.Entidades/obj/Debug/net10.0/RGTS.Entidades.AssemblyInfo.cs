@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RGTS.Entidades")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+513d1490262f9a047d8d0d4bf1bc027883b2326f")]
 [assembly: System.Reflection.AssemblyProductAttribute("RGTS.Entidades")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RGTS.Entidades")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

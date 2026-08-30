@@ -7,8 +7,8 @@ namespace RGTS.Interfaz
         public Form1()
         {
             InitializeComponent();
-            var materialSkinManager = MaterialSkinManager.Instance; 
-            materialSkinManager.AddFormToManage(this); 
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
 
             materialSkinManager.ColorScheme = new ColorScheme(
@@ -18,6 +18,15 @@ namespace RGTS.Interfaz
                 Accent.LightGreen100,   // acento verde lima
                 TextShade.WHITE
             );
+        }
+
+        private void BIniciarSesion_Click(object sender, EventArgs e)
+        {
+            //un if else para validar el usuario y la contraseña
+            MessageBox.Show("Usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            TextboxContraseña.Clear();
+            TextboxUsuario.Clear();
+
         }
     }
 }

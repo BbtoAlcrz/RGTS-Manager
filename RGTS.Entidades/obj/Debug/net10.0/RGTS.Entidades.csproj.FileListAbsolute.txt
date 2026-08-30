@@ -1,0 +1,12 @@
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\bin\Debug\net10.0\RGTS.Entidades.deps.json
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\bin\Debug\net10.0\RGTS.Entidades.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\bin\Debug\net10.0\RGTS.Entidades.pdb
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.AssemblyInfoInputs.cache
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.AssemblyInfo.cs
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.csproj.CoreCompileInputs.cache
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.sourcelink.json
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\refint\RGTS.Entidades.dll
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\RGTS.Entidades.pdb
+C:\Users\Benito\source\repos\RGTS-Manager\RGTS.Entidades\obj\Debug\net10.0\ref\RGTS.Entidades.dll

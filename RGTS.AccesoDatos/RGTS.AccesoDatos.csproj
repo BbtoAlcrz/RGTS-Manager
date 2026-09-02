@@ -11,9 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Conexión\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Repositorios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
   </ItemGroup>
 
 </Project>

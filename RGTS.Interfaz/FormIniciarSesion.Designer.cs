@@ -1,6 +1,6 @@
 ﻿namespace RGTS.Interfaz
 {
-    partial class Form1
+    partial class FormIniciarSesion
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            MaterialSkin.Controls.MaterialLabel LUsuario;
+            MaterialSkin.Controls.MaterialLabel LContraseña;
             TextboxUsuario = new MaterialSkin.Controls.MaterialTextBox();
             TextboxContraseña = new MaterialSkin.Controls.MaterialTextBox();
+            BIniciarSesion = new MaterialSkin.Controls.MaterialButton();
             LUsuario = new MaterialSkin.Controls.MaterialLabel();
             LContraseña = new MaterialSkin.Controls.MaterialLabel();
-            BIniciarSesion = new MaterialSkin.Controls.MaterialButton();
             SuspendLayout();
             // 
             // TextboxUsuario
@@ -120,7 +122,7 @@
             BIniciarSesion.UseVisualStyleBackColor = true;
             BIniciarSesion.Click += BIniciarSesion_Click;
             // 
-            // Form1
+            // FormIniciarSesion
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -130,7 +132,7 @@
             Controls.Add(LUsuario);
             Controls.Add(TextboxContraseña);
             Controls.Add(TextboxUsuario);
-            Name = "Form1";
+            Name = "FormIniciarSesion";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Iniciar Sesión";
             ResumeLayout(false);

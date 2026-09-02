@@ -2,9 +2,9 @@ using MaterialSkin;
 
 namespace RGTS.Interfaz
 {
-    public partial class Form1 : MaterialSkin.Controls.MaterialForm
+    public partial class FormIniciarSesion : MaterialSkin.Controls.MaterialForm
     {
-        public Form1()
+        public FormIniciarSesion()
         {
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
@@ -23,9 +23,11 @@ namespace RGTS.Interfaz
         private void BIniciarSesion_Click(object sender, EventArgs e)
         {
             //un if else para validar el usuario y la contraseña
-            MessageBox.Show("Usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //MessageBox.Show("Usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButtons.OK, MessageBoxIcon.Error);
             TextboxContraseña.Clear();
             TextboxUsuario.Clear();
+
+            //ejecutar el panel principal
 
         }
     }

@@ -1,9 +1,9 @@
 ﻿namespace RGTS.Entidades
 {
-    internal class Rol
+    public class Rol
     {
         public int IdRol { get; set; }
-        public required string NombreRol { get; set; }
-        public required string DescripcionRol { get; set; }
+        public string NombreRol { get; set; } = string.Empty;
+        public string DescripcionRol { get; set; } = string.Empty;
     }
 }

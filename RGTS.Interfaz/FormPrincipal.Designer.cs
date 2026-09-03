@@ -57,6 +57,7 @@
             Controls.Add(PnlMenu);
             Name = "FormPrincipal";
             Text = "FormPrincipal";
+            FormClosed += FormPrincipal_FormClosed;
             ResumeLayout(false);
         }
 

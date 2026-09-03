@@ -11,9 +11,4 @@
     <ProjectReference Include="..\RGTS.Entidades\RGTS.Entidades.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Servicios\" />
-    <Folder Include="Validaciones\" />
-  </ItemGroup>
-
 </Project>

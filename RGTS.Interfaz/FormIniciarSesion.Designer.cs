@@ -28,32 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            MaterialSkin.Controls.MaterialLabel LUsuario;
+            MaterialSkin.Controls.MaterialLabel LEmail;
             MaterialSkin.Controls.MaterialLabel LContraseña;
-            TextboxUsuario = new MaterialSkin.Controls.MaterialTextBox();
+            TextboxEmail = new MaterialSkin.Controls.MaterialTextBox();
             TextboxContraseña = new MaterialSkin.Controls.MaterialTextBox();
             BIniciarSesion = new MaterialSkin.Controls.MaterialButton();
-            LUsuario = new MaterialSkin.Controls.MaterialLabel();
+            LEmail = new MaterialSkin.Controls.MaterialLabel();
             LContraseña = new MaterialSkin.Controls.MaterialLabel();
             SuspendLayout();
             // 
-            // TextboxUsuario
+            // LEmail
             // 
-            TextboxUsuario.AnimateReadOnly = false;
-            TextboxUsuario.BorderStyle = BorderStyle.None;
-            TextboxUsuario.Depth = 0;
-            TextboxUsuario.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            TextboxUsuario.Hint = "Ingresa tu usuario";
-            TextboxUsuario.LeadingIcon = null;
-            TextboxUsuario.Location = new Point(48, 139);
-            TextboxUsuario.MaxLength = 50;
-            TextboxUsuario.MouseState = MaterialSkin.MouseState.OUT;
-            TextboxUsuario.Multiline = false;
-            TextboxUsuario.Name = "TextboxUsuario";
-            TextboxUsuario.Size = new Size(285, 50);
-            TextboxUsuario.TabIndex = 0;
-            TextboxUsuario.Text = "";
-            TextboxUsuario.TrailingIcon = null;
+            LEmail.AutoSize = true;
+            LEmail.Depth = 0;
+            LEmail.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            LEmail.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            LEmail.Location = new Point(48, 119);
+            LEmail.MouseState = MaterialSkin.MouseState.HOVER;
+            LEmail.Name = "LEmail";
+            LEmail.Size = new Size(37, 17);
+            LEmail.TabIndex = 2;
+            LEmail.Text = "Email";
+            // 
+            // LContraseña
+            // 
+            LContraseña.AutoSize = true;
+            LContraseña.Depth = 0;
+            LContraseña.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            LContraseña.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            LContraseña.Location = new Point(48, 221);
+            LContraseña.MouseState = MaterialSkin.MouseState.HOVER;
+            LContraseña.Name = "LContraseña";
+            LContraseña.Size = new Size(75, 17);
+            LContraseña.TabIndex = 3;
+            LContraseña.Text = "Contraseña";
+            // 
+            // TextboxEmail
+            // 
+            this.TextboxEmail.AnimateReadOnly = false;
+            this.TextboxEmail.BorderStyle = BorderStyle.None;
+            this.TextboxEmail.Depth = 0;
+            this.TextboxEmail.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            this.TextboxEmail.Hint = "Ingresa tu email";
+            this.TextboxEmail.LeadingIcon = null;
+            this.TextboxEmail.Location = new Point(48, 139);
+            this.TextboxEmail.MaxLength = 50;
+            this.TextboxEmail.MouseState = MaterialSkin.MouseState.OUT;
+            this.TextboxEmail.Multiline = false;
+            this.TextboxEmail.Name = "TextboxEmail";
+            this.TextboxEmail.Size = new Size(285, 50);
+            this.TextboxEmail.TabIndex = 0;
+            this.TextboxEmail.Text = "";
+            this.TextboxEmail.TrailingIcon = null;
             // 
             // TextboxContraseña
             // 
@@ -73,32 +99,6 @@
             TextboxContraseña.TabIndex = 1;
             TextboxContraseña.Text = "";
             TextboxContraseña.TrailingIcon = null;
-            // 
-            // LUsuario
-            // 
-            LUsuario.AutoSize = true;
-            LUsuario.Depth = 0;
-            LUsuario.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            LUsuario.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            LUsuario.Location = new Point(48, 119);
-            LUsuario.MouseState = MaterialSkin.MouseState.HOVER;
-            LUsuario.Name = "LUsuario";
-            LUsuario.Size = new Size(50, 17);
-            LUsuario.TabIndex = 2;
-            LUsuario.Text = "Usuario";
-            // 
-            // LContraseña
-            // 
-            LContraseña.AutoSize = true;
-            LContraseña.Depth = 0;
-            LContraseña.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            LContraseña.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            LContraseña.Location = new Point(48, 221);
-            LContraseña.MouseState = MaterialSkin.MouseState.HOVER;
-            LContraseña.Name = "LContraseña";
-            LContraseña.Size = new Size(75, 17);
-            LContraseña.TabIndex = 3;
-            LContraseña.Text = "Contraseña";
             // 
             // BIniciarSesion
             // 
@@ -129,9 +129,9 @@
             ClientSize = new Size(383, 464);
             Controls.Add(BIniciarSesion);
             Controls.Add(LContraseña);
-            Controls.Add(LUsuario);
+            Controls.Add(LEmail);
             Controls.Add(TextboxContraseña);
-            Controls.Add(TextboxUsuario);
+            Controls.Add(this.TextboxEmail);
             Name = "FormIniciarSesion";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Iniciar Sesión";
@@ -141,9 +141,9 @@
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialTextBox TextboxUsuario;
+        private MaterialSkin.Controls.MaterialTextBox TextboxEmail;
         private MaterialSkin.Controls.MaterialTextBox TextboxContraseña;
-        private MaterialSkin.Controls.MaterialLabel LUsuario;
+        private MaterialSkin.Controls.MaterialLabel LEmail;
         private MaterialSkin.Controls.MaterialLabel LContraseña;
         private MaterialSkin.Controls.MaterialButton BIniciarSesion;
     }

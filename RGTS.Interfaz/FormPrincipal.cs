@@ -13,6 +13,7 @@ namespace RGTS.Interfaz
 {
     public partial class FormPrincipal : MaterialForm
     {
+        // esto mantiene la información de login de usuario en toda la aplicación
         public static Usuario? UsuarioSesion { get; private set; }
 
         public FormPrincipal()

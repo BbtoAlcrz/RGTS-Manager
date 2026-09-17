@@ -19,7 +19,7 @@ BEGIN
     );
 
     CREATE TABLE USUARIO (
-        id_usuario INT IDENTITY(1,1) PRIMARY KEY,
+        dni VARCHAR(20) PRIMARY KEY,
         id_rol INT NOT NULL,
         nombre VARCHAR(50) NOT NULL,
         apellido VARCHAR(50) NOT NULL,
@@ -89,12 +89,12 @@ IF OBJECT_ID('dbo.COMPRA', 'U') IS NULL
 BEGIN
     CREATE TABLE COMPRA (
         id_compra INT IDENTITY(1,1) PRIMARY KEY,
-        id_usuario INT NOT NULL,
+        dni_usuario VARCHAR(20) NOT NULL,
         id_proveedor INT NOT NULL,
         fecha DATETIME NOT NULL DEFAULT GETDATE(),
         total_derivado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
         estado VARCHAR(30) NOT NULL DEFAULT 'Pendiente',
-        CONSTRAINT FK_Compra_Usuario FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario),
+        CONSTRAINT FK_Compra_Usuario FOREIGN KEY (dni_usuario) REFERENCES USUARIO(dni),
         CONSTRAINT FK_Compra_Proveedor FOREIGN KEY (id_proveedor) REFERENCES PROVEEDOR(id_proveedor)
     );
 
@@ -116,11 +116,11 @@ IF OBJECT_ID('dbo.VENTA', 'U') IS NULL
 BEGIN
     CREATE TABLE VENTA (
         id_venta INT IDENTITY(1,1) PRIMARY KEY,
-        id_usuario INT NOT NULL,
+        dni_usuario VARCHAR(20) NOT NULL,
         id_cliente INT NULL,
         fecha DATETIME NOT NULL DEFAULT GETDATE(),
         total_derivado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-        CONSTRAINT FK_Venta_Usuario FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario),
+        CONSTRAINT FK_Venta_Usuario FOREIGN KEY (dni_usuario) REFERENCES USUARIO(dni),
         CONSTRAINT FK_Venta_Cliente FOREIGN KEY (id_cliente) REFERENCES CLIENTE(id_cliente)
     );
 
@@ -155,7 +155,7 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT 
-        U.id_usuario,
+        U.dni,
         U.id_rol,
         U.nombre,
         U.apellido,

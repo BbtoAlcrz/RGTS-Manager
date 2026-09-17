@@ -42,7 +42,7 @@ namespace RGTS.AccesoDatos.Repositorios
                         {
                             usuario = new Usuario
                             {
-                                IdUsuario = Convert.ToInt32(reader["id_usuario"]),
+                                Dni = reader["dni"]?.ToString() ?? string.Empty,
                                 IdRol = Convert.ToInt32(reader["id_rol"]),
                                 Nombre = reader["nombre"]?.ToString() ?? string.Empty,
                                 Apellido = reader["apellido"]?.ToString() ?? string.Empty,

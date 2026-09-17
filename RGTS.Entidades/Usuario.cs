@@ -13,6 +13,6 @@ namespace RGTS.Entidades
         public bool Activo { get; set; }
 
         public string NombreCompleto => $"{Nombre} {Apellido}";
-        public required Rol Rol { get; set; }
+        public Rol? Rol { get; set; }
     }
 }

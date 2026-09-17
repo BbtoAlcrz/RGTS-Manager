@@ -15,9 +15,8 @@ namespace RGTS.AccesoDatos.Repositorios
             _conexionBD = new ConexionBD();
         }
 
-        /// <summary>
-        /// Obtiene un usuario y su rol asociado mediante el Procedimiento Almacenado sp_ObtenerUsuarioPorEmail.
-        /// </summary>
+       
+        // Obtiene un usuario y su rol asociado mediante el Procedimiento Almacenado sp_ObtenerUsuarioPorEmail.
         public Usuario? ObtenerPorEmail(string email)
         {
             Usuario? usuario = null;
@@ -63,5 +62,29 @@ namespace RGTS.AccesoDatos.Repositorios
 
             return usuario;
         }
+
+        // Inserta un nuevo Usuario en la base de datos mediante el Procedimiento Almacenado sp_InsertarUsuario.
+        public void Insertar(Usuario usuario)
+        {
+            using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+            {
+                using (SqlCommand comando = new SqlCommand("dbo.sp_InsertarUsuario", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+
+                    comando.Parameters.Add(new SqlParameter("@Dni", SqlDbType.VarChar, 20) { Value = usuario.Dni });
+                    comando.Parameters.Add(new SqlParameter("@IdRol", SqlDbType.Int) { Value = usuario.IdRol });
+                    comando.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar, 50) { Value = usuario.Nombre });
+                    comando.Parameters.Add(new SqlParameter("@Apellido", SqlDbType.VarChar, 50) { Value = usuario.Apellido });
+                    comando.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 100) { Value = usuario.Email });
+                    comando.Parameters.Add(new SqlParameter("@ContrasenaHash", SqlDbType.VarChar, 255) { Value = usuario.ContrasenaHash });
+
+                    conexion.Open();
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
+
     }
 }

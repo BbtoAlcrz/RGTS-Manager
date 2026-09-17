@@ -171,6 +171,43 @@ END
 GO
 
 
+-- INSERTAR UN USUARIO
+IF OBJECT_ID('dbo.sp_InsertarUsuario', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_InsertarUsuario;
+GO
+
+CREATE PROCEDURE dbo.sp_InsertarUsuario
+    @Dni VARCHAR(20),
+    @IdRol INT,
+    @Nombre VARCHAR(50),
+    @Apellido VARCHAR(50),
+    @Email VARCHAR(100),
+    @ContrasenaHash VARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Validar Email unico antes de insertar
+    IF EXISTS (SELECT 1 FROM USUARIO WHERE email = @Email)
+    BEGIN
+        RAISERROR('El email ingresado ya se encuentra registrado en el sistema.', 16, 1);
+        RETURN;
+    END
+
+    -- Validar DNI unico antes de insertar
+    IF EXISTS (SELECT 1 FROM USUARIO WHERE dni = @Dni)
+    BEGIN
+        RAISERROR('El DNI ingresado ya se encuentra registrado en el sistema.', 16, 1);
+        RETURN;
+    END
+
+    INSERT INTO USUARIO (dni, id_rol, nombre, apellido, email, contrasena_hash, activo)
+    VALUES (@Dni, @IdRol, @Nombre, @Apellido, @Email, @ContrasenaHash, 1);
+END
+GO
+
+
+
 -- **********************************************
 
 -- SEEDERS (DEJAR SIEMPRE A LO ÚLTIMO) **********

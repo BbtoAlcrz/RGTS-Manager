@@ -6,28 +6,21 @@ namespace RGTS.LogicaNegocio.Validaciones
     public static class InicioSesionValidacion
     {
         private static readonly Regex EmailRegex = new Regex(
-            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase
-        );
+           @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",
+           RegexOptions.Compiled | RegexOptions.IgnoreCase
+       );
 
-        /// <summary>
-        /// Valida la sintaxis del email y la presencia de la contraseña antes de ir a la BD.
-        /// </summary>
+        // Valida la sintaxis del email y la presencia de la contraseña antes de ir a la BD.        
         public static void ValidarCredenciales(string email, string contrasena)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
             {
-                throw new ArgumentException("El correo electrónico no puede estar vacío.");
+                throw new ArgumentException("El email o la contraseña no pueden estar vacíos");
             }
 
             if (!EmailRegex.IsMatch(email.Trim()))
             {
-                throw new ArgumentException("El formato del correo electrónico ingresado no es válido.");
-            }
-
-            if (string.IsNullOrWhiteSpace(contrasena))
-            {
-                throw new ArgumentException("La contraseña no puede estar vacía.");
+                throw new ArgumentException("El correo electrónico no posee un formato válido");
             }
         }
     }

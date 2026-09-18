@@ -32,10 +32,11 @@ namespace RGTS.Interfaz.Administrador
         private void InitializeComponent()
         {
             panelListaUsuarios = new Panel();
-            BtnEliminarUsuario = new MaterialButton();
+            ComboBoxListarEstado = new MaterialComboBox();
+            BtnCambiarEstadoUsuario = new MaterialButton();
             BtnEditarUsuario = new MaterialButton();
             BtnAgregarUsuario = new MaterialButton();
-            materialListView1 = new MaterialListView();
+            ListaUsuarios = new MaterialListView();
             UsuarioDNI = new ColumnHeader();
             UsuarioNombre = new ColumnHeader();
             UsuarioApellido = new ColumnHeader();
@@ -43,43 +44,69 @@ namespace RGTS.Interfaz.Administrador
             UsuarioRol = new ColumnHeader();
             UsuarioEstado = new ColumnHeader();
             ComboBoxListarRol = new MaterialComboBox();
-            TxtBuscarUsuaio = new MaterialTextBox2();
+            TxtBuscarUsuario = new MaterialTextBox2();
             panelListaUsuarios.SuspendLayout();
             SuspendLayout();
             // 
             // panelListaUsuarios
             // 
-            panelListaUsuarios.Controls.Add(BtnEliminarUsuario);
+            panelListaUsuarios.Controls.Add(ComboBoxListarEstado);
+            panelListaUsuarios.Controls.Add(BtnCambiarEstadoUsuario);
             panelListaUsuarios.Controls.Add(BtnEditarUsuario);
             panelListaUsuarios.Controls.Add(BtnAgregarUsuario);
-            panelListaUsuarios.Controls.Add(materialListView1);
+            panelListaUsuarios.Controls.Add(ListaUsuarios);
             panelListaUsuarios.Controls.Add(ComboBoxListarRol);
-            panelListaUsuarios.Controls.Add(TxtBuscarUsuaio);
+            panelListaUsuarios.Controls.Add(TxtBuscarUsuario);
             panelListaUsuarios.Location = new Point(27, 71);
             panelListaUsuarios.Name = "panelListaUsuarios";
             panelListaUsuarios.Size = new Size(744, 404);
             panelListaUsuarios.TabIndex = 0;
             panelListaUsuarios.Tag = "";
             // 
-            // BtnEliminarUsuario
+            // ComboBoxListarEstado
             // 
-            BtnEliminarUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            BtnEliminarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BtnEliminarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
-            BtnEliminarUsuario.Depth = 0;
-            BtnEliminarUsuario.HighEmphasis = true;
-            BtnEliminarUsuario.Icon = null;
-            BtnEliminarUsuario.Location = new Point(618, 318);
-            BtnEliminarUsuario.Margin = new Padding(4, 6, 4, 6);
-            BtnEliminarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
-            BtnEliminarUsuario.Name = "BtnEliminarUsuario";
-            BtnEliminarUsuario.NoAccentTextColor = Color.Empty;
-            BtnEliminarUsuario.Size = new Size(122, 36);
-            BtnEliminarUsuario.TabIndex = 5;
-            BtnEliminarUsuario.Text = "Deshabilitar";
-            BtnEliminarUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
-            BtnEliminarUsuario.UseAccentColor = false;
-            BtnEliminarUsuario.UseVisualStyleBackColor = true;
+            ComboBoxListarEstado.AutoResize = false;
+            ComboBoxListarEstado.BackColor = Color.FromArgb(255, 255, 255);
+            ComboBoxListarEstado.Depth = 0;
+            ComboBoxListarEstado.DrawMode = DrawMode.OwnerDrawVariable;
+            ComboBoxListarEstado.DropDownHeight = 174;
+            ComboBoxListarEstado.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBoxListarEstado.DropDownWidth = 121;
+            ComboBoxListarEstado.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            ComboBoxListarEstado.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            ComboBoxListarEstado.FormattingEnabled = true;
+            ComboBoxListarEstado.Hint = "Estado";
+            ComboBoxListarEstado.IntegralHeight = false;
+            ComboBoxListarEstado.ItemHeight = 43;
+            ComboBoxListarEstado.Location = new Point(573, 11);
+            ComboBoxListarEstado.MaxDropDownItems = 4;
+            ComboBoxListarEstado.MouseState = MaterialSkin.MouseState.OUT;
+            ComboBoxListarEstado.Name = "ComboBoxListarEstado";
+            ComboBoxListarEstado.Size = new Size(166, 49);
+            ComboBoxListarEstado.StartIndex = 0;
+            ComboBoxListarEstado.TabIndex = 4;
+            ComboBoxListarEstado.SelectedIndexChanged += ComboBoxListarEstado_SelectedIndexChanged;
+            // 
+            // BtnCambiarEstadoUsuario
+            // 
+            BtnCambiarEstadoUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            BtnCambiarEstadoUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnCambiarEstadoUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
+            BtnCambiarEstadoUsuario.Depth = 0;
+            BtnCambiarEstadoUsuario.HighEmphasis = true;
+            BtnCambiarEstadoUsuario.Icon = null;
+            BtnCambiarEstadoUsuario.Location = new Point(618, 318);
+            BtnCambiarEstadoUsuario.Margin = new Padding(4, 6, 4, 6);
+            BtnCambiarEstadoUsuario.MouseState = MaterialSkin.MouseState.HOVER;
+            BtnCambiarEstadoUsuario.Name = "BtnCambiarEstadoUsuario";
+            BtnCambiarEstadoUsuario.NoAccentTextColor = Color.Empty;
+            BtnCambiarEstadoUsuario.Size = new Size(122, 36);
+            BtnCambiarEstadoUsuario.TabIndex = 6;
+            BtnCambiarEstadoUsuario.Text = "Deshabilitar";
+            BtnCambiarEstadoUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
+            BtnCambiarEstadoUsuario.UseAccentColor = false;
+            BtnCambiarEstadoUsuario.UseVisualStyleBackColor = true;
+            BtnCambiarEstadoUsuario.Click += BtnCambiarEstadoUsuario_Click;
             // 
             // BtnEditarUsuario
             // 
@@ -94,11 +121,12 @@ namespace RGTS.Interfaz.Administrador
             BtnEditarUsuario.Name = "BtnEditarUsuario";
             BtnEditarUsuario.NoAccentTextColor = Color.Empty;
             BtnEditarUsuario.Size = new Size(71, 36);
-            BtnEditarUsuario.TabIndex = 4;
+            BtnEditarUsuario.TabIndex = 5;
             BtnEditarUsuario.Text = "Editar";
             BtnEditarUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
             BtnEditarUsuario.UseAccentColor = false;
             BtnEditarUsuario.UseVisualStyleBackColor = true;
+            BtnEditarUsuario.Click += BtnEditarUsuario_Click;
             // 
             // BtnAgregarUsuario
             // 
@@ -113,30 +141,32 @@ namespace RGTS.Interfaz.Administrador
             BtnAgregarUsuario.Name = "BtnAgregarUsuario";
             BtnAgregarUsuario.NoAccentTextColor = Color.Empty;
             BtnAgregarUsuario.Size = new Size(153, 36);
-            BtnAgregarUsuario.TabIndex = 3;
+            BtnAgregarUsuario.TabIndex = 1;
             BtnAgregarUsuario.Text = "Agregar Usuario";
             BtnAgregarUsuario.Type = MaterialButton.MaterialButtonType.Contained;
             BtnAgregarUsuario.UseAccentColor = false;
             BtnAgregarUsuario.UseVisualStyleBackColor = true;
+            BtnAgregarUsuario.Click += BtnAgregarUsuario_Click;
             // 
-            // materialListView1
+            // ListaUsuarios
             // 
-            materialListView1.AutoSizeTable = false;
-            materialListView1.BackColor = Color.FromArgb(255, 255, 255);
-            materialListView1.BorderStyle = BorderStyle.None;
-            materialListView1.Columns.AddRange(new ColumnHeader[] { UsuarioDNI, UsuarioNombre, UsuarioApellido, UsuarioEmail, UsuarioRol, UsuarioEstado });
-            materialListView1.Depth = 0;
-            materialListView1.FullRowSelect = true;
-            materialListView1.Location = new Point(3, 66);
-            materialListView1.MinimumSize = new Size(200, 100);
-            materialListView1.MouseLocation = new Point(-1, -1);
-            materialListView1.MouseState = MaterialSkin.MouseState.OUT;
-            materialListView1.Name = "materialListView1";
-            materialListView1.OwnerDraw = true;
-            materialListView1.Size = new Size(738, 243);
-            materialListView1.TabIndex = 2;
-            materialListView1.UseCompatibleStateImageBehavior = false;
-            materialListView1.View = View.Details;
+            ListaUsuarios.AutoSizeTable = false;
+            ListaUsuarios.BackColor = Color.FromArgb(255, 255, 255);
+            ListaUsuarios.BorderStyle = BorderStyle.None;
+            ListaUsuarios.Columns.AddRange(new ColumnHeader[] { UsuarioDNI, UsuarioNombre, UsuarioApellido, UsuarioEmail, UsuarioRol, UsuarioEstado });
+            ListaUsuarios.Depth = 0;
+            ListaUsuarios.FullRowSelect = true;
+            ListaUsuarios.Location = new Point(3, 66);
+            ListaUsuarios.MinimumSize = new Size(200, 100);
+            ListaUsuarios.MouseLocation = new Point(-1, -1);
+            ListaUsuarios.MouseState = MaterialSkin.MouseState.OUT;
+            ListaUsuarios.Name = "ListaUsuarios";
+            ListaUsuarios.OwnerDraw = true;
+            ListaUsuarios.Size = new Size(738, 243);
+            ListaUsuarios.TabIndex = 2;
+            ListaUsuarios.UseCompatibleStateImageBehavior = false;
+            ListaUsuarios.View = View.Details;
+            ListaUsuarios.SelectedIndexChanged += ListaUsuarios_SelectedIndexChanged;
             // 
             // UsuarioDNI
             // 
@@ -183,42 +213,44 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarRol.Hint = "Rol";
             ComboBoxListarRol.IntegralHeight = false;
             ComboBoxListarRol.ItemHeight = 43;
-            ComboBoxListarRol.Location = new Point(531, 12);
+            ComboBoxListarRol.Location = new Point(405, 11);
             ComboBoxListarRol.MaxDropDownItems = 4;
             ComboBoxListarRol.MouseState = MaterialSkin.MouseState.OUT;
             ComboBoxListarRol.Name = "ComboBoxListarRol";
-            ComboBoxListarRol.Size = new Size(210, 49);
+            ComboBoxListarRol.Size = new Size(162, 49);
             ComboBoxListarRol.StartIndex = 0;
-            ComboBoxListarRol.TabIndex = 1;
+            ComboBoxListarRol.TabIndex = 3;
+            ComboBoxListarRol.SelectedIndexChanged += ComboBoxListarRol_SelectedIndexChanged;
             // 
-            // TxtBuscarUsuaio
+            // TxtBuscarUsuario
             // 
-            TxtBuscarUsuaio.AnimateReadOnly = false;
-            TxtBuscarUsuaio.BackgroundImageLayout = ImageLayout.None;
-            TxtBuscarUsuaio.CharacterCasing = CharacterCasing.Normal;
-            TxtBuscarUsuaio.Depth = 0;
-            TxtBuscarUsuaio.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            TxtBuscarUsuaio.HideSelection = true;
-            TxtBuscarUsuaio.LeadingIcon = null;
-            TxtBuscarUsuaio.Location = new Point(3, 12);
-            TxtBuscarUsuaio.MaxLength = 32767;
-            TxtBuscarUsuaio.MouseState = MaterialSkin.MouseState.OUT;
-            TxtBuscarUsuaio.Name = "TxtBuscarUsuaio";
-            TxtBuscarUsuaio.PasswordChar = '\0';
-            TxtBuscarUsuaio.PrefixSuffixText = null;
-            TxtBuscarUsuaio.ReadOnly = false;
-            TxtBuscarUsuaio.RightToLeft = RightToLeft.No;
-            TxtBuscarUsuaio.SelectedText = "";
-            TxtBuscarUsuaio.SelectionLength = 0;
-            TxtBuscarUsuaio.SelectionStart = 0;
-            TxtBuscarUsuaio.ShortcutsEnabled = true;
-            TxtBuscarUsuaio.Size = new Size(503, 48);
-            TxtBuscarUsuaio.TabIndex = 0;
-            TxtBuscarUsuaio.TabStop = false;
-            TxtBuscarUsuaio.Text = "Buscar por DNI o Nombre";
-            TxtBuscarUsuaio.TextAlign = HorizontalAlignment.Left;
-            TxtBuscarUsuaio.TrailingIcon = null;
-            TxtBuscarUsuaio.UseSystemPasswordChar = false;
+            TxtBuscarUsuario.AnimateReadOnly = false;
+            TxtBuscarUsuario.BackgroundImageLayout = ImageLayout.None;
+            TxtBuscarUsuario.CharacterCasing = CharacterCasing.Normal;
+            TxtBuscarUsuario.Depth = 0;
+            TxtBuscarUsuario.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            TxtBuscarUsuario.HideSelection = true;
+            TxtBuscarUsuario.LeadingIcon = null;
+            TxtBuscarUsuario.Location = new Point(3, 12);
+            TxtBuscarUsuario.MaxLength = 32767;
+            TxtBuscarUsuario.MouseState = MaterialSkin.MouseState.OUT;
+            TxtBuscarUsuario.Name = "TxtBuscarUsuario";
+            TxtBuscarUsuario.PasswordChar = '\0';
+            TxtBuscarUsuario.PrefixSuffixText = null;
+            TxtBuscarUsuario.ReadOnly = false;
+            TxtBuscarUsuario.RightToLeft = RightToLeft.No;
+            TxtBuscarUsuario.SelectedText = "";
+            TxtBuscarUsuario.SelectionLength = 0;
+            TxtBuscarUsuario.SelectionStart = 0;
+            TxtBuscarUsuario.ShortcutsEnabled = true;
+            TxtBuscarUsuario.Size = new Size(396, 48);
+            TxtBuscarUsuario.TabIndex = 0;
+            TxtBuscarUsuario.TabStop = false;
+            TxtBuscarUsuario.Text = "Buscar por DNI o Nombre";
+            TxtBuscarUsuario.TextAlign = HorizontalAlignment.Left;
+            TxtBuscarUsuario.TrailingIcon = null;
+            TxtBuscarUsuario.UseSystemPasswordChar = false;
+            TxtBuscarUsuario.TextChanged += TxtBuscarUsuario_TextChanged;
             // 
             // FormListadoUsuarios
             // 
@@ -228,6 +260,7 @@ namespace RGTS.Interfaz.Administrador
             Controls.Add(panelListaUsuarios);
             Name = "FormListadoUsuarios";
             Text = "Lista de usuarios";
+            Load += FormListadoUsuarios_Load;
             panelListaUsuarios.ResumeLayout(false);
             panelListaUsuarios.PerformLayout();
             ResumeLayout(false);
@@ -236,9 +269,9 @@ namespace RGTS.Interfaz.Administrador
         #endregion
 
         private Panel panelListaUsuarios;
-        private MaterialTextBox2 TxtBuscarUsuaio;
+        private MaterialTextBox2 TxtBuscarUsuario;
         private MaterialComboBox ComboBoxListarRol;
-        private MaterialListView materialListView1;
+        private MaterialListView ListaUsuarios;
         private ColumnHeader UsuarioDNI;
         private ColumnHeader UsuarioNombre;
         private ColumnHeader UsuarioApellido;
@@ -247,6 +280,7 @@ namespace RGTS.Interfaz.Administrador
         private ColumnHeader UsuarioEstado;
         private MaterialButton BtnAgregarUsuario;
         private MaterialButton BtnEditarUsuario;
-        private MaterialButton BtnEliminarUsuario;
+        private MaterialButton BtnCambiarEstadoUsuario;
+        private MaterialComboBox ComboBoxListarEstado;
     }
 }

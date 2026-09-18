@@ -25,7 +25,8 @@ namespace RGTS.LogicaNegocio.Validaciones
             bool esNuevo = true)
         {
             // Valida campos vacios o en blanco
-            if(string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(apellido) || string.IsNullOrWhiteSpace(dni) || string.IsNullOrWhiteSpace(email))
+            if(string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(apellido) || 
+               string.IsNullOrWhiteSpace(dni) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
             {
                 throw new ArgumentException("Debe completar todos los campos");
             }
@@ -63,7 +64,7 @@ namespace RGTS.LogicaNegocio.Validaciones
             // Contraseña inicial (solo obligatoria al crear un usuario nuevo)
             if (esNuevo)
             {
-                if (string.IsNullOrWhiteSpace(contrasena) || contrasena.Length < 8)
+                if (contrasena.Length < 8)
                 {
                     throw new ArgumentException("La contraseña inicial debe contener al menos 8 caracteres");
                 }

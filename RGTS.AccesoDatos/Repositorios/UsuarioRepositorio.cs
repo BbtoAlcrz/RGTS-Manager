@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using RGTS.AccesoDatos.Conexion;
 using RGTS.Entidades;
@@ -15,8 +16,8 @@ namespace RGTS.AccesoDatos.Repositorios
             _conexionBD = new ConexionBD();
         }
 
-       
-        // Obtiene un usuario y su rol asociado mediante el Procedimiento Almacenado sp_ObtenerUsuarioPorEmail.
+        // se usa al iniciar sesión
+        // obtiene un usuario y su rol asociado mediante el Procedimiento Almacenado sp_ObtenerUsuarioPorEmail.
         public Usuario? ObtenerPorEmail(string email)
         {
             Usuario? usuario = null;
@@ -63,6 +64,72 @@ namespace RGTS.AccesoDatos.Repositorios
             return usuario;
         }
 
+        // Obtiene todos los usuarios y sus roles asociados mediante el Procedimiento Almacenado sp_ListarUsuarios, con la opción de filtrar por texto o por rol
+        public List<Usuario> ObtenerTodos(string? filtroTexto = null, int? idRol = null, bool? activo = null)
+        {
+            var lista = new List<Usuario>();
+
+            using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+            {
+                using (SqlCommand comando = new SqlCommand("dbo.sp_ListarUsuarios", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+
+                    // Busqueda por texto
+                    if (string.IsNullOrWhiteSpace(filtroTexto))
+                        comando.Parameters.Add(new SqlParameter("@FiltroTexto", SqlDbType.VarChar, 100) { Value = DBNull.Value });
+                    else
+                        comando.Parameters.Add(new SqlParameter("@FiltroTexto", SqlDbType.VarChar, 100) { Value = filtroTexto.Trim() });
+
+                    // Busqueda por rol
+                    if (idRol == null || idRol <= 0)
+                        comando.Parameters.Add(new SqlParameter("@IdRol", SqlDbType.Int) { Value = DBNull.Value });
+                    else
+                        comando.Parameters.Add(new SqlParameter("@IdRol", SqlDbType.Int) { Value = idRol.Value });
+
+                    //busqueda por estado (activo/inactivo)
+                    if(activo == null)
+                    {
+                        comando.Parameters.Add(new SqlParameter("@Activo", SqlDbType.Bit) { Value = DBNull.Value });
+                    }
+                    else
+                    {
+                        comando.Parameters.Add(new SqlParameter("@Activo", SqlDbType.Bit) { Value = activo.Value });
+                    }
+
+                    conexion.Open();
+
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new Usuario
+                            {
+                                Dni = reader["dni"]?.ToString() ?? string.Empty,
+                                IdRol = Convert.ToInt32(reader["id_rol"]),
+                                Nombre = reader["nombre"]?.ToString() ?? string.Empty,
+                                Apellido = reader["apellido"]?.ToString() ?? string.Empty,
+                                Email = reader["email"]?.ToString() ?? string.Empty,
+                                ContrasenaHash = reader["contrasena_hash"]?.ToString() ?? string.Empty,
+                                Activo = Convert.ToBoolean(reader["activo"]),
+                                Rol = new Rol
+                                {
+                                    IdRol = Convert.ToInt32(reader["id_rol"]),
+                                    NombreRol = reader["nombre_rol"]?.ToString() ?? string.Empty,
+                                    DescripcionRol = reader["descripcion_rol"] != DBNull.Value
+                                                    ? (reader["descripcion_rol"]?.ToString() ?? string.Empty)
+                                                    : string.Empty
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            return lista;
+        }
+
+
         // Inserta un nuevo Usuario en la base de datos mediante el Procedimiento Almacenado sp_InsertarUsuario.
         public void Insertar(Usuario usuario)
         {
@@ -85,6 +152,55 @@ namespace RGTS.AccesoDatos.Repositorios
             }
         }
 
+
+        // Actualiza un Usuario existente en la base de datos mediante el Procedimiento Almacenado sp_ActualizarUsuario.
+        public void Actualizar(Usuario usuario, bool cambiarContrasena)
+        {
+            using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+            {
+                using (SqlCommand comando = new SqlCommand("dbo.sp_ActualizarUsuario", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+
+                    comando.Parameters.Add(new SqlParameter("@Dni", SqlDbType.VarChar, 20) { Value = usuario.Dni });
+                    comando.Parameters.Add(new SqlParameter("@IdRol", SqlDbType.Int) { Value = usuario.IdRol });
+                    comando.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar, 50) { Value = usuario.Nombre });
+                    comando.Parameters.Add(new SqlParameter("@Apellido", SqlDbType.VarChar, 50) { Value = usuario.Apellido });
+                    comando.Parameters.Add(new SqlParameter("@Email", SqlDbType.VarChar, 100) { Value = usuario.Email });
+
+                    // si cambiarContrasena es true, quiere decir que se quiere actualizar la contraseña tambien
+                    if (cambiarContrasena)
+                    {
+                        comando.Parameters.Add(new SqlParameter("@ContrasenaHash", SqlDbType.VarChar, 255) { Value = usuario.ContrasenaHash });
+                    } 
+                    // si es false, no se actualiza y el PA recibe un valor nulo para no modificarla
+                    else
+                    {
+                        comando.Parameters.Add(new SqlParameter("@ContrasenaHash", SqlDbType.VarChar, 255) { Value = DBNull.Value });
+                    }
+
+                    conexion.Open();
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // cambia el estado del usuario (activo/inactivo) mediante el PA sp_CambiarEstadoUsuario, usa el dni y el nuevo estado como parametros
+        public void CambiarEstado(string dni, bool nuevoEstado)
+        {
+            using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+            {
+                using (SqlCommand comando = new SqlCommand("dbo.sp_CambiarEstadoUsuario", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+                    comando.Parameters.Add(new SqlParameter("@Dni", SqlDbType.VarChar, 20) { Value = dni });
+                    comando.Parameters.Add(new SqlParameter("@NuevoEstado", SqlDbType.Bit) { Value = nuevoEstado });
+
+                    conexion.Open();
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
 
     }
 }

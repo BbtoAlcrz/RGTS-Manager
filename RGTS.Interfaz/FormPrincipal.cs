@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using MaterialSkin;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
 
@@ -19,6 +20,8 @@ namespace RGTS.Interfaz
         public FormPrincipal()
         {
             InitializeComponent();
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
         }
 
         public FormPrincipal(Usuario usuario) : this()
@@ -49,7 +52,9 @@ namespace RGTS.Interfaz
 
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
+            // Al cerrar el FormPrincipal, cerramos toda la aplicación
             Application.Exit();
+            this.Close();
         }
     }
 }

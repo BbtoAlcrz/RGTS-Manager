@@ -50,6 +50,7 @@ namespace RGTS.Interfaz.Administrador
             // 
             // panelListaUsuarios
             // 
+            panelListaUsuarios.BackColor = SystemColors.WindowFrame;
             panelListaUsuarios.Controls.Add(ComboBoxListarEstado);
             panelListaUsuarios.Controls.Add(BtnCambiarEstadoUsuario);
             panelListaUsuarios.Controls.Add(BtnEditarUsuario);
@@ -66,7 +67,7 @@ namespace RGTS.Interfaz.Administrador
             // ComboBoxListarEstado
             // 
             ComboBoxListarEstado.AutoResize = false;
-            ComboBoxListarEstado.BackColor = Color.FromArgb(255, 255, 255);
+            ComboBoxListarEstado.BackColor = SystemColors.Window;
             ComboBoxListarEstado.Depth = 0;
             ComboBoxListarEstado.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBoxListarEstado.DropDownHeight = 174;
@@ -91,6 +92,7 @@ namespace RGTS.Interfaz.Administrador
             // 
             BtnCambiarEstadoUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BtnCambiarEstadoUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnCambiarEstadoUsuario.BackColor = SystemColors.Window;
             BtnCambiarEstadoUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnCambiarEstadoUsuario.Depth = 0;
             BtnCambiarEstadoUsuario.HighEmphasis = true;
@@ -104,13 +106,14 @@ namespace RGTS.Interfaz.Administrador
             BtnCambiarEstadoUsuario.TabIndex = 6;
             BtnCambiarEstadoUsuario.Text = "Deshabilitar";
             BtnCambiarEstadoUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
-            BtnCambiarEstadoUsuario.UseAccentColor = false;
-            BtnCambiarEstadoUsuario.UseVisualStyleBackColor = true;
+            BtnCambiarEstadoUsuario.UseAccentColor = true;
+            BtnCambiarEstadoUsuario.UseVisualStyleBackColor = false;
             BtnCambiarEstadoUsuario.Click += BtnCambiarEstadoUsuario_Click;
             // 
             // BtnEditarUsuario
             // 
             BtnEditarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnEditarUsuario.BackColor = SystemColors.Window;
             BtnEditarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnEditarUsuario.Depth = 0;
             BtnEditarUsuario.HighEmphasis = true;
@@ -125,7 +128,7 @@ namespace RGTS.Interfaz.Administrador
             BtnEditarUsuario.Text = "Editar";
             BtnEditarUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
             BtnEditarUsuario.UseAccentColor = false;
-            BtnEditarUsuario.UseVisualStyleBackColor = true;
+            BtnEditarUsuario.UseVisualStyleBackColor = false;
             BtnEditarUsuario.Click += BtnEditarUsuario_Click;
             // 
             // BtnAgregarUsuario
@@ -201,7 +204,7 @@ namespace RGTS.Interfaz.Administrador
             // ComboBoxListarRol
             // 
             ComboBoxListarRol.AutoResize = false;
-            ComboBoxListarRol.BackColor = Color.FromArgb(255, 255, 255);
+            ComboBoxListarRol.BackColor = SystemColors.Window;
             ComboBoxListarRol.Depth = 0;
             ComboBoxListarRol.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBoxListarRol.DropDownHeight = 174;
@@ -230,6 +233,7 @@ namespace RGTS.Interfaz.Administrador
             TxtBuscarUsuario.Depth = 0;
             TxtBuscarUsuario.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtBuscarUsuario.HideSelection = true;
+            TxtBuscarUsuario.Hint = "Buscar por DNI o Nombre";
             TxtBuscarUsuario.LeadingIcon = null;
             TxtBuscarUsuario.Location = new Point(3, 12);
             TxtBuscarUsuario.MaxLength = 32767;
@@ -246,7 +250,6 @@ namespace RGTS.Interfaz.Administrador
             TxtBuscarUsuario.Size = new Size(396, 48);
             TxtBuscarUsuario.TabIndex = 0;
             TxtBuscarUsuario.TabStop = false;
-            TxtBuscarUsuario.Text = "Buscar por DNI o Nombre";
             TxtBuscarUsuario.TextAlign = HorizontalAlignment.Left;
             TxtBuscarUsuario.TrailingIcon = null;
             TxtBuscarUsuario.UseSystemPasswordChar = false;

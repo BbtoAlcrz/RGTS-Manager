@@ -1,3 +1,5 @@
+using MaterialSkin;
+
 namespace RGTS.Interfaz
 {
     internal static class Program
@@ -11,6 +13,18 @@ namespace RGTS.Interfaz
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+
+            // Configurar MaterialSkin globalmente para toda la aplicación
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.Indigo500,      // morado/azul principal
+                Primary.Indigo700,      // versión oscura (para header/toolbar)
+                Primary.Grey100,        // versión clara (fondo)
+                Accent.LightGreen100,   // acento verde lima
+                TextShade.WHITE
+            );
+
             Application.Run(new FormIniciarSesion());
         }
     }

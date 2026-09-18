@@ -12,6 +12,14 @@ namespace RGTS.Interfaz.Administrador
     {
         private readonly UsuarioServicio _usuarioServicio;
 
+        // Clase auxiliar solo para los estados (no existe en Entidades)
+        private class EstadoFiltro
+        {
+            public string Texto { get; set; }
+            public bool? Valor { get; set; }
+        }
+        
+
         public FormListadoUsuarios()
         {
             InitializeComponent();
@@ -37,34 +45,42 @@ namespace RGTS.Interfaz.Administrador
             ListaUsuarios.GridLines = true;
         }
 
-
+        //la funcion se encarga principalmente de cargar el filtro de Rol y Estado 
         private void CargarFiltros()
         {
+            // evitamos que se refresque la lista mientras se cargan los filtros
+            ComboBoxListarRol.SelectedValueChanged -= ComboBoxListarRol_SelectedIndexChanged;
+            ComboBoxListarEstado.SelectedValueChanged -= ComboBoxListarEstado_SelectedIndexChanged;
+
             var roles = new[]
             {
-                new { IdRol = 0, Nombre = "Todos los roles" },
-                new { IdRol = 1, Nombre = "Administrador" },
-                new { IdRol = 2, Nombre = "Vendedor" },
-                new { IdRol = 3, Nombre = "Encargado de Depósito" }
+                new Rol { IdRol = 0, NombreRol = "Todos los roles" },
+                new Rol { IdRol = 1, NombreRol = "Administrador" },
+                new Rol { IdRol = 2, NombreRol = "Vendedor" },
+                new Rol { IdRol = 3, NombreRol = "Encargado de Depósito" }
             };
 
             ComboBoxListarRol.DataSource = roles;
-            ComboBoxListarRol.DisplayMember = "Nombre";
+            ComboBoxListarRol.DisplayMember = "NombreRol";
             ComboBoxListarRol.ValueMember = "IdRol";
             ComboBoxListarRol.SelectedIndex = 0;
 
 
             var estados = new[]
             {
-                new { Texto = "Todos los estados", Valor = (bool?)null },
-                new { Texto = "Habilitado", Valor = (bool?)true },
-                new { Texto = "Deshabilitado", Valor = (bool?)false }
+                new EstadoFiltro { Texto = "Todos los estados", Valor = (bool?)null },
+                new EstadoFiltro { Texto = "Habilitado", Valor = (bool?)true },
+                new EstadoFiltro { Texto = "Deshabilitado", Valor = (bool?)false }
             };
 
             ComboBoxListarEstado.DataSource = estados;
             ComboBoxListarEstado.DisplayMember = "Texto";
             ComboBoxListarEstado.ValueMember = "Valor";
             ComboBoxListarEstado.SelectedIndex = 0;
+
+            // una vez cargados los filtros, la lista se puede refrescar al cambiar la selección
+            ComboBoxListarRol.SelectedValueChanged += ComboBoxListarRol_SelectedIndexChanged;
+            ComboBoxListarEstado.SelectedValueChanged += ComboBoxListarEstado_SelectedIndexChanged;
         }
 
 
@@ -78,10 +94,10 @@ namespace RGTS.Interfaz.Administrador
             BtnCambiarEstadoUsuario.Text = "Deshabilitar";
 
             string filtroTexto = TxtBuscarUsuario.Text;
-            int idRol = ComboBoxListarRol.SelectedValue != null ? Convert.ToInt32(ComboBoxListarRol.SelectedValue) : 0;
-            bool? estado = (bool?)ComboBoxListarEstado.SelectedValue;
+            int idRol = (ComboBoxListarRol.SelectedItem as Rol)?.IdRol ?? 0;
+            bool? estado = (ComboBoxListarEstado.SelectedItem as EstadoFiltro)?.Valor;
 
-            List<Usuario> lista = _usuarioServicio.ListarUsuarios(filtroTexto, idRol);
+            List<Usuario> lista = _usuarioServicio.ListarUsuarios(filtroTexto, idRol, estado);
 
             foreach (var usuario in lista)
             {

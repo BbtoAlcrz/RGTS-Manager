@@ -15,15 +15,6 @@ namespace RGTS.Interfaz
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-
-            materialSkinManager.ColorScheme = new ColorScheme(
-                Primary.Indigo500,      // morado/azul principal
-                Primary.Indigo700,      // versión oscura (para header/toolbar)
-                Primary.Grey100,        // versión clara (fondo)
-                Accent.LightGreen100,   // acento verde lima
-                TextShade.WHITE
-            );
 
             _autenticacionServicio = new AutenticacionServicio();
         }
@@ -51,11 +42,18 @@ namespace RGTS.Interfaz
                 this.Hide();
 
                 // Abrimos el formulario principal pasándole el usuario logueado
-                FormPrincipal formPrincipal = new FormPrincipal(usuarioAutenticado);
+                //FormPrincipal formPrincipal = new FormPrincipal(usuarioAutenticado);
 
                 // Si cierran el FormPrincipal, se cierra la aplicación por completo
-                formPrincipal.FormClosed += (s, args) => this.Close();
-                formPrincipal.Show();
+                //formPrincipal.FormClosed += (s, args) => this.Close();
+                //formPrincipal.Show();
+
+                // despues de ocultar el login abre la ventana de gestion de clientes del administrador
+                //Administrador.FormListadoUsuarios abrirEste = new Administrador.FormListadoUsuarios();
+                FormPrincipal abrirEste = new FormPrincipal(usuarioAutenticado);
+                abrirEste.Show();
+
+                // al cerrar la ventana, se cierra la aplicacion por completo con applition.exit()
             }
             catch (ArgumentException ex)
             {

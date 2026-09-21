@@ -45,6 +45,8 @@
             BtnCancelar = new MaterialSkin.Controls.MaterialButton();
             BtnGuardar = new MaterialSkin.Controls.MaterialButton();
             panel1 = new Panel();
+            TxtExistenciasMax = new MaterialSkin.Controls.MaterialTextBox2();
+            LExistenciasMax = new MaterialSkin.Controls.MaterialLabel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,7 +55,7 @@
             LCodigo.AutoSize = true;
             LCodigo.Depth = 0;
             LCodigo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LCodigo.Location = new Point(13, 0);
+            LCodigo.Location = new Point(15, 0);
             LCodigo.MouseState = MaterialSkin.MouseState.HOVER;
             LCodigo.Name = "LCodigo";
             LCodigo.Size = new Size(51, 19);
@@ -65,7 +67,7 @@
             LCategoria.AutoSize = true;
             LCategoria.Depth = 0;
             LCategoria.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LCategoria.Location = new Point(13, 244);
+            LCategoria.Location = new Point(15, 325);
             LCategoria.MouseState = MaterialSkin.MouseState.HOVER;
             LCategoria.Name = "LCategoria";
             LCategoria.Size = new Size(69, 19);
@@ -77,7 +79,7 @@
             LPrecio.AutoSize = true;
             LPrecio.Depth = 0;
             LPrecio.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LPrecio.Location = new Point(13, 308);
+            LPrecio.Location = new Point(212, 325);
             LPrecio.MouseState = MaterialSkin.MouseState.HOVER;
             LPrecio.Name = "LPrecio";
             LPrecio.Size = new Size(45, 19);
@@ -89,7 +91,7 @@
             LExistenciasA.AutoSize = true;
             LExistenciasA.Depth = 0;
             LExistenciasA.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LExistenciasA.Location = new Point(21, 373);
+            LExistenciasA.Location = new Point(15, 416);
             LExistenciasA.MouseState = MaterialSkin.MouseState.HOVER;
             LExistenciasA.Name = "LExistenciasA";
             LExistenciasA.Size = new Size(146, 19);
@@ -101,7 +103,7 @@
             LExistenciasMin.AutoSize = true;
             LExistenciasMin.Depth = 0;
             LExistenciasMin.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LExistenciasMin.Location = new Point(229, 373);
+            LExistenciasMin.Location = new Point(255, 507);
             LExistenciasMin.MouseState = MaterialSkin.MouseState.HOVER;
             LExistenciasMin.Name = "LExistenciasMin";
             LExistenciasMin.Size = new Size(147, 19);
@@ -113,7 +115,7 @@
             LNombre.AutoSize = true;
             LNombre.Depth = 0;
             LNombre.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LNombre.Location = new Point(13, 62);
+            LNombre.Location = new Point(15, 83);
             LNombre.MouseState = MaterialSkin.MouseState.HOVER;
             LNombre.Name = "LNombre";
             LNombre.Size = new Size(150, 19);
@@ -125,7 +127,7 @@
             LDescripcion.AutoSize = true;
             LDescripcion.Depth = 0;
             LDescripcion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LDescripcion.Location = new Point(13, 123);
+            LDescripcion.Location = new Point(15, 164);
             LDescripcion.MouseState = MaterialSkin.MouseState.HOVER;
             LDescripcion.Name = "LDescripcion";
             LDescripcion.Size = new Size(84, 19);
@@ -141,8 +143,7 @@
             TxtCodigo.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtCodigo.HideSelection = true;
             TxtCodigo.LeadingIcon = null;
-            TxtCodigo.Location = new Point(13, 16);
-            TxtCodigo.Margin = new Padding(3, 2, 3, 2);
+            TxtCodigo.Location = new Point(15, 21);
             TxtCodigo.MaxLength = 32767;
             TxtCodigo.MouseState = MaterialSkin.MouseState.OUT;
             TxtCodigo.Name = "TxtCodigo";
@@ -154,7 +155,7 @@
             TxtCodigo.SelectionLength = 0;
             TxtCodigo.SelectionStart = 0;
             TxtCodigo.ShortcutsEnabled = true;
-            TxtCodigo.Size = new Size(273, 48);
+            TxtCodigo.Size = new Size(387, 48);
             TxtCodigo.TabIndex = 7;
             TxtCodigo.TabStop = false;
             TxtCodigo.TextAlign = HorizontalAlignment.Left;
@@ -170,8 +171,7 @@
             TxtNombre.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtNombre.HideSelection = true;
             TxtNombre.LeadingIcon = null;
-            TxtNombre.Location = new Point(13, 78);
-            TxtNombre.Margin = new Padding(3, 2, 3, 2);
+            TxtNombre.Location = new Point(15, 104);
             TxtNombre.MaxLength = 32767;
             TxtNombre.MouseState = MaterialSkin.MouseState.OUT;
             TxtNombre.Name = "TxtNombre";
@@ -183,7 +183,7 @@
             TxtNombre.SelectionLength = 0;
             TxtNombre.SelectionStart = 0;
             TxtNombre.ShortcutsEnabled = true;
-            TxtNombre.Size = new Size(273, 48);
+            TxtNombre.Size = new Size(387, 48);
             TxtNombre.TabIndex = 8;
             TxtNombre.TabStop = false;
             TxtNombre.TextAlign = HorizontalAlignment.Left;
@@ -197,8 +197,7 @@
             MltDescripcion.CharacterCasing = CharacterCasing.Normal;
             MltDescripcion.Depth = 0;
             MltDescripcion.HideSelection = true;
-            MltDescripcion.Location = new Point(13, 140);
-            MltDescripcion.Margin = new Padding(3, 2, 3, 2);
+            MltDescripcion.Location = new Point(15, 187);
             MltDescripcion.MaxLength = 32767;
             MltDescripcion.MouseState = MaterialSkin.MouseState.OUT;
             MltDescripcion.Name = "MltDescripcion";
@@ -209,7 +208,7 @@
             MltDescripcion.SelectionLength = 0;
             MltDescripcion.SelectionStart = 0;
             MltDescripcion.ShortcutsEnabled = true;
-            MltDescripcion.Size = new Size(273, 94);
+            MltDescripcion.Size = new Size(387, 125);
             MltDescripcion.TabIndex = 9;
             MltDescripcion.TabStop = false;
             MltDescripcion.TextAlign = HorizontalAlignment.Left;
@@ -224,8 +223,7 @@
             TxtPrecio.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtPrecio.HideSelection = true;
             TxtPrecio.LeadingIcon = null;
-            TxtPrecio.Location = new Point(13, 325);
-            TxtPrecio.Margin = new Padding(3, 2, 3, 2);
+            TxtPrecio.Location = new Point(212, 348);
             TxtPrecio.MaxLength = 32767;
             TxtPrecio.MouseState = MaterialSkin.MouseState.OUT;
             TxtPrecio.Name = "TxtPrecio";
@@ -237,7 +235,7 @@
             TxtPrecio.SelectionLength = 0;
             TxtPrecio.SelectionStart = 0;
             TxtPrecio.ShortcutsEnabled = true;
-            TxtPrecio.Size = new Size(273, 48);
+            TxtPrecio.Size = new Size(190, 48);
             TxtPrecio.TabIndex = 10;
             TxtPrecio.TabStop = false;
             TxtPrecio.TextAlign = HorizontalAlignment.Left;
@@ -253,8 +251,7 @@
             TxtExistenciasA.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtExistenciasA.HideSelection = true;
             TxtExistenciasA.LeadingIcon = null;
-            TxtExistenciasA.Location = new Point(21, 397);
-            TxtExistenciasA.Margin = new Padding(3, 2, 3, 2);
+            TxtExistenciasA.Location = new Point(15, 449);
             TxtExistenciasA.MaxLength = 32767;
             TxtExistenciasA.MouseState = MaterialSkin.MouseState.OUT;
             TxtExistenciasA.Name = "TxtExistenciasA";
@@ -266,7 +263,7 @@
             TxtExistenciasA.SelectionLength = 0;
             TxtExistenciasA.SelectionStart = 0;
             TxtExistenciasA.ShortcutsEnabled = true;
-            TxtExistenciasA.Size = new Size(128, 48);
+            TxtExistenciasA.Size = new Size(146, 48);
             TxtExistenciasA.TabIndex = 11;
             TxtExistenciasA.TabStop = false;
             TxtExistenciasA.TextAlign = HorizontalAlignment.Left;
@@ -282,8 +279,7 @@
             TxtExistenciasMin.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtExistenciasMin.HideSelection = true;
             TxtExistenciasMin.LeadingIcon = null;
-            TxtExistenciasMin.Location = new Point(223, 397);
-            TxtExistenciasMin.Margin = new Padding(3, 2, 3, 2);
+            TxtExistenciasMin.Location = new Point(255, 538);
             TxtExistenciasMin.MaxLength = 32767;
             TxtExistenciasMin.MouseState = MaterialSkin.MouseState.OUT;
             TxtExistenciasMin.Name = "TxtExistenciasMin";
@@ -295,7 +291,7 @@
             TxtExistenciasMin.SelectionLength = 0;
             TxtExistenciasMin.SelectionStart = 0;
             TxtExistenciasMin.ShortcutsEnabled = true;
-            TxtExistenciasMin.Size = new Size(135, 48);
+            TxtExistenciasMin.Size = new Size(147, 48);
             TxtExistenciasMin.TabIndex = 12;
             TxtExistenciasMin.TabStop = false;
             TxtExistenciasMin.TextAlign = HorizontalAlignment.Left;
@@ -316,12 +312,11 @@
             CbCategoria.FormattingEnabled = true;
             CbCategoria.IntegralHeight = false;
             CbCategoria.ItemHeight = 43;
-            CbCategoria.Location = new Point(13, 260);
-            CbCategoria.Margin = new Padding(3, 2, 3, 2);
+            CbCategoria.Location = new Point(15, 347);
             CbCategoria.MaxDropDownItems = 4;
             CbCategoria.MouseState = MaterialSkin.MouseState.OUT;
             CbCategoria.Name = "CbCategoria";
-            CbCategoria.Size = new Size(133, 49);
+            CbCategoria.Size = new Size(151, 49);
             CbCategoria.StartIndex = 0;
             CbCategoria.TabIndex = 13;
             // 
@@ -332,8 +327,8 @@
             BtnCancelar.Depth = 0;
             BtnCancelar.HighEmphasis = true;
             BtnCancelar.Icon = null;
-            BtnCancelar.Location = new Point(213, 526);
-            BtnCancelar.Margin = new Padding(4);
+            BtnCancelar.Location = new Point(243, 701);
+            BtnCancelar.Margin = new Padding(5);
             BtnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelar.Name = "BtnCancelar";
             BtnCancelar.NoAccentTextColor = Color.Empty;
@@ -343,6 +338,7 @@
             BtnCancelar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnCancelar.UseAccentColor = false;
             BtnCancelar.UseVisualStyleBackColor = true;
+            BtnCancelar.Click += BtnCancelar_Click;
             // 
             // BtnGuardar
             // 
@@ -351,8 +347,8 @@
             BtnGuardar.Depth = 0;
             BtnGuardar.HighEmphasis = true;
             BtnGuardar.Icon = null;
-            BtnGuardar.Location = new Point(325, 526);
-            BtnGuardar.Margin = new Padding(4);
+            BtnGuardar.Location = new Point(371, 701);
+            BtnGuardar.Margin = new Padding(5);
             BtnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnGuardar.Name = "BtnGuardar";
             BtnGuardar.NoAccentTextColor = Color.Empty;
@@ -362,10 +358,13 @@
             BtnGuardar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnGuardar.UseAccentColor = false;
             BtnGuardar.UseVisualStyleBackColor = true;
+            BtnGuardar.Click += BtnGuardar_Click;
             // 
             // panel1
             // 
             panel1.BackColor = Color.Gainsboro;
+            panel1.Controls.Add(TxtExistenciasMax);
+            panel1.Controls.Add(LExistenciasMax);
             panel1.Controls.Add(CbCategoria);
             panel1.Controls.Add(TxtExistenciasMin);
             panel1.Controls.Add(TxtExistenciasA);
@@ -380,23 +379,60 @@
             panel1.Controls.Add(LPrecio);
             panel1.Controls.Add(LCategoria);
             panel1.Controls.Add(LCodigo);
-            panel1.Location = new Point(6, 75);
-            panel1.Margin = new Padding(3, 2, 3, 2);
+            panel1.Location = new Point(12, 81);
             panel1.Name = "panel1";
-            panel1.Size = new Size(391, 459);
+            panel1.Size = new Size(447, 612);
             panel1.TabIndex = 16;
+            // 
+            // TxtExistenciasMax
+            // 
+            TxtExistenciasMax.AnimateReadOnly = false;
+            TxtExistenciasMax.BackgroundImageLayout = ImageLayout.None;
+            TxtExistenciasMax.CharacterCasing = CharacterCasing.Normal;
+            TxtExistenciasMax.Depth = 0;
+            TxtExistenciasMax.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            TxtExistenciasMax.HideSelection = true;
+            TxtExistenciasMax.LeadingIcon = null;
+            TxtExistenciasMax.Location = new Point(15, 538);
+            TxtExistenciasMax.MaxLength = 32767;
+            TxtExistenciasMax.MouseState = MaterialSkin.MouseState.OUT;
+            TxtExistenciasMax.Name = "TxtExistenciasMax";
+            TxtExistenciasMax.PasswordChar = '\0';
+            TxtExistenciasMax.PrefixSuffixText = null;
+            TxtExistenciasMax.ReadOnly = false;
+            TxtExistenciasMax.RightToLeft = RightToLeft.No;
+            TxtExistenciasMax.SelectedText = "";
+            TxtExistenciasMax.SelectionLength = 0;
+            TxtExistenciasMax.SelectionStart = 0;
+            TxtExistenciasMax.ShortcutsEnabled = true;
+            TxtExistenciasMax.Size = new Size(154, 48);
+            TxtExistenciasMax.TabIndex = 15;
+            TxtExistenciasMax.TabStop = false;
+            TxtExistenciasMax.TextAlign = HorizontalAlignment.Left;
+            TxtExistenciasMax.TrailingIcon = null;
+            TxtExistenciasMax.UseSystemPasswordChar = false;
+            // 
+            // LExistenciasMax
+            // 
+            LExistenciasMax.AutoSize = true;
+            LExistenciasMax.Depth = 0;
+            LExistenciasMax.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            LExistenciasMax.Location = new Point(15, 507);
+            LExistenciasMax.MouseState = MaterialSkin.MouseState.HOVER;
+            LExistenciasMax.Name = "LExistenciasMax";
+            LExistenciasMax.Size = new Size(151, 19);
+            LExistenciasMax.TabIndex = 14;
+            LExistenciasMax.Text = "Existencias Maximas";
             // 
             // FormProductoAltaEdicion
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(437, 560);
+            ClientSize = new Size(499, 747);
             Controls.Add(BtnGuardar);
             Controls.Add(BtnCancelar);
             Controls.Add(panel1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "FormProductoAltaEdicion";
-            Padding = new Padding(3, 48, 3, 2);
             Text = "Registrar Nuevo Producto";
             Load += FormProductoAltaEdicion_Load;
             panel1.ResumeLayout(false);
@@ -424,5 +460,7 @@
         private MaterialSkin.Controls.MaterialButton BtnCancelar;
         private MaterialSkin.Controls.MaterialButton BtnGuardar;
         private Panel panel1;
+        private MaterialSkin.Controls.MaterialTextBox2 TxtExistenciasMax;
+        private MaterialSkin.Controls.MaterialLabel LExistenciasMax;
     }
 }

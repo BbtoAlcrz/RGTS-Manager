@@ -1,6 +1,6 @@
-﻿namespace RGTS.Interfaz
+﻿namespace RGTS.Interfaz.Administrador
 {
-    partial class FormGestionClientes
+    partial class FormCategoriaListado
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewGroup listViewGroup4 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup5 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup6 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup1 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup2 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup3 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
             panel2 = new Panel();
             BtnAlta = new MaterialSkin.Controls.MaterialButton();
             BtnNuevo = new MaterialSkin.Controls.MaterialButton();
@@ -38,14 +38,9 @@
             btnEliminar = new MaterialSkin.Controls.MaterialButton();
             lstClientes = new MaterialSkin.Controls.MaterialListView();
             ID = new ColumnHeader();
-            DNI = new ColumnHeader();
-            Apellido = new ColumnHeader();
-            Nombre = new ColumnHeader();
-            Teléfono = new ColumnHeader();
-            Email = new ColumnHeader();
             Estado = new ColumnHeader();
-            TxtBuscar = new MaterialSkin.Controls.MaterialTextBox();
-            LListado = new MaterialSkin.Controls.MaterialLabel();
+            Nombre = new ColumnHeader();
+            Descripcion = new ColumnHeader();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -58,12 +53,10 @@
             panel2.Controls.Add(BtnEditar);
             panel2.Controls.Add(btnEliminar);
             panel2.Controls.Add(lstClientes);
-            panel2.Controls.Add(TxtBuscar);
-            panel2.Controls.Add(LListado);
-            panel2.Location = new Point(19, 92);
+            panel2.Location = new Point(18, 97);
             panel2.Name = "panel2";
-            panel2.Size = new Size(997, 421);
-            panel2.TabIndex = 1;
+            panel2.Size = new Size(719, 380);
+            panel2.TabIndex = 2;
             // 
             // BtnAlta
             // 
@@ -75,12 +68,12 @@
             BtnAlta.ForeColor = Color.Firebrick;
             BtnAlta.HighEmphasis = true;
             BtnAlta.Icon = null;
-            BtnAlta.Location = new Point(650, 35);
+            BtnAlta.Location = new Point(572, 109);
             BtnAlta.Margin = new Padding(5);
             BtnAlta.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAlta.Name = "BtnAlta";
             BtnAlta.NoAccentTextColor = Color.Empty;
-            BtnAlta.Size = new Size(128, 64);
+            BtnAlta.Size = new Size(111, 47);
             BtnAlta.TabIndex = 20;
             BtnAlta.Text = "DAR DE ALTA";
             BtnAlta.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -95,14 +88,14 @@
             BtnNuevo.Depth = 0;
             BtnNuevo.HighEmphasis = true;
             BtnNuevo.Icon = null;
-            BtnNuevo.Location = new Point(783, 349);
+            BtnNuevo.Location = new Point(361, 303);
             BtnNuevo.Margin = new Padding(5);
             BtnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevo.Name = "BtnNuevo";
             BtnNuevo.NoAccentTextColor = Color.Empty;
-            BtnNuevo.Size = new Size(131, 36);
+            BtnNuevo.Size = new Size(153, 36);
             BtnNuevo.TabIndex = 19;
-            BtnNuevo.Text = "Nuevo Cliente";
+            BtnNuevo.Text = "Nueva Categoria";
             BtnNuevo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnNuevo.UseAccentColor = false;
             BtnNuevo.UseVisualStyleBackColor = true;
@@ -115,14 +108,14 @@
             BtnEditar.Depth = 0;
             BtnEditar.HighEmphasis = true;
             BtnEditar.Icon = null;
-            BtnEditar.Location = new Point(619, 349);
+            BtnEditar.Location = new Point(174, 303);
             BtnEditar.Margin = new Padding(5);
             BtnEditar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditar.Name = "BtnEditar";
             BtnEditar.NoAccentTextColor = Color.Empty;
-            BtnEditar.Size = new Size(133, 36);
+            BtnEditar.Size = new Size(155, 36);
             BtnEditar.TabIndex = 18;
-            BtnEditar.Text = "Editar Cliente";
+            BtnEditar.Text = "Editar Categoria";
             BtnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnEditar.UseAccentColor = false;
             BtnEditar.UseVisualStyleBackColor = true;
@@ -138,12 +131,12 @@
             btnEliminar.ForeColor = Color.Firebrick;
             btnEliminar.HighEmphasis = true;
             btnEliminar.Icon = null;
-            btnEliminar.Location = new Point(805, 35);
+            btnEliminar.Location = new Point(572, 31);
             btnEliminar.Margin = new Padding(5);
             btnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
             btnEliminar.Name = "btnEliminar";
             btnEliminar.NoAccentTextColor = Color.Empty;
-            btnEliminar.Size = new Size(128, 64);
+            btnEliminar.Size = new Size(111, 47);
             btnEliminar.TabIndex = 14;
             btnEliminar.Text = "DAR DE BAJA";
             btnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -156,124 +149,69 @@
             lstClientes.AutoSizeTable = false;
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
-            lstClientes.Columns.AddRange(new ColumnHeader[] { ID, DNI, Apellido, Nombre, Teléfono, Email, Estado });
+            lstClientes.Columns.AddRange(new ColumnHeader[] { ID, Estado, Nombre, Descripcion });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
-            listViewGroup4.CollapsedState = ListViewGroupCollapsedState.Expanded;
-            listViewGroup4.Footer = "ID";
-            listViewGroup4.Header = "ListViewGroup";
-            listViewGroup4.Name = "ID";
-            listViewGroup5.Header = "ListViewGroup";
-            listViewGroup5.Name = "DNI";
-            listViewGroup6.Header = "ListViewGroup";
-            listViewGroup6.Name = "listViewGroup1";
-            lstClientes.Groups.AddRange(new ListViewGroup[] { listViewGroup4, listViewGroup5, listViewGroup6 });
-            lstClientes.Location = new Point(57, 107);
+            listViewGroup1.CollapsedState = ListViewGroupCollapsedState.Expanded;
+            listViewGroup1.Footer = "ID";
+            listViewGroup1.Header = "ListViewGroup";
+            listViewGroup1.Name = "ID";
+            listViewGroup2.Header = "ListViewGroup";
+            listViewGroup2.Name = "DNI";
+            listViewGroup3.Header = "ListViewGroup";
+            listViewGroup3.Name = "listViewGroup1";
+            lstClientes.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3 });
+            lstClientes.Location = new Point(56, 31);
             lstClientes.MinimumSize = new Size(200, 100);
             lstClientes.MouseLocation = new Point(-1, -1);
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(875, 208);
+            lstClientes.Size = new Size(458, 233);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
-            lstClientes.SelectedIndexChanged += lstClientes_SelectedIndexChanged;
             // 
             // ID
             // 
             ID.Text = "ID";
             ID.Width = 50;
             // 
-            // DNI
+            // Estado
             // 
-            DNI.Text = "DNI";
-            DNI.Width = 100;
-            // 
-            // Apellido
-            // 
-            Apellido.Text = "Apellido";
-            Apellido.Width = 100;
+            Estado.DisplayIndex = 2;
             // 
             // Nombre
             // 
+            Nombre.DisplayIndex = 1;
             Nombre.Text = "Nombre";
             Nombre.Width = 100;
             // 
-            // Teléfono
-            // 
-            Teléfono.Text = "Teléfono";
-            Teléfono.Width = 100;
-            // 
-            // Email
-            // 
-            Email.Text = "Email";
-            Email.Width = 100;
-            // 
-            // TxtBuscar
-            // 
-            TxtBuscar.AnimateReadOnly = false;
-            TxtBuscar.BorderStyle = BorderStyle.None;
-            TxtBuscar.Depth = 0;
-            TxtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            TxtBuscar.Hint = "Buscar DNI";
-            TxtBuscar.LeadingIcon = null;
-            TxtBuscar.Location = new Point(57, 35);
-            TxtBuscar.MaxLength = 50;
-            TxtBuscar.MouseState = MaterialSkin.MouseState.OUT;
-            TxtBuscar.Multiline = false;
-            TxtBuscar.Name = "TxtBuscar";
-            TxtBuscar.Size = new Size(568, 50);
-            TxtBuscar.TabIndex = 13;
-            TxtBuscar.Text = "";
-            TxtBuscar.TrailingIcon = null;
-            TxtBuscar.TextChanged += TxtBuscar_TextChanged;
-            // 
-            // LListado
-            // 
-            LListado.AutoSize = true;
-            LListado.Depth = 0;
-            LListado.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LListado.Location = new Point(3, 0);
-            LListado.MouseState = MaterialSkin.MouseState.HOVER;
-            LListado.Name = "LListado";
-            LListado.Size = new Size(139, 19);
-            LListado.TabIndex = 15;
-            LListado.Text = "Listado de Clientes ";
-            // 
-            // FormGestionClientes
+            // FormCategoriaListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
-            ClientSize = new Size(1077, 566);
+            ClientSize = new Size(784, 522);
             Controls.Add(panel2);
-            Name = "FormGestionClientes";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestion de Cliente";
-            Load += AdminGestionCliente_Load;
+            Name = "FormCategoriaListado";
+            Text = "Categorias";
+            Load += Form1_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-        private MaterialSkin.Controls.MaterialLabel LUsuario;
-        private MaterialSkin.Controls.MaterialLabel materialLabel6;
+
         private Panel panel2;
-        private MaterialSkin.Controls.MaterialLabel LListado;
-        private MaterialSkin.Controls.MaterialTextBox TxtBuscar;
+        private MaterialSkin.Controls.MaterialButton BtnAlta;
+        private MaterialSkin.Controls.MaterialButton BtnNuevo;
+        private MaterialSkin.Controls.MaterialButton BtnEditar;
+        private MaterialSkin.Controls.MaterialButton btnEliminar;
         private MaterialSkin.Controls.MaterialListView lstClientes;
         private ColumnHeader ID;
-        private ColumnHeader DNI;
-        private ColumnHeader Apellido;
-        private ColumnHeader Nombre;
-        private ColumnHeader Teléfono;
-        private ColumnHeader Email;
-        private MaterialSkin.Controls.MaterialButton btnEliminar;
-        private MaterialSkin.Controls.MaterialButton BtnEditar;
-        private MaterialSkin.Controls.MaterialButton BtnNuevo;
         private ColumnHeader Estado;
-        private MaterialSkin.Controls.MaterialButton BtnAlta;
+        private ColumnHeader Nombre;
+        private ColumnHeader Descripcion;
     }
 }

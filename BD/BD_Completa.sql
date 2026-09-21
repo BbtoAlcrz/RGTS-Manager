@@ -277,6 +277,26 @@ BEGIN
 END
 GO
 
+
+
+-- CAMBIAR ESTADO ACTIVO / INACTIVO
+IF OBJECT_ID('dbo.sp_CambiarEstadoUsuario', 'P') IS NOT NULL
+    DROP PROCEDURE dbo.sp_CambiarEstadoUsuario;
+GO
+
+CREATE PROCEDURE dbo.sp_CambiarEstadoUsuario
+    @Dni VARCHAR(20),
+    @NuevoEstado BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE USUARIO
+    SET activo = @NuevoEstado
+    WHERE dni = @Dni;
+END
+GO
+
 -- **********************************************
 
 -- SEEDERS (DEJAR SIEMPRE A LO ÚLTIMO) **********

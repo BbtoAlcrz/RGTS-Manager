@@ -28,42 +28,296 @@
         /// </summary>
         private void InitializeComponent()
         {
-            PnlMenu = new Panel();
-            PnlContenedor = new Panel();
+            PanelContenedorVistas = new Panel();
+            PanelPerfilInfo = new Panel();
+            LabelRolUsuario = new MaterialSkin.Controls.MaterialLabel();
+            LabelNombreUsuario = new MaterialSkin.Controls.MaterialLabel();
+            BotonCerrarSesion = new MaterialSkin.Controls.MaterialButton();
+            PanelBotones = new FlowLayoutPanel();
+            BotonModuloUsuarios = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloProductos = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloProveedores = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloClientes = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloVentas = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloCompras = new MaterialSkin.Controls.MaterialButton();
+            PanelContenedorMenu = new Panel();
+            PanelPerfilInfo.SuspendLayout();
+            PanelBotones.SuspendLayout();
+            PanelContenedorMenu.SuspendLayout();
             SuspendLayout();
             // 
-            // PnlMenu
+            // PanelContenedorVistas
             // 
-            PnlMenu.Dock = DockStyle.Left;
-            PnlMenu.Location = new Point(3, 64);
-            PnlMenu.Name = "PnlMenu";
-            PnlMenu.Size = new Size(200, 453);
-            PnlMenu.TabIndex = 0;
+            PanelContenedorVistas.AutoSize = true;
+            PanelContenedorVistas.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            PanelContenedorVistas.Dock = DockStyle.Fill;
+            PanelContenedorVistas.Location = new Point(197, 64);
+            PanelContenedorVistas.Name = "PanelContenedorVistas";
+            PanelContenedorVistas.Size = new Size(750, 453);
+            PanelContenedorVistas.TabIndex = 2;
             // 
-            // PnlContenedor
+            // PanelPerfilInfo
             // 
-            PnlContenedor.Dock = DockStyle.Fill;
-            PnlContenedor.Location = new Point(203, 64);
-            PnlContenedor.Name = "PnlContenedor";
-            PnlContenedor.Size = new Size(744, 453);
-            PnlContenedor.TabIndex = 1;
+            PanelPerfilInfo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            PanelPerfilInfo.Controls.Add(LabelRolUsuario);
+            PanelPerfilInfo.Controls.Add(LabelNombreUsuario);
+            PanelPerfilInfo.Controls.Add(BotonCerrarSesion);
+            PanelPerfilInfo.Dock = DockStyle.Bottom;
+            PanelPerfilInfo.Location = new Point(0, 349);
+            PanelPerfilInfo.Name = "PanelPerfilInfo";
+            PanelPerfilInfo.Size = new Size(194, 104);
+            PanelPerfilInfo.TabIndex = 3;
+            // 
+            // LabelRolUsuario
+            // 
+            LabelRolUsuario.AutoSize = true;
+            LabelRolUsuario.Depth = 0;
+            LabelRolUsuario.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            LabelRolUsuario.FontType = MaterialSkin.MaterialSkinManager.fontType.Caption;
+            LabelRolUsuario.Location = new Point(7, 44);
+            LabelRolUsuario.MouseState = MaterialSkin.MouseState.HOVER;
+            LabelRolUsuario.Name = "LabelRolUsuario";
+            LabelRolUsuario.Size = new Size(79, 14);
+            LabelRolUsuario.TabIndex = 3;
+            LabelRolUsuario.Text = "nombre del rol";
+            // 
+            // LabelNombreUsuario
+            // 
+            LabelNombreUsuario.AutoSize = true;
+            LabelNombreUsuario.Depth = 0;
+            LabelNombreUsuario.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            LabelNombreUsuario.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
+            LabelNombreUsuario.Location = new Point(7, 22);
+            LabelNombreUsuario.MouseState = MaterialSkin.MouseState.HOVER;
+            LabelNombreUsuario.Name = "LabelNombreUsuario";
+            LabelNombreUsuario.Size = new Size(117, 17);
+            LabelNombreUsuario.TabIndex = 2;
+            LabelNombreUsuario.Text = "nombre de usuario";
+            // 
+            // BotonCerrarSesion
+            // 
+            BotonCerrarSesion.Anchor = AnchorStyles.Bottom;
+            BotonCerrarSesion.AutoSize = false;
+            BotonCerrarSesion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonCerrarSesion.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonCerrarSesion.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonCerrarSesion.Depth = 0;
+            BotonCerrarSesion.DrawShadows = false;
+            BotonCerrarSesion.HighEmphasis = false;
+            BotonCerrarSesion.Icon = null;
+            BotonCerrarSesion.Location = new Point(7, 62);
+            BotonCerrarSesion.Margin = new Padding(4, 6, 4, 6);
+            BotonCerrarSesion.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonCerrarSesion.Name = "BotonCerrarSesion";
+            BotonCerrarSesion.NoAccentTextColor = Color.Empty;
+            BotonCerrarSesion.Size = new Size(180, 36);
+            BotonCerrarSesion.TabIndex = 6;
+            BotonCerrarSesion.TabStop = false;
+            BotonCerrarSesion.Text = "Cerrar Sesión";
+            BotonCerrarSesion.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonCerrarSesion.UseAccentColor = false;
+            BotonCerrarSesion.UseVisualStyleBackColor = true;
+            // 
+            // PanelBotones
+            // 
+            PanelBotones.AutoScroll = true;
+            PanelBotones.Controls.Add(BotonModuloUsuarios);
+            PanelBotones.Controls.Add(BotonModuloProductos);
+            PanelBotones.Controls.Add(BotonModuloProveedores);
+            PanelBotones.Controls.Add(BotonModuloClientes);
+            PanelBotones.Controls.Add(BotonModuloVentas);
+            PanelBotones.Controls.Add(BotonModuloCompras);
+            PanelBotones.FlowDirection = FlowDirection.TopDown;
+            PanelBotones.Location = new Point(3, 3);
+            PanelBotones.Name = "PanelBotones";
+            PanelBotones.Size = new Size(188, 319);
+            PanelBotones.TabIndex = 1;
+            PanelBotones.WrapContents = false;
+            // 
+            // BotonModuloUsuarios
+            // 
+            BotonModuloUsuarios.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BotonModuloUsuarios.AutoSize = false;
+            BotonModuloUsuarios.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloUsuarios.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloUsuarios.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloUsuarios.Depth = 0;
+            BotonModuloUsuarios.DrawShadows = false;
+            BotonModuloUsuarios.HighEmphasis = true;
+            BotonModuloUsuarios.Icon = null;
+            BotonModuloUsuarios.Location = new Point(4, 6);
+            BotonModuloUsuarios.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloUsuarios.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloUsuarios.Name = "BotonModuloUsuarios";
+            BotonModuloUsuarios.NoAccentTextColor = Color.Empty;
+            BotonModuloUsuarios.Size = new Size(180, 36);
+            BotonModuloUsuarios.TabIndex = 1;
+            BotonModuloUsuarios.Text = "Usuarios";
+            BotonModuloUsuarios.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloUsuarios.UseAccentColor = false;
+            BotonModuloUsuarios.UseVisualStyleBackColor = true;
+            BotonModuloUsuarios.Click += BotonModuloUsuarios_Click;
+            // 
+            // BotonModuloProductos
+            // 
+            BotonModuloProductos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BotonModuloProductos.AutoSize = false;
+            BotonModuloProductos.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloProductos.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloProductos.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloProductos.Depth = 0;
+            BotonModuloProductos.DrawShadows = false;
+            BotonModuloProductos.HighEmphasis = true;
+            BotonModuloProductos.Icon = null;
+            BotonModuloProductos.Location = new Point(4, 54);
+            BotonModuloProductos.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloProductos.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloProductos.Name = "BotonModuloProductos";
+            BotonModuloProductos.NoAccentTextColor = Color.Empty;
+            BotonModuloProductos.Size = new Size(180, 36);
+            BotonModuloProductos.TabIndex = 2;
+            BotonModuloProductos.Text = "Productos";
+            BotonModuloProductos.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloProductos.UseAccentColor = false;
+            BotonModuloProductos.UseVisualStyleBackColor = true;
+            BotonModuloProductos.Click += BotonModuloProductos_Click;
+            // 
+            // BotonModuloProveedores
+            // 
+            BotonModuloProveedores.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            BotonModuloProveedores.AutoSize = false;
+            BotonModuloProveedores.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloProveedores.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloProveedores.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloProveedores.Depth = 0;
+            BotonModuloProveedores.DrawShadows = false;
+            BotonModuloProveedores.HighEmphasis = true;
+            BotonModuloProveedores.Icon = null;
+            BotonModuloProveedores.Location = new Point(4, 102);
+            BotonModuloProveedores.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloProveedores.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloProveedores.Name = "BotonModuloProveedores";
+            BotonModuloProveedores.NoAccentTextColor = Color.Empty;
+            BotonModuloProveedores.Size = new Size(180, 36);
+            BotonModuloProveedores.TabIndex = 6;
+            BotonModuloProveedores.Text = "Proveedores";
+            BotonModuloProveedores.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloProveedores.UseAccentColor = false;
+            BotonModuloProveedores.UseVisualStyleBackColor = true;
+            BotonModuloProveedores.Click += BotonModuloProveedores_Click;
+            // 
+            // BotonModuloClientes
+            // 
+            BotonModuloClientes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BotonModuloClientes.AutoSize = false;
+            BotonModuloClientes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloClientes.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloClientes.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloClientes.Depth = 0;
+            BotonModuloClientes.DrawShadows = false;
+            BotonModuloClientes.HighEmphasis = true;
+            BotonModuloClientes.Icon = null;
+            BotonModuloClientes.Location = new Point(4, 150);
+            BotonModuloClientes.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloClientes.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloClientes.Name = "BotonModuloClientes";
+            BotonModuloClientes.NoAccentTextColor = Color.Empty;
+            BotonModuloClientes.Size = new Size(180, 36);
+            BotonModuloClientes.TabIndex = 3;
+            BotonModuloClientes.Text = "Clientes";
+            BotonModuloClientes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloClientes.UseAccentColor = false;
+            BotonModuloClientes.UseVisualStyleBackColor = true;
+            BotonModuloClientes.Click += BotonModuloClientes_Click;
+            // 
+            // BotonModuloVentas
+            // 
+            BotonModuloVentas.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BotonModuloVentas.AutoSize = false;
+            BotonModuloVentas.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloVentas.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloVentas.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloVentas.Depth = 0;
+            BotonModuloVentas.DrawShadows = false;
+            BotonModuloVentas.HighEmphasis = true;
+            BotonModuloVentas.Icon = null;
+            BotonModuloVentas.Location = new Point(4, 198);
+            BotonModuloVentas.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloVentas.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloVentas.Name = "BotonModuloVentas";
+            BotonModuloVentas.NoAccentTextColor = Color.Empty;
+            BotonModuloVentas.Size = new Size(180, 36);
+            BotonModuloVentas.TabIndex = 4;
+            BotonModuloVentas.Text = "Ventas";
+            BotonModuloVentas.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloVentas.UseAccentColor = false;
+            BotonModuloVentas.UseVisualStyleBackColor = true;
+            // 
+            // BotonModuloCompras
+            // 
+            BotonModuloCompras.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            BotonModuloCompras.AutoSize = false;
+            BotonModuloCompras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloCompras.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloCompras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloCompras.Depth = 0;
+            BotonModuloCompras.DrawShadows = false;
+            BotonModuloCompras.HighEmphasis = true;
+            BotonModuloCompras.Icon = null;
+            BotonModuloCompras.Location = new Point(4, 246);
+            BotonModuloCompras.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloCompras.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloCompras.Name = "BotonModuloCompras";
+            BotonModuloCompras.NoAccentTextColor = Color.Empty;
+            BotonModuloCompras.Size = new Size(180, 36);
+            BotonModuloCompras.TabIndex = 5;
+            BotonModuloCompras.Text = "Compras";
+            BotonModuloCompras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloCompras.UseAccentColor = false;
+            BotonModuloCompras.UseVisualStyleBackColor = true;
+            // 
+            // PanelContenedorMenu
+            // 
+            PanelContenedorMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            PanelContenedorMenu.Controls.Add(PanelBotones);
+            PanelContenedorMenu.Controls.Add(PanelPerfilInfo);
+            PanelContenedorMenu.Dock = DockStyle.Left;
+            PanelContenedorMenu.Location = new Point(3, 64);
+            PanelContenedorMenu.Name = "PanelContenedorMenu";
+            PanelContenedorMenu.Size = new Size(194, 453);
+            PanelContenedorMenu.TabIndex = 0;
             // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(950, 520);
-            Controls.Add(PnlContenedor);
-            Controls.Add(PnlMenu);
+            Controls.Add(PanelContenedorVistas);
+            Controls.Add(PanelContenedorMenu);
             Name = "FormPrincipal";
-            Text = "FormPrincipal";
+            Text = "RGTS - Manager";
             FormClosed += FormPrincipal_FormClosed;
+            PanelPerfilInfo.ResumeLayout(false);
+            PanelPerfilInfo.PerformLayout();
+            PanelBotones.ResumeLayout(false);
+            PanelContenedorMenu.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private Panel PnlMenu;
-        private Panel PnlContenedor;
+        private Panel PanelContenedorVistas;
+        private Panel PanelPerfilInfo;
+        private FlowLayoutPanel PanelBotones;
+        private Panel PanelContenedorMenu;
+        private MaterialSkin.Controls.MaterialButton BotonModuloVentas;
+        private MaterialSkin.Controls.MaterialButton BotonModuloUsuarios;
+        private MaterialSkin.Controls.MaterialButton BotonModuloProductos;
+        private MaterialSkin.Controls.MaterialLabel LabelNombreUsuario;
+        private MaterialSkin.Controls.MaterialButton BotonCerrarSesion;
+        private MaterialSkin.Controls.MaterialButton BotonModuloClientes;
+        private MaterialSkin.Controls.MaterialButton BotonModuloCompras;
+        private MaterialSkin.Controls.MaterialLabel LabelRolUsuario;
+        private MaterialSkin.Controls.MaterialButton BotonModuloProveedores;
     }
 }

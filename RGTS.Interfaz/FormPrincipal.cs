@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,14 +9,19 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.Interfaz.Administrador;
+using RGTS.Interfaz.EncargadoDeposito;
 
 
 namespace RGTS.Interfaz
 {
     public partial class FormPrincipal : MaterialForm
     {
-        // esto mantiene la información de login de usuario en toda la aplicación
+        // esto mantiene la información de login del usuario y el nombre de su rol en toda la aplicación
         public static Usuario? UsuarioSesion { get; private set; }
+        public static string? RolSesion { get; private set; }
+
+        private Form? _formularioActivo = null;
 
         public FormPrincipal()
         {
@@ -27,34 +33,132 @@ namespace RGTS.Interfaz
         public FormPrincipal(Usuario usuario) : this()
         {
             UsuarioSesion = usuario;
+            RolSesion = UsuarioSesion.Rol?.NombreRol;
 
-            // Aquí puedes configurar títulos o personalizar las pestañas según su Rol
-            this.Text = $"RGTS Manager - {UsuarioSesion.NombreCompleto} ({UsuarioSesion.Rol?.NombreRol})";
+            // cambia el nombre y el rol dependiendo del usuario de la sesion
+            LabelNombreUsuario.Text = UsuarioSesion.NombreCompleto;
+            LabelRolUsuario.Text = RolSesion;
 
-            ConfigurarPermisosSegunRol(UsuarioSesion.Rol?.NombreRol);
+            ConfigurarNavegacionPorRol(RolSesion);
         }
 
-        private void ConfigurarPermisosSegunRol(string? nombreRol)
+        // generico para abrir cualquier formulario dentro del panel principal
+        private void AbrirFormularioEnPanel<T>() where T : Form, new()
         {
-            switch (nombreRol)
+            if (_formularioActivo != null && _formularioActivo.GetType() == typeof(T))
             {
-                case "Administrador":
-                    // Acceso a todo
-                    break;
-                case "Vendedor":
-                    // Ocultar pestañas/botones de Compras, Usuarios, etc.
-                    break;
-                case "Encargado de Deposito":
-                    // Ocultar ventas y clientes
-                    break;
+                //el formulario ya está abierto
+                return;
+            }
+
+            // cerrar el formulario si existe y esta activo
+            if (_formularioActivo != null)
+            {
+                _formularioActivo.Close();
+                _formularioActivo.Dispose();
+                _formularioActivo.Controls.Clear();
+            }
+
+            // crear el nuevo formulario
+            _formularioActivo = new T
+            {
+                TopLevel = false,
+                FormBorderStyle = FormBorderStyle.None,
+                Dock = DockStyle.Fill
+            };
+
+            // poner el panel creado en el panel principal
+            PanelContenedorVistas.Controls.Add(_formularioActivo);
+            PanelContenedorVistas.Tag = _formularioActivo;
+            _formularioActivo.Show();
+            _formularioActivo.BringToFront();
+        }
+
+
+        // configura la navegacion de los botones del menu para sus formularios por rol
+        private void ConfigurarNavegacionPorRol(string? rolActual)
+        {
+            // ocultams todos los botones primero (para resetear el panel)
+            OcultarTodosLosBotones();
+
+            // definimos que botones le corresponden a cada rol (es ampliable)
+            Button[] botonesPermitidos = rolActual switch
+            {
+                "Administrador" => new[]
+                {
+                    BotonModuloUsuarios,
+                    BotonModuloProductos,
+                    BotonModuloProveedores,
+                    BotonModuloClientes,
+                    BotonModuloVentas,
+                    BotonModuloCompras
+                },
+
+                "Vendedor" => new[]
+                {
+                    BotonModuloVentas,
+                    BotonModuloClientes,
+                    BotonModuloProductos
+                },
+
+                "Encargado de Deposito" => new[]
+                {
+                    BotonModuloProveedores,
+                    BotonModuloProductos,
+                    BotonModuloCompras
+                },
+
+                // un Rol no reconocido, y por ende no muestra ningun boton
+                _ => Array.Empty<Button>()
+            };
+
+            // hacemos visibles unicamente los asignados al rol
+            foreach (Button boton in botonesPermitidos)
+            {
+                boton.Visible = true;
             }
         }
+
+
+        private void OcultarTodosLosBotones()
+        {
+            // Todos los botones del panel lateral vuelven a false
+            foreach (Control control in PanelBotones.Controls)
+            {
+                if (control is Button boton)
+                {
+                    boton.Visible = false;
+                }
+            }
+        }
+
+
 
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Al cerrar el FormPrincipal, cerramos toda la aplicación
-            Application.Exit();
-            this.Close();
+            Environment.Exit(0);
+        }
+
+
+        private void BotonModuloUsuarios_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormListadoUsuarios>();
+        }
+
+        private void BotonModuloProductos_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormProductos>();
+        }
+
+        private void BotonModuloClientes_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormGestionClientes>();
+        }
+
+        private void BotonModuloProveedores_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormListadoProveedores>();
         }
     }
 }

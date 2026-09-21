@@ -58,7 +58,7 @@ namespace RGTS.Interfaz.Administrador
             panelListaUsuarios.Controls.Add(ListaUsuarios);
             panelListaUsuarios.Controls.Add(ComboBoxListarRol);
             panelListaUsuarios.Controls.Add(TxtBuscarUsuario);
-            panelListaUsuarios.Location = new Point(27, 71);
+            panelListaUsuarios.Location = new Point(15, 20);
             panelListaUsuarios.Name = "panelListaUsuarios";
             panelListaUsuarios.Size = new Size(744, 404);
             panelListaUsuarios.TabIndex = 0;
@@ -261,7 +261,9 @@ namespace RGTS.Interfaz.Administrador
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 512);
             Controls.Add(panelListaUsuarios);
+            FormStyle = FormStyles.StatusAndActionBar_None;
             Name = "FormListadoUsuarios";
+            Padding = new Padding(3, 0, 3, 3);
             Text = "Lista de usuarios";
             Load += FormListadoUsuarios_Load;
             panelListaUsuarios.ResumeLayout(false);

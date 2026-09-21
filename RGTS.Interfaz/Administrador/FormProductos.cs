@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
+using RGTS.Entidades;
+using RGTS.LogicaNegocio.Servicios;
         
 namespace RGTS.Interfaz
 {

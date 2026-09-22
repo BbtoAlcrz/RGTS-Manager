@@ -14,21 +14,24 @@ namespace RGTS.Interfaz.Administrador
         public FormAgregarCategoria(Categoria? categoriaEditar = null)
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _categoriaServicio = new CategoriaServicio();
             _categoriaEditar = categoriaEditar;
+            ConfigurarModo();
+        }
+
+        private void ConfigurarModo()
+        {
+            labelTitulo.Text = _categoriaEditar == null ? "Agregar Categoría" : "Editar Categoría";
         }
 
         private void FormAgregarCategoria_Load(object sender, EventArgs e)
         {
             if (_categoriaEditar != null)
             {
-                Text = "Editar Categoría";
                 txtNombre.Text = _categoriaEditar.NombreCategoria;
                 MltDescripcion.Text = _categoriaEditar.Descripcion;
-            }
-            else
-            {
-                Text = "Agregar Categoría";
             }
         }
 

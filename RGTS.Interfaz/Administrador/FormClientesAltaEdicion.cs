@@ -15,24 +15,28 @@ namespace RGTS.Interfaz.Administrador
         public FormClientesAltaEdicion(Cliente? clienteEditar = null)
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _clienteServicio = new ClienteServicio();
             _clienteEditar = clienteEditar;
+            ConfigurarModo();
+        }
+
+        private void ConfigurarModo()
+        {
+            Text = _clienteEditar == null ? "Agregar Cliente" : "Editar Cliente";
+            labelTitulo.Text = _clienteEditar == null ? "Agregar Nuevo Cliente" : "Editar Cliente";
         }
 
         private void FormClientesListado_Load(object sender, EventArgs e)
         {
             if (_clienteEditar != null)
             {
-                Text = "Editar Cliente";
                 txtNombre.Text = _clienteEditar.Nombre;
                 txtApellido.Text = _clienteEditar.Apellido;
                 txtDni.Text = _clienteEditar.DNI;
                 txtTelefono.Text = _clienteEditar.Telefono;
                 txtEmail.Text = _clienteEditar.Email;
-            }
-            else
-            {
-                Text = "Nuevo Cliente";
             }
         }
 
@@ -69,6 +73,11 @@ namespace RGTS.Interfaz.Administrador
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void txtTelefono_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel2 = new Panel();
+            panel2 = new MaterialSkin.Controls.MaterialCard();
             LTotal = new MaterialSkin.Controls.MaterialLabel();
             LDetalleCompra = new MaterialSkin.Controls.MaterialLabel();
             LtexOrden = new MaterialSkin.Controls.MaterialLabel();
@@ -45,13 +45,15 @@
             Cantidad = new ColumnHeader();
             CostoUni = new ColumnHeader();
             SubTotal = new ColumnHeader();
+            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel2
             // 
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel2.BackColor = Color.LightGray;
+            panel2.BackColor = Color.FromArgb(255, 255, 255);
+            panel2.Controls.Add(labelTitulo);
             panel2.Controls.Add(LTotal);
             panel2.Controls.Add(LDetalleCompra);
             panel2.Controls.Add(LtexOrden);
@@ -63,18 +65,24 @@
             panel2.Controls.Add(BtnCancelarCompra);
             panel2.Controls.Add(BtnRegistrarCompra);
             panel2.Controls.Add(lstClientes);
-            panel2.Location = new Point(21, 79);
+            panel2.Depth = 0;
+            panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panel2.Location = new Point(4, 5);
+            panel2.Margin = new Padding(12, 10, 12, 10);
+            panel2.MouseState = MaterialSkin.MouseState.HOVER;
             panel2.Name = "panel2";
-            panel2.Size = new Size(877, 474);
+            panel2.Padding = new Padding(12, 10, 12, 10);
+            panel2.Size = new Size(848, 520);
             panel2.TabIndex = 4;
             // 
             // LTotal
             // 
+            LTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             LTotal.AutoSize = true;
             LTotal.Depth = 0;
             LTotal.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
             LTotal.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            LTotal.Location = new Point(497, 336);
+            LTotal.Location = new Point(731, 430);
             LTotal.MouseState = MaterialSkin.MouseState.HOVER;
             LTotal.Name = "LTotal";
             LTotal.Size = new Size(102, 24);
@@ -83,10 +91,11 @@
             // 
             // LDetalleCompra
             // 
+            LDetalleCompra.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LDetalleCompra.AutoSize = true;
             LDetalleCompra.Depth = 0;
             LDetalleCompra.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LDetalleCompra.Location = new Point(360, 39);
+            LDetalleCompra.Location = new Point(314, 76);
             LDetalleCompra.MouseState = MaterialSkin.MouseState.HOVER;
             LDetalleCompra.Name = "LDetalleCompra";
             LDetalleCompra.Size = new Size(165, 19);
@@ -98,7 +107,7 @@
             LtexOrden.AutoSize = true;
             LtexOrden.Depth = 0;
             LtexOrden.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LtexOrden.Location = new Point(31, 23);
+            LtexOrden.Location = new Point(17, 76);
             LtexOrden.MouseState = MaterialSkin.MouseState.HOVER;
             LtexOrden.Name = "LtexOrden";
             LtexOrden.Size = new Size(191, 19);
@@ -113,12 +122,13 @@
             TxtCantidad.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtCantidad.Hint = "Cantidad";
             TxtCantidad.LeadingIcon = null;
-            TxtCantidad.Location = new Point(229, 231);
+            TxtCantidad.Location = new Point(169, 204);
+            TxtCantidad.Margin = new Padding(3, 2, 3, 2);
             TxtCantidad.MaxLength = 50;
             TxtCantidad.MouseState = MaterialSkin.MouseState.OUT;
             TxtCantidad.Multiline = false;
             TxtCantidad.Name = "TxtCantidad";
-            TxtCantidad.Size = new Size(96, 50);
+            TxtCantidad.Size = new Size(104, 50);
             TxtCantidad.TabIndex = 27;
             TxtCantidad.Text = "";
             TxtCantidad.TrailingIcon = null;
@@ -131,12 +141,13 @@
             TxtCostoUni.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtCostoUni.Hint = "Costo Unitario $";
             TxtCostoUni.LeadingIcon = null;
-            TxtCostoUni.Location = new Point(31, 231);
+            TxtCostoUni.Location = new Point(17, 204);
+            TxtCostoUni.Margin = new Padding(3, 2, 3, 2);
             TxtCostoUni.MaxLength = 50;
             TxtCostoUni.MouseState = MaterialSkin.MouseState.OUT;
             TxtCostoUni.Multiline = false;
             TxtCostoUni.Name = "TxtCostoUni";
-            TxtCostoUni.Size = new Size(168, 50);
+            TxtCostoUni.Size = new Size(147, 50);
             TxtCostoUni.TabIndex = 26;
             TxtCostoUni.Text = "";
             TxtCostoUni.TrailingIcon = null;
@@ -149,12 +160,13 @@
             TxtBuscarCoN.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtBuscarCoN.Hint = "Codigo o Nombre";
             TxtBuscarCoN.LeadingIcon = null;
-            TxtBuscarCoN.Location = new Point(31, 138);
+            TxtBuscarCoN.Location = new Point(16, 150);
+            TxtBuscarCoN.Margin = new Padding(3, 2, 3, 2);
             TxtBuscarCoN.MaxLength = 50;
             TxtBuscarCoN.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscarCoN.Multiline = false;
             TxtBuscarCoN.Name = "TxtBuscarCoN";
-            TxtBuscarCoN.Size = new Size(294, 50);
+            TxtBuscarCoN.Size = new Size(257, 50);
             TxtBuscarCoN.TabIndex = 25;
             TxtBuscarCoN.Text = "";
             TxtBuscarCoN.TrailingIcon = null;
@@ -174,11 +186,12 @@
             CmbFiltroProvee.Hint = "Proveedor";
             CmbFiltroProvee.IntegralHeight = false;
             CmbFiltroProvee.ItemHeight = 43;
-            CmbFiltroProvee.Location = new Point(31, 61);
+            CmbFiltroProvee.Location = new Point(16, 97);
+            CmbFiltroProvee.Margin = new Padding(3, 2, 3, 2);
             CmbFiltroProvee.MaxDropDownItems = 4;
             CmbFiltroProvee.MouseState = MaterialSkin.MouseState.OUT;
             CmbFiltroProvee.Name = "CmbFiltroProvee";
-            CmbFiltroProvee.Size = new Size(294, 49);
+            CmbFiltroProvee.Size = new Size(258, 49);
             CmbFiltroProvee.StartIndex = 0;
             CmbFiltroProvee.TabIndex = 21;
             // 
@@ -192,14 +205,14 @@
             BtnAñadirComp.ForeColor = Color.CornflowerBlue;
             BtnAñadirComp.HighEmphasis = true;
             BtnAñadirComp.Icon = null;
-            BtnAñadirComp.Location = new Point(58, 313);
-            BtnAñadirComp.Margin = new Padding(5);
+            BtnAñadirComp.Location = new Point(17, 272);
+            BtnAñadirComp.Margin = new Padding(4, 4, 4, 4);
             BtnAñadirComp.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAñadirComp.Name = "BtnAñadirComp";
             BtnAñadirComp.NoAccentTextColor = Color.Empty;
-            BtnAñadirComp.Size = new Size(224, 47);
+            BtnAñadirComp.Size = new Size(257, 35);
             BtnAñadirComp.TabIndex = 20;
-            BtnAñadirComp.Text = "Añadir Orden de Compra";
+            BtnAñadirComp.Text = "Añadir A la Orden de Compra";
             BtnAñadirComp.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnAñadirComp.UseAccentColor = false;
             BtnAñadirComp.UseVisualStyleBackColor = true;
@@ -207,13 +220,14 @@
             // 
             // BtnCancelarCompra
             // 
+            BtnCancelarCompra.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             BtnCancelarCompra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnCancelarCompra.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnCancelarCompra.Depth = 0;
             BtnCancelarCompra.HighEmphasis = true;
             BtnCancelarCompra.Icon = null;
-            BtnCancelarCompra.Location = new Point(765, 395);
-            BtnCancelarCompra.Margin = new Padding(5);
+            BtnCancelarCompra.Location = new Point(493, 470);
+            BtnCancelarCompra.Margin = new Padding(4, 4, 4, 4);
             BtnCancelarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelarCompra.Name = "BtnCancelarCompra";
             BtnCancelarCompra.NoAccentTextColor = Color.Empty;
@@ -227,13 +241,14 @@
             // 
             // BtnRegistrarCompra
             // 
+            BtnRegistrarCompra.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             BtnRegistrarCompra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnRegistrarCompra.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnRegistrarCompra.Depth = 0;
             BtnRegistrarCompra.HighEmphasis = true;
             BtnRegistrarCompra.Icon = null;
-            BtnRegistrarCompra.Location = new Point(497, 395);
-            BtnRegistrarCompra.Margin = new Padding(5);
+            BtnRegistrarCompra.Location = new Point(597, 470);
+            BtnRegistrarCompra.Margin = new Padding(4, 4, 4, 4);
             BtnRegistrarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             BtnRegistrarCompra.Name = "BtnRegistrarCompra";
             BtnRegistrarCompra.NoAccentTextColor = Color.Empty;
@@ -247,19 +262,21 @@
             // 
             // lstClientes
             // 
+            lstClientes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstClientes.AutoSizeTable = false;
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, Descripcion, Cantidad, CostoUni, SubTotal });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
-            lstClientes.Location = new Point(360, 61);
-            lstClientes.MinimumSize = new Size(200, 100);
+            lstClientes.Location = new Point(314, 97);
+            lstClientes.Margin = new Padding(3, 2, 3, 2);
+            lstClientes.MinimumSize = new Size(175, 75);
             lstClientes.MouseLocation = new Point(-1, -1);
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(501, 233);
+            lstClientes.Size = new Size(519, 310);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
@@ -277,22 +294,42 @@
             // Cantidad
             // 
             Cantidad.Text = "Cantidad";
+            Cantidad.Width = 80;
             // 
             // CostoUni
             // 
-            CostoUni.Text = "Costo uni";
+            CostoUni.Text = "Costo unitario";
+            CostoUni.Width = 80;
             // 
             // SubTotal
             // 
             SubTotal.Text = "SubTotal";
+            SubTotal.Width = 100;
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.AutoSize = true;
+            labelTitulo.Depth = 0;
+            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            labelTitulo.Location = new Point(15, 10);
+            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(264, 29);
+            labelTitulo.TabIndex = 31;
+            labelTitulo.Text = "Nueva Orden de Compra";
             // 
             // FormNuevaCompra
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(928, 601);
+            ClientSize = new Size(856, 530);
             Controls.Add(panel2);
+            FormStyle = FormStyles.StatusAndActionBar_None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormNuevaCompra";
+            Padding = new Padding(3, 0, 3, 2);
+            Sizable = false;
             Text = "Nueva Orden de Compra";
             Load += FormNuevaCompra_Load;
             panel2.ResumeLayout(false);
@@ -302,7 +339,7 @@
 
         #endregion
 
-        private Panel panel2;
+        private MaterialSkin.Controls.MaterialCard panel2;
         private DateTimePicker DtpDesde;
         private DateTimePicker DtpHasta;
         private MaterialSkin.Controls.MaterialComboBox CmbFiltroProvee;
@@ -326,5 +363,6 @@
         private MaterialSkin.Controls.MaterialTextBox TxtCantidad;
         private MaterialSkin.Controls.MaterialLabel LTotal;
         private ColumnHeader SubTotal;
+        private MaterialSkin.Controls.MaterialLabel labelTitulo;
     }
 }

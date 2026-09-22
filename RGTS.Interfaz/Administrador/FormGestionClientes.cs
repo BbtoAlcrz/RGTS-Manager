@@ -10,6 +10,7 @@ namespace RGTS.Interfaz
 {
     public partial class FormGestionClientes : MaterialForm
     {
+        private readonly Panel pnlEdicionContenedor = new();
         // Clientes hardcodeados para esta entrega
         private readonly List<Cliente> _clientes = new List<Cliente>
         {
@@ -21,6 +22,10 @@ namespace RGTS.Interfaz
         public FormGestionClientes()
         {
             InitializeComponent();
+            pnlEdicionContenedor.Dock = DockStyle.Fill;
+            pnlEdicionContenedor.Visible = false;
+            Controls.Add(pnlEdicionContenedor);
+            pnlEdicionContenedor.BringToFront();
         }
 
         private void AdminGestionCliente_Load(object sender, EventArgs e)
@@ -57,11 +62,27 @@ namespace RGTS.Interfaz
             CargarGrilla(TxtBuscar.Text);
         }
 
+        private void MostrarSubVentana(Form subFormulario)
+        {
+            pnlEdicionContenedor.Controls.Clear();
+            subFormulario.TopLevel = false;
+            subFormulario.FormBorderStyle = FormBorderStyle.None;
+            subFormulario.Dock = DockStyle.Fill;
+            subFormulario.FormClosed += (s, args) =>
+            {
+                pnlEdicionContenedor.Visible = false;
+                pnlEdicionContenedor.Controls.Clear();
+                CargarGrilla();
+            };
+            pnlEdicionContenedor.Controls.Add(subFormulario);
+            pnlEdicionContenedor.Visible = true;
+            pnlEdicionContenedor.BringToFront();
+            subFormulario.Show();
+        }
+
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            var form = new FormClientesAltaEdicion();
-            form.ShowDialog();
-            CargarGrilla();
+            MostrarSubVentana(new FormClientesAltaEdicion());
         }
 
         private void BtnEditar_Click(object sender, EventArgs e)
@@ -69,9 +90,7 @@ namespace RGTS.Interfaz
             Cliente? seleccionado = ObtenerClienteSeleccionado();
             if (seleccionado == null) return;
 
-            var form = new FormClientesAltaEdicion(seleccionado);
-            form.ShowDialog();
-            CargarGrilla();
+            MostrarSubVentana(new FormClientesAltaEdicion(seleccionado));
         }
 
         // Baja lógica: marca el cliente como inactivo

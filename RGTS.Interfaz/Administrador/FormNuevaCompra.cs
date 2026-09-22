@@ -32,6 +32,8 @@ namespace RGTS.Interfaz.Administrador
         public FormNuevaCompra()
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _compraServicio = new CompraServicio();
         }
 

@@ -29,7 +29,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
+            panel1 = new MaterialCard();
             TextBoxEmailProveedor = new MaterialTextBox2();
             LabelProveedorEmail = new MaterialLabel();
             ComboBoxTipoProveedor = new MaterialComboBox();
@@ -438,7 +438,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
 
         #endregion
 
-        private Panel panel1;
+        private MaterialCard panel1;
         private MaterialLabel LabelProveedorRSocial;
         private MaterialLabel LabelProveedorNombreComercial;
         private MaterialLabel LabelProveedorTipoProveedor;

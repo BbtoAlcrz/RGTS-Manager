@@ -21,6 +21,7 @@ namespace RGTS.Interfaz
         public static Usuario? UsuarioSesion { get; private set; }
         public static string? RolSesion { get; private set; }
 
+        public static FormPrincipal? InstanciaActual { get; private set; }
         private Form? _formularioActivo = null;
 
         public FormPrincipal()
@@ -28,6 +29,7 @@ namespace RGTS.Interfaz
             InitializeComponent();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
+            InstanciaActual = this;
         }
 
         public FormPrincipal(Usuario usuario) : this()
@@ -73,6 +75,31 @@ namespace RGTS.Interfaz
             _formularioActivo.Show();
             _formularioActivo.BringToFront();
         }
+
+
+
+        public void AbrirFormularioEnPanel(Form formularioHijo)
+        {
+            if (_formularioActivo != null)
+            {
+                _formularioActivo.Close();
+                _formularioActivo.Dispose();
+                PanelContenedorVistas.Controls.Clear();
+            }
+
+            _formularioActivo = formularioHijo;
+            formularioHijo.TopLevel = false;
+            formularioHijo.FormBorderStyle = FormBorderStyle.None;
+            formularioHijo.Dock = DockStyle.Fill;
+
+            PanelContenedorVistas.Controls.Add(formularioHijo);
+            PanelContenedorVistas.Tag = formularioHijo;
+            formularioHijo.Show();
+            formularioHijo.BringToFront();
+        }
+
+
+
 
 
         // configura la navegacion de los botones del menu para sus formularios por rol
@@ -159,6 +186,11 @@ namespace RGTS.Interfaz
         private void BotonModuloProveedores_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel<FormListadoProveedores>();
+        }
+
+        private void BotonModuloCompras_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormListadoCompras>();
         }
     }
 }

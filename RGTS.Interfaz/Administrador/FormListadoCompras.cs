@@ -9,6 +9,7 @@ namespace RGTS.Interfaz.Administrador
 {
     public partial class FormListadoCompras : MaterialForm
     {
+        private readonly Panel pnlEdicionContenedor = new();
         // Proveedores hardcodeados (mismos que en FormNuevaCompra, para esta entrega)
         private readonly List<Proveedor> _proveedores = new List<Proveedor>
         {
@@ -42,6 +43,10 @@ namespace RGTS.Interfaz.Administrador
         public FormListadoCompras()
         {
             InitializeComponent();
+            pnlEdicionContenedor.Dock = DockStyle.Fill;
+            pnlEdicionContenedor.Visible = false;
+            Controls.Add(pnlEdicionContenedor);
+            pnlEdicionContenedor.BringToFront();
         }
 
         private void FormListadoCompras_Load(object sender, EventArgs e)
@@ -84,12 +89,28 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
+        private void MostrarSubVentana(Form subFormulario)
+        {
+            pnlEdicionContenedor.Controls.Clear();
+            subFormulario.TopLevel = false;
+            subFormulario.FormBorderStyle = FormBorderStyle.None;
+            subFormulario.Dock = DockStyle.Fill;
+            subFormulario.FormClosed += (s, args) =>
+            {
+                pnlEdicionContenedor.Visible = false;
+                pnlEdicionContenedor.Controls.Clear();
+                CargarGrilla();
+            };
+            pnlEdicionContenedor.Controls.Add(subFormulario);
+            pnlEdicionContenedor.Visible = true;
+            pnlEdicionContenedor.BringToFront();
+            subFormulario.Show();
+        }
+
         // Abre el formulario de nueva compra
         private void BtnNuevaCompra_Click(object sender, EventArgs e)
         {
-            var form = new FormNuevaCompra();
-            form.ShowDialog();
-            CargarGrilla();
+            MostrarSubVentana(new FormNuevaCompra());
         }
 
         // Abre el detalle de solo lectura de la compra seleccionada
@@ -102,8 +123,7 @@ namespace RGTS.Interfaz.Administrador
                 ? _detallesPorCompra[seleccionada.IdCompra]
                 : new List<DetalleCompra>();
 
-            var form = new FormDetalleCompra(seleccionada, detalle);
-            form.ShowDialog();
+            MostrarSubVentana(new FormDetalleCompra(seleccionada, detalle));
         }
 
         // Cambia el estado de la compra seleccionada a "Recibida"

@@ -20,6 +20,8 @@ namespace RGTS.Interfaz.Administrador
         public FormAgregarUsuario()
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _usuarioServicio = new UsuarioServicio();
             _esEdicion = false;
             CargarComboRoles();
@@ -54,15 +56,16 @@ namespace RGTS.Interfaz.Administrador
         {
             if (_esEdicion)
             {
-                this.Text = "Editar Usuario"; // titulo del formulario
+                labelTitulo.Text = "Editar Usuario";
                 BtnAgregarUsuarioNuevo.Text = "Guardar";
                 TextBoxUsuarioDni.ReadOnly = true;
                 LabelUsuarioContrasenia.Text = "Nueva Contraseña (dejar vacio para no cambiar)";
             }
             else
             {
-                this.Text = "Agregar Usuario";
+                labelTitulo.Text = "Agregar Usuario";
                 BtnAgregarUsuarioNuevo.Text = "Agregar";
+                TextBoxUsuarioDni.ReadOnly = false;
             }
         }
 
@@ -75,7 +78,7 @@ namespace RGTS.Interfaz.Administrador
                 TextBoxUsuarioApellido.Text = _usuarioEditar.Apellido;
                 TextBoxUsuarioEmail.Text = _usuarioEditar.Email;
                 ComboBoxUsuarioRol.SelectedValue = _usuarioEditar.IdRol;
-                TextBoxUsuarioContrasenia.Text = string.Empty; // Nunca muestra contraseñas
+                TextBoxUsuarioContrasenia.Text = string.Empty;
             }
         }
 
@@ -112,8 +115,7 @@ namespace RGTS.Interfaz.Administrador
                     MessageBox.Show("El Usuario se registró Correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                this.Close(); // Oculta el panel contenedor y refresca la grilla automáticamente
             }
             catch (ArgumentException ex)
             {
@@ -127,7 +129,7 @@ namespace RGTS.Interfaz.Administrador
 
         private void BtnCancelarUsuario_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Close(); // Cierra y regresa al listado sin guardar
         }
     }
 }

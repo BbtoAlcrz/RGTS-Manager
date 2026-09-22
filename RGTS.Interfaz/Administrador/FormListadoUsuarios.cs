@@ -15,10 +15,9 @@ namespace RGTS.Interfaz.Administrador
         // Clase auxiliar solo para los estados (no existe en Entidades)
         private class EstadoFiltro
         {
-            public string Texto { get; set; }
+            public string? Texto { get; set; }
             public bool? Valor { get; set; }
         }
-        
 
         public FormListadoUsuarios()
         {
@@ -36,7 +35,6 @@ namespace RGTS.Interfaz.Administrador
             BtnCambiarEstadoUsuario.Enabled = false;
         }
 
-
         private void ConfigurarLista()
         {
             ListaUsuarios.View = View.Details;
@@ -45,10 +43,9 @@ namespace RGTS.Interfaz.Administrador
             ListaUsuarios.GridLines = true;
         }
 
-        //la funcion se encarga principalmente de cargar el filtro de Rol y Estado 
         private void CargarFiltros()
         {
-            // evitamos que se refresque la lista mientras se cargan los filtros
+            // Evitamos que se refresque la lista mientras se cargan los filtros
             ComboBoxListarRol.SelectedValueChanged -= ComboBoxListarRol_SelectedIndexChanged;
             ComboBoxListarEstado.SelectedValueChanged -= ComboBoxListarEstado_SelectedIndexChanged;
 
@@ -65,7 +62,6 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarRol.ValueMember = "IdRol";
             ComboBoxListarRol.SelectedIndex = 0;
 
-
             var estados = new[]
             {
                 new EstadoFiltro { Texto = "Todos los estados", Valor = (bool?)null },
@@ -78,11 +74,10 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarEstado.ValueMember = "Valor";
             ComboBoxListarEstado.SelectedIndex = 0;
 
-            // una vez cargados los filtros, la lista se puede refrescar al cambiar la selección
+            // Reconectamos los eventos tras poblar el DataSource
             ComboBoxListarRol.SelectedValueChanged += ComboBoxListarRol_SelectedIndexChanged;
             ComboBoxListarEstado.SelectedValueChanged += ComboBoxListarEstado_SelectedIndexChanged;
         }
-
 
         private void Refrescar()
         {
@@ -108,15 +103,36 @@ namespace RGTS.Interfaz.Administrador
                 item.SubItems.Add(usuario.Rol?.NombreRol ?? "Sin Rol");
                 item.SubItems.Add(usuario.Activo ? "Habilitado" : "Deshabilitado");
 
-                item.Tag = usuario; // almacena el Usuario en un Tag para poder acceder a él
+                item.Tag = usuario;
                 ListaUsuarios.Items.Add(item);
             }
 
             ListaUsuarios.EndUpdate();
         }
 
+        // Método que incrusta el formulario secundario en el panel superpuesto
+        private void MostrarSubVentana(Form subFormulario)
+        {
+            pnlEdicionContenedor.Controls.Clear();
 
-        // funcion que se ejecuta al seleccionar o deseleccionar un usuario de la lista
+            subFormulario.TopLevel = false;
+            subFormulario.FormBorderStyle = FormBorderStyle.None;
+            subFormulario.Dock = DockStyle.Fill;
+
+            // Al cerrarse el formulario secundario, se oculta el panel y se recarga la tabla
+            subFormulario.FormClosed += (s, args) =>
+            {
+                pnlEdicionContenedor.Visible = false;
+                pnlEdicionContenedor.Controls.Clear();
+                Refrescar();
+            };
+
+            pnlEdicionContenedor.Controls.Add(subFormulario);
+            pnlEdicionContenedor.Visible = true;
+            pnlEdicionContenedor.BringToFront();
+            subFormulario.Show();
+        }
+
         private void ListaUsuarios_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ListaUsuarios.SelectedItems.Count > 0)
@@ -126,7 +142,6 @@ namespace RGTS.Interfaz.Administrador
 
                 BtnEditarUsuario.Enabled = true;
                 BtnCambiarEstadoUsuario.Enabled = true;
-
                 BtnCambiarEstadoUsuario.Text = usuario.Activo ? "Deshabilitar" : "Habilitar";
             }
             else
@@ -137,40 +152,26 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
-
         private void BtnAgregarUsuario_Click(object sender, EventArgs e)
         {
-            //cuando presione el boton y finalice de agregar un Usuario, refresca la lista
-            using (var form = new FormAgregarUsuario())
-            {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    Refrescar();
-                }
-            }
+            MostrarSubVentana(new FormAgregarUsuario());
         }
-
 
         private void BtnEditarUsuario_Click(object sender, EventArgs e)
         {
-            // Se extrae la entidad original almacenada en el Tag de la fila elegida
-            ListViewItem usuarioSeleccionado = ListaUsuarios.SelectedItems[0];
-            Usuario usuario = (Usuario)usuarioSeleccionado.Tag;
-
-            //cuando presione el boton y actualice un Usuario, refresca la lista
-            using (var form = new FormAgregarUsuario(usuario))
+            if (ListaUsuarios.SelectedItems.Count > 0)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    Refrescar();
-                }
+                ListViewItem usuarioSeleccionado = ListaUsuarios.SelectedItems[0];
+                Usuario usuario = (Usuario)usuarioSeleccionado.Tag;
+
+                MostrarSubVentana(new FormAgregarUsuario(usuario));
             }
         }
 
-
         private void BtnCambiarEstadoUsuario_Click(object sender, EventArgs e)
         {
-            // se extrae la entidad original almacenada en el Tag de la fila elegida
+            if (ListaUsuarios.SelectedItems.Count == 0) return;
+
             ListViewItem usuarioSeleccionado = ListaUsuarios.SelectedItems[0];
             Usuario usuario = (Usuario)usuarioSeleccionado.Tag;
 
@@ -188,20 +189,17 @@ namespace RGTS.Interfaz.Administrador
                 MessageBoxDefaultButton.Button2
             );
 
-            //cuando presione "Si" y actualice un Usuario, refresca la lista
             if (respuesta == DialogResult.Yes)
             {
                 try
                 {
                     string dniActual = FormPrincipal.UsuarioSesion?.Dni ?? string.Empty;
                     _usuarioServicio.CambiarEstadoUsuario(usuario.Dni, nuevoEstado, dniActual);
-
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error al modificar estado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
                 finally
                 {
                     Refrescar();
@@ -209,19 +207,19 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
-
         private void TxtBuscarUsuario_TextChanged(object sender, EventArgs e)
         {
             Refrescar();
         }
+
         private void ComboBoxListarRol_SelectedIndexChanged(object sender, EventArgs e)
         {
             Refrescar();
         }
+
         private void ComboBoxListarEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
             Refrescar();
         }
-
     }
 }

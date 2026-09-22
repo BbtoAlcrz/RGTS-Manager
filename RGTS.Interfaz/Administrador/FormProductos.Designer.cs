@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewGroup listViewGroup2 = new ListViewGroup("Codigo", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup1 = new ListViewGroup("Codigo", HorizontalAlignment.Left);
             TxtBuscar = new MaterialSkin.Controls.MaterialTextBox2();
             CmbFiltroCat = new MaterialSkin.Controls.MaterialComboBox();
             LstProductos = new MaterialSkin.Controls.MaterialListView();
@@ -42,12 +42,15 @@
             BtnEditar = new MaterialSkin.Controls.MaterialButton();
             BtnEliminar = new MaterialSkin.Controls.MaterialButton();
             BtnGestionarCat = new MaterialSkin.Controls.MaterialButton();
-            panel1 = new Panel();
+            panel1 = new MaterialSkin.Controls.MaterialCard();
+            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
+            materialButton1 = new MaterialSkin.Controls.MaterialButton();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // TxtBuscar
             // 
+            TxtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             TxtBuscar.AnimateReadOnly = false;
             TxtBuscar.BackgroundImageLayout = ImageLayout.None;
             TxtBuscar.CharacterCasing = CharacterCasing.Normal;
@@ -56,7 +59,8 @@
             TxtBuscar.HideSelection = true;
             TxtBuscar.Hint = "Buscar por codigo o nombre";
             TxtBuscar.LeadingIcon = null;
-            TxtBuscar.Location = new Point(31, 85);
+            TxtBuscar.Location = new Point(15, 51);
+            TxtBuscar.Margin = new Padding(3, 2, 3, 2);
             TxtBuscar.MaxLength = 32767;
             TxtBuscar.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscar.Name = "TxtBuscar";
@@ -68,16 +72,18 @@
             TxtBuscar.SelectionLength = 0;
             TxtBuscar.SelectionStart = 0;
             TxtBuscar.ShortcutsEnabled = true;
-            TxtBuscar.Size = new Size(585, 48);
+            TxtBuscar.Size = new Size(491, 48);
             TxtBuscar.TabIndex = 0;
             TxtBuscar.TabStop = false;
             TxtBuscar.TextAlign = HorizontalAlignment.Left;
             TxtBuscar.TrailingIcon = null;
             TxtBuscar.UseSystemPasswordChar = false;
+            TxtBuscar.Click += TxtBuscar_Click;
             TxtBuscar.KeyDown += TxtBuscar_KeyDown;
             // 
             // CmbFiltroCat
             // 
+            CmbFiltroCat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CmbFiltroCat.AutoResize = false;
             CmbFiltroCat.BackColor = Color.FromArgb(255, 255, 255);
             CmbFiltroCat.Depth = 0;
@@ -91,36 +97,40 @@
             CmbFiltroCat.Hint = "Categorias";
             CmbFiltroCat.IntegralHeight = false;
             CmbFiltroCat.ItemHeight = 43;
-            CmbFiltroCat.Location = new Point(622, 85);
+            CmbFiltroCat.Location = new Point(512, 51);
+            CmbFiltroCat.Margin = new Padding(3, 2, 3, 2);
             CmbFiltroCat.MaxDropDownItems = 4;
             CmbFiltroCat.MouseState = MaterialSkin.MouseState.OUT;
             CmbFiltroCat.Name = "CmbFiltroCat";
-            CmbFiltroCat.Size = new Size(201, 49);
+            CmbFiltroCat.Size = new Size(301, 49);
             CmbFiltroCat.StartIndex = 0;
             CmbFiltroCat.TabIndex = 1;
-            this.CmbFiltroCat.SelectedIndexChanged += new System.EventHandler(this.CmbFiltroCat_SelectedIndexChanged);
+            CmbFiltroCat.SelectedIndexChanged += CmbFiltroCat_SelectedIndexChanged;
             // 
             // LstProductos
             // 
+            LstProductos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LstProductos.AutoSizeTable = false;
             LstProductos.BackColor = Color.FromArgb(255, 255, 255);
             LstProductos.BorderStyle = BorderStyle.None;
             LstProductos.Columns.AddRange(new ColumnHeader[] { Codigo, Nombre, Categoria, Precio, Existencias, Estado });
             LstProductos.Depth = 0;
             LstProductos.FullRowSelect = true;
-            listViewGroup2.Header = "Codigo";
-            listViewGroup2.Name = "listViewGroup1";
-            LstProductos.Groups.AddRange(new ListViewGroup[] { listViewGroup2 });
-            LstProductos.Location = new Point(31, 139);
-            LstProductos.MinimumSize = new Size(200, 100);
+            listViewGroup1.Header = "Codigo";
+            listViewGroup1.Name = "listViewGroup1";
+            LstProductos.Groups.AddRange(new ListViewGroup[] { listViewGroup1 });
+            LstProductos.Location = new Point(15, 104);
+            LstProductos.Margin = new Padding(3, 2, 3, 2);
+            LstProductos.MinimumSize = new Size(175, 75);
             LstProductos.MouseLocation = new Point(-1, -1);
             LstProductos.MouseState = MaterialSkin.MouseState.OUT;
             LstProductos.Name = "LstProductos";
             LstProductos.OwnerDraw = true;
-            LstProductos.Size = new Size(869, 293);
+            LstProductos.Size = new Size(660, 220);
             LstProductos.TabIndex = 3;
             LstProductos.UseCompatibleStateImageBehavior = false;
             LstProductos.View = View.Details;
+            LstProductos.SelectedIndexChanged += LstProductos_SelectedIndexChanged;
             // 
             // Codigo
             // 
@@ -154,13 +164,14 @@
             // 
             // BtnNuevo
             // 
+            BtnNuevo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnNuevo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnNuevo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnNuevo.Depth = 0;
             BtnNuevo.HighEmphasis = true;
             BtnNuevo.Icon = null;
-            BtnNuevo.Location = new Point(31, 443);
-            BtnNuevo.Margin = new Padding(5);
+            BtnNuevo.Location = new Point(24, 358);
+            BtnNuevo.Margin = new Padding(4);
             BtnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevo.Name = "BtnNuevo";
             BtnNuevo.NoAccentTextColor = Color.Empty;
@@ -174,13 +185,14 @@
             // 
             // BtnEditar
             // 
+            BtnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnEditar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnEditar.Depth = 0;
             BtnEditar.HighEmphasis = true;
             BtnEditar.Icon = null;
-            BtnEditar.Location = new Point(183, 364);
-            BtnEditar.Margin = new Padding(5);
+            BtnEditar.Location = new Point(182, 358);
+            BtnEditar.Margin = new Padding(4);
             BtnEditar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditar.Name = "BtnEditar";
             BtnEditar.NoAccentTextColor = Color.Empty;
@@ -194,19 +206,21 @@
             // 
             // BtnEliminar
             // 
+            BtnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            BtnEliminar.AutoSize = false;
             BtnEliminar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnEliminar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnEliminar.Depth = 0;
             BtnEliminar.HighEmphasis = true;
             BtnEliminar.Icon = null;
-            BtnEliminar.Location = new Point(262, 364);
-            BtnEliminar.Margin = new Padding(5);
+            BtnEliminar.Location = new Point(691, 106);
+            BtnEliminar.Margin = new Padding(4);
             BtnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEliminar.Name = "BtnEliminar";
             BtnEliminar.NoAccentTextColor = Color.Empty;
-            BtnEliminar.Size = new Size(88, 36);
+            BtnEliminar.Size = new Size(122, 36);
             BtnEliminar.TabIndex = 6;
-            BtnEliminar.Text = "Eliminar";
+            BtnEliminar.Text = "Habilitar";
             BtnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnEliminar.UseAccentColor = false;
             BtnEliminar.UseVisualStyleBackColor = true;
@@ -214,13 +228,14 @@
             // 
             // BtnGestionarCat
             // 
+            BtnGestionarCat.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             BtnGestionarCat.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnGestionarCat.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnGestionarCat.Depth = 0;
             BtnGestionarCat.HighEmphasis = true;
             BtnGestionarCat.Icon = null;
-            BtnGestionarCat.Location = new Point(667, 364);
-            BtnGestionarCat.Margin = new Padding(5);
+            BtnGestionarCat.Location = new Point(619, 358);
+            BtnGestionarCat.Margin = new Padding(4);
             BtnGestionarCat.MouseState = MaterialSkin.MouseState.HOVER;
             BtnGestionarCat.Name = "BtnGestionarCat";
             BtnGestionarCat.NoAccentTextColor = Color.Empty;
@@ -234,32 +249,77 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.LightGray;
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BackColor = Color.FromArgb(255, 255, 255);
+            panel1.Controls.Add(labelTitulo);
+            panel1.Controls.Add(materialButton1);
+            panel1.Controls.Add(CmbFiltroCat);
+            panel1.Controls.Add(LstProductos);
+            panel1.Controls.Add(TxtBuscar);
+            panel1.Controls.Add(BtnNuevo);
             panel1.Controls.Add(BtnGestionarCat);
             panel1.Controls.Add(BtnEditar);
             panel1.Controls.Add(BtnEliminar);
-            panel1.Location = new Point(27, 77);
+            panel1.Depth = 0;
+            panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panel1.Location = new Point(3, 3);
+            panel1.Margin = new Padding(12, 10, 12, 10);
+            panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
-            panel1.Size = new Size(883, 440);
+            panel1.Padding = new Padding(12, 10, 12, 10);
+            panel1.Size = new Size(829, 408);
             panel1.TabIndex = 8;
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.AutoSize = true;
+            labelTitulo.Depth = 0;
+            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            labelTitulo.Location = new Point(15, 10);
+            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(231, 29);
+            labelTitulo.TabIndex = 9;
+            labelTitulo.Text = "Listado de Productos";
+            // 
+            // materialButton1
+            // 
+            materialButton1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            materialButton1.Depth = 0;
+            materialButton1.HighEmphasis = true;
+            materialButton1.Icon = null;
+            materialButton1.Location = new Point(691, 148);
+            materialButton1.Margin = new Padding(4);
+            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialButton1.Name = "materialButton1";
+            materialButton1.NoAccentTextColor = Color.Empty;
+            materialButton1.Size = new Size(122, 36);
+            materialButton1.TabIndex = 8;
+            materialButton1.Text = "Deshabilitar";
+            materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            materialButton1.UseAccentColor = false;
+            materialButton1.UseVisualStyleBackColor = true;
+            materialButton1.Click += materialButton1_Click;
             // 
             // FormProductos
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(955, 552);
-            Controls.Add(BtnNuevo);
-            Controls.Add(LstProductos);
-            Controls.Add(CmbFiltroCat);
-            Controls.Add(TxtBuscar);
+            ClientSize = new Size(836, 414);
             Controls.Add(panel1);
+            FormStyle = FormStyles.StatusAndActionBar_None;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormProductos";
+            Padding = new Padding(3, 0, 3, 2);
+            Sizable = false;
             Text = "Gestion de Producto";
             Load += FormProductos_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -277,6 +337,8 @@
         private MaterialSkin.Controls.MaterialButton BtnEditar;
         private MaterialSkin.Controls.MaterialButton BtnEliminar;
         private MaterialSkin.Controls.MaterialButton BtnGestionarCat;
-        private Panel panel1;
+        private MaterialSkin.Controls.MaterialCard panel1;
+        private MaterialSkin.Controls.MaterialButton materialButton1;
+        private MaterialSkin.Controls.MaterialLabel labelTitulo;
     }
 }

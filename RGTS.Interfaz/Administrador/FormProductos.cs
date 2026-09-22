@@ -6,10 +6,11 @@ using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz
-{   
+{
     public partial class FormProductos : MaterialForm
     {
         private readonly ProductoServicio _productoServicio;
+        private readonly Panel pnlEdicionContenedor = new();
 
         // Lista de categorías hardcodeadas para esta entrega
         private readonly List<Categoria> _categorias = new List<Categoria>
@@ -24,6 +25,10 @@ namespace RGTS.Interfaz
         {
             InitializeComponent();
             _productoServicio = new ProductoServicio();
+            pnlEdicionContenedor.Dock = DockStyle.Fill;
+            pnlEdicionContenedor.Visible = false;
+            Controls.Add(pnlEdicionContenedor);
+            pnlEdicionContenedor.BringToFront();
         }
 
         private void FormProductos_Load(object sender, EventArgs e)
@@ -104,18 +109,34 @@ namespace RGTS.Interfaz
             CargarGrilla(texto, idCategoria);
         }
 
+        private void MostrarSubVentana(Form subFormulario)
+        {
+            pnlEdicionContenedor.Controls.Clear();
+            subFormulario.TopLevel = false;
+            subFormulario.FormBorderStyle = FormBorderStyle.None;
+            subFormulario.Dock = DockStyle.Fill;
+            subFormulario.FormClosed += (s, args) =>
+            {
+                pnlEdicionContenedor.Visible = false;
+                pnlEdicionContenedor.Controls.Clear();
+                CargarGrilla();
+            };
+            pnlEdicionContenedor.Controls.Add(subFormulario);
+            pnlEdicionContenedor.Visible = true;
+            pnlEdicionContenedor.BringToFront();
+            subFormulario.Show();
+        }
+
         // Abre el formulario de alta de producto
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            var form = new FormProductoAltaEdicion(_categorias);
-            form.ShowDialog();
-            CargarGrilla(); // recarga la grilla al cerrar
+            MostrarSubVentana(new FormProductoAltaEdicion(_categorias));
         }
 
         // Abre el formulario de edición con los datos del producto seleccionado
         private void BtnEditar_Click(object sender, EventArgs e)
         {
-            if(LstProductos.SelectedItems.Count == 0)
+            if (LstProductos.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Seleccioná un producto para editar.",
                     "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -124,9 +145,7 @@ namespace RGTS.Interfaz
 
             Producto? seleccionado = LstProductos.SelectedItems[0].Tag as Producto;
             if (seleccionado == null) return;
-            var form = new FormProductoAltaEdicion(_categorias, seleccionado);
-            form.ShowDialog();
-            CargarGrilla(); // recarga la grilla al cerrar
+            MostrarSubVentana(new FormProductoAltaEdicion(_categorias, seleccionado));
         }
 
         // Realiza la baja lógica del producto seleccionado
@@ -168,6 +187,25 @@ namespace RGTS.Interfaz
             // Por implementar en próxima entrega
             MessageBox.Show("Funcionalidad disponible en la próxima entrega.",
                 "En desarrollo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Manejador para el evento Click del TextBox de búsqueda
+        private void TxtBuscar_Click(object sender, EventArgs e)
+        {
+            // Este evento se dispara cuando se hace clic en el TextBox de búsqueda
+            // Por ahora no tiene lógica específica
+        }
+
+        // Manejador para el evento SelectedIndexChanged del ListBox de productos
+        private void LstProductos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Este evento se dispara cuando cambiad la selección en la lista de productos
+            // Por ahora no tiene lógica específica
         }
     }
 }

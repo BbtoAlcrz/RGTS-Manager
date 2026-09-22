@@ -15,6 +15,8 @@ namespace RGTS.Interfaz.Administrador
         public FormDetalleCompra(Compra compra, List<DetalleCompra> detalle)
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _compra = compra;
             _detalle = detalle;
         }

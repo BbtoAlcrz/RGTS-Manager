@@ -8,6 +8,7 @@ namespace RGTS.Interfaz.Administrador
 {
     public partial class FormCategoriaListado : MaterialForm
     {
+        private readonly Panel pnlEdicionContenedor = new();
         // Lista hardcodeada para esta entrega
         private List<Categoria> _categorias = new List<Categoria>
         {
@@ -20,6 +21,10 @@ namespace RGTS.Interfaz.Administrador
         public FormCategoriaListado()
         {
             InitializeComponent();
+            pnlEdicionContenedor.Dock = DockStyle.Fill;
+            pnlEdicionContenedor.Visible = false;
+            Controls.Add(pnlEdicionContenedor);
+            pnlEdicionContenedor.BringToFront();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,12 +47,28 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
+        private void MostrarSubVentana(Form subFormulario)
+        {
+            pnlEdicionContenedor.Controls.Clear();
+            subFormulario.TopLevel = false;
+            subFormulario.FormBorderStyle = FormBorderStyle.None;
+            subFormulario.Dock = DockStyle.Fill;
+            subFormulario.FormClosed += (s, args) =>
+            {
+                pnlEdicionContenedor.Visible = false;
+                pnlEdicionContenedor.Controls.Clear();
+                CargarGrilla();
+            };
+            pnlEdicionContenedor.Controls.Add(subFormulario);
+            pnlEdicionContenedor.Visible = true;
+            pnlEdicionContenedor.BringToFront();
+            subFormulario.Show();
+        }
+
         // Abre el formulario para agregar una nueva categoría
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            var form = new FormAgregarCategoria();
-            form.ShowDialog();
-            CargarGrilla();
+            MostrarSubVentana(new FormAgregarCategoria());
         }
 
         // Abre el formulario para editar la categoría seleccionada
@@ -63,9 +84,7 @@ namespace RGTS.Interfaz.Administrador
             Categoria? seleccionada = lstClientes.SelectedItems[0].Tag as Categoria;
             if (seleccionada == null) return;
 
-            var form = new FormAgregarCategoria(seleccionada);
-            form.ShowDialog();
-            CargarGrilla();
+            MostrarSubVentana(new FormAgregarCategoria(seleccionada));
         }
 
         // Baja lógica: marca la categoría como inactiva

@@ -21,6 +21,8 @@ namespace RGTS.Interfaz.EncargadoDeposito
         public FormAgregarProveedor()
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _proveedorServicio = new ProveedorServicio();
             _esEdicion = false;
             CargarComboTipoProveedor();
@@ -120,7 +122,6 @@ namespace RGTS.Interfaz.EncargadoDeposito
                     MessageBox.Show("El Proveedor se registró correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (ArgumentException ex)

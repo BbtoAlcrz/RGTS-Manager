@@ -16,12 +16,12 @@ namespace RGTS.Interfaz
 
             // Configurar MaterialSkin globalmente para toda la aplicación
             var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(
                 Primary.Indigo500,      // morado/azul principal
                 Primary.Indigo700,      // versión oscura (para header/toolbar)
                 Primary.Grey100,        // versión clara (fondo)
-                Accent.LightGreen100,   // acento verde lima
+                Accent.LightGreen700,   // acento verde lima
                 TextShade.WHITE
             );
 

@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
+            panel1 = new MaterialSkin.Controls.MaterialCard();
+            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
             BtnVerDetalleProveedor = new MaterialSkin.Controls.MaterialButton();
             TextBoxBuscarProveedor = new MaterialSkin.Controls.MaterialTextBox2();
             materialButton1 = new MaterialSkin.Controls.MaterialButton();
@@ -46,26 +47,47 @@
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BackColor = Color.FromArgb(255, 255, 255);
+            panel1.Controls.Add(labelTitulo);
             panel1.Controls.Add(BtnVerDetalleProveedor);
             panel1.Controls.Add(TextBoxBuscarProveedor);
             panel1.Controls.Add(materialButton1);
             panel1.Controls.Add(BtnEditarProveedor);
             panel1.Controls.Add(BtnAgregarProveedor);
             panel1.Controls.Add(materialListView1);
-            panel1.Location = new Point(6, 67);
+            panel1.Depth = 0;
+            panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panel1.Location = new Point(6, 3);
+            panel1.Margin = new Padding(14);
+            panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
-            panel1.Size = new Size(621, 413);
+            panel1.Padding = new Padding(14);
+            panel1.Size = new Size(743, 495);
             panel1.TabIndex = 0;
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.AutoSize = true;
+            labelTitulo.Depth = 0;
+            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            labelTitulo.Location = new Point(17, 14);
+            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(256, 29);
+            labelTitulo.TabIndex = 6;
+            labelTitulo.Text = "Listado de Proveedores";
             // 
             // BtnVerDetalleProveedor
             // 
-            BtnVerDetalleProveedor.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            BtnVerDetalleProveedor.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             BtnVerDetalleProveedor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnVerDetalleProveedor.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnVerDetalleProveedor.Depth = 0;
             BtnVerDetalleProveedor.HighEmphasis = true;
             BtnVerDetalleProveedor.Icon = null;
-            BtnVerDetalleProveedor.Location = new Point(504, 24);
+            BtnVerDetalleProveedor.Location = new Point(613, 77);
             BtnVerDetalleProveedor.Margin = new Padding(4, 6, 4, 6);
             BtnVerDetalleProveedor.MouseState = MaterialSkin.MouseState.HOVER;
             BtnVerDetalleProveedor.Name = "BtnVerDetalleProveedor";
@@ -79,14 +101,16 @@
             // 
             // TextBoxBuscarProveedor
             // 
+            TextBoxBuscarProveedor.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             TextBoxBuscarProveedor.AnimateReadOnly = false;
             TextBoxBuscarProveedor.BackgroundImageLayout = ImageLayout.None;
             TextBoxBuscarProveedor.CharacterCasing = CharacterCasing.Normal;
             TextBoxBuscarProveedor.Depth = 0;
             TextBoxBuscarProveedor.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxBuscarProveedor.HideSelection = true;
+            TextBoxBuscarProveedor.Hint = "Buscar por Razón Social o Nombre comercial";
             TextBoxBuscarProveedor.LeadingIcon = null;
-            TextBoxBuscarProveedor.Location = new Point(4, 15);
+            TextBoxBuscarProveedor.Location = new Point(17, 68);
             TextBoxBuscarProveedor.MaxLength = 32767;
             TextBoxBuscarProveedor.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxBuscarProveedor.Name = "TextBoxBuscarProveedor";
@@ -98,23 +122,22 @@
             TextBoxBuscarProveedor.SelectionLength = 0;
             TextBoxBuscarProveedor.SelectionStart = 0;
             TextBoxBuscarProveedor.ShortcutsEnabled = true;
-            TextBoxBuscarProveedor.Size = new Size(493, 48);
+            TextBoxBuscarProveedor.Size = new Size(589, 48);
             TextBoxBuscarProveedor.TabIndex = 4;
             TextBoxBuscarProveedor.TabStop = false;
-            TextBoxBuscarProveedor.Text = "Buscar por Razón Social o Nombre comercial";
             TextBoxBuscarProveedor.TextAlign = HorizontalAlignment.Left;
             TextBoxBuscarProveedor.TrailingIcon = null;
             TextBoxBuscarProveedor.UseSystemPasswordChar = false;
             // 
             // materialButton1
             // 
-            materialButton1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            materialButton1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             materialButton1.Depth = 0;
             materialButton1.HighEmphasis = true;
             materialButton1.Icon = null;
-            materialButton1.Location = new Point(495, 362);
+            materialButton1.Location = new Point(603, 444);
             materialButton1.Margin = new Padding(4, 6, 4, 6);
             materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             materialButton1.Name = "materialButton1";
@@ -128,12 +151,13 @@
             // 
             // BtnEditarProveedor
             // 
+            BtnEditarProveedor.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnEditarProveedor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnEditarProveedor.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnEditarProveedor.Depth = 0;
             BtnEditarProveedor.HighEmphasis = true;
             BtnEditarProveedor.Icon = null;
-            BtnEditarProveedor.Location = new Point(187, 362);
+            BtnEditarProveedor.Location = new Point(187, 444);
             BtnEditarProveedor.Margin = new Padding(4, 6, 4, 6);
             BtnEditarProveedor.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditarProveedor.Name = "BtnEditarProveedor";
@@ -148,12 +172,13 @@
             // 
             // BtnAgregarProveedor
             // 
+            BtnAgregarProveedor.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnAgregarProveedor.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnAgregarProveedor.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnAgregarProveedor.Depth = 0;
             BtnAgregarProveedor.HighEmphasis = true;
             BtnAgregarProveedor.Icon = null;
-            BtnAgregarProveedor.Location = new Point(4, 362);
+            BtnAgregarProveedor.Location = new Point(4, 444);
             BtnAgregarProveedor.Margin = new Padding(4, 6, 4, 6);
             BtnAgregarProveedor.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAgregarProveedor.Name = "BtnAgregarProveedor";
@@ -168,19 +193,20 @@
             // 
             // materialListView1
             // 
+            materialListView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             materialListView1.AutoSizeTable = false;
             materialListView1.BackColor = Color.FromArgb(255, 255, 255);
             materialListView1.BorderStyle = BorderStyle.None;
             materialListView1.Columns.AddRange(new ColumnHeader[] { ProveedorID, ProveedorRSocial, ProveedorNombre, ProveedorTelefono, ProveedorEmail, ProveedorEstado });
             materialListView1.Depth = 0;
             materialListView1.FullRowSelect = true;
-            materialListView1.Location = new Point(3, 69);
+            materialListView1.Location = new Point(16, 122);
             materialListView1.MinimumSize = new Size(200, 100);
             materialListView1.MouseLocation = new Point(-1, -1);
             materialListView1.MouseState = MaterialSkin.MouseState.OUT;
             materialListView1.Name = "materialListView1";
             materialListView1.OwnerDraw = true;
-            materialListView1.Size = new Size(615, 284);
+            materialListView1.Size = new Size(710, 288);
             materialListView1.TabIndex = 0;
             materialListView1.UseCompatibleStateImageBehavior = false;
             materialListView1.View = View.Details;
@@ -218,9 +244,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(638, 507);
+            ClientSize = new Size(760, 508);
             Controls.Add(panel1);
+            FormStyle = FormStyles.StatusAndActionBar_None;
             Name = "FormListadoProveedores";
+            Padding = new Padding(3, 0, 3, 3);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -228,7 +256,7 @@
 
         #endregion
 
-        private Panel panel1;
+        private MaterialSkin.Controls.MaterialCard panel1;
         private MaterialSkin.Controls.MaterialListView materialListView1;
         private ColumnHeader ProveedorID;
         private ColumnHeader idProveedor;
@@ -242,5 +270,6 @@
         private MaterialSkin.Controls.MaterialButton materialButton1;
         private MaterialSkin.Controls.MaterialTextBox2 TextBoxBuscarProveedor;
         private MaterialSkin.Controls.MaterialButton BtnVerDetalleProveedor;
+        private MaterialSkin.Controls.MaterialLabel labelTitulo;
     }
 }

@@ -17,9 +17,18 @@ namespace RGTS.Interfaz
         public FormProductoAltaEdicion(List<Categoria> categorias, Producto? productoEditar = null)
         {
             InitializeComponent();
+            Sizable = false;
+            FormStyle = FormStyles.StatusAndActionBar_None;
             _productoServicio = new ProductoServicio();
             _categorias = categorias;
             _productoEditar = productoEditar;
+            ConfigurarModo();
+        }
+
+        private void ConfigurarModo()
+        {
+            Text = _productoEditar == null ? "Agregar Producto" : "Editar Producto";
+            labelTitulo.Text = Text.ToUpperInvariant();
         }
 
         private void FormProductoAltaEdicion_Load(object sender, EventArgs e)
@@ -29,7 +38,6 @@ namespace RGTS.Interfaz
             if (_productoEditar != null)
             {
                 // Modo edición: carga los datos del producto seleccionado
-                Text = "Editar Producto";
                 TxtCodigo.Text = _productoEditar.Codigo;
                 TxtNombre.Text = _productoEditar.Nombre;
                 MltDescripcion.Text = _productoEditar.Descripcion;
@@ -51,7 +59,6 @@ namespace RGTS.Interfaz
             else
             {
                 // Modo alta: formulario vacío
-                Text = "Registrar Nuevo Producto";
             }
         }
 

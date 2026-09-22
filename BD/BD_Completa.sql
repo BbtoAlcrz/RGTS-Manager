@@ -248,7 +248,7 @@ GO
 
 CREATE PROCEDURE dbo.sp_ListarUsuarios
     @FiltroTexto VARCHAR(100) = NULL,
-    @IdRol INT = NULL
+    @IdRol INT = NULL,
     @Activo BIT = NULL
 AS
 BEGIN
@@ -272,7 +272,7 @@ BEGIN
          OR U.nombre LIKE '%' + @FiltroTexto + '%' 
          OR U.apellido LIKE '%' + @FiltroTexto + '%')
         AND (@IdRol IS NULL OR @IdRol = 0 OR U.id_rol = @IdRol)
-        AND (@Activo IS NULL OR @Activo = U.activo = @Activo)
+        AND (@Activo IS NULL OR U.activo = @Activo)
     ORDER BY U.apellido, U.nombre;
 END
 GO
@@ -312,9 +312,9 @@ GO
 IF NOT EXISTS (SELECT 1 FROM USUARIO)
 BEGIN
     -- Contraseña inicial sin hashear como prueba
-    INSERT INTO USUARIO (id_rol, nombre, apellido, email, contrasena_hash, activo) VALUES
-    (1, 'Fausto', 'Avalos Alurralde', 'admin@a.com', 'admin123', 1),
-    (2, 'Benito', 'Alcaraz', 'vendedor@v.com', 'vendedor123', 1),
-    (3, 'Carlos', 'Deposito', 'deposito@d.com', 'deposito123', 1);
+    INSERT INTO USUARIO (dni, id_rol, nombre, apellido, email, contrasena_hash, activo) VALUES
+    ('47366368' , 1, 'Fausto', 'Avalos Alurralde', 'admin@a.com', 'admin123', 1),
+    ('45020546', 2, 'Benito', 'Alcaraz', 'vendedor@v.com', 'vendedor123', 1),
+    ('12345678', 3, 'Carlos', 'Deposito', 'deposito@d.com', 'deposito123', 1);
 END
 GO

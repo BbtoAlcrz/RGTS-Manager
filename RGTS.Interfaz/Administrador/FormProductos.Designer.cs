@@ -44,7 +44,6 @@
             BtnGestionarCat = new MaterialSkin.Controls.MaterialButton();
             panel1 = new MaterialSkin.Controls.MaterialCard();
             labelTitulo = new MaterialSkin.Controls.MaterialLabel();
-            materialButton1 = new MaterialSkin.Controls.MaterialButton();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -220,7 +219,7 @@
             BtnEliminar.NoAccentTextColor = Color.Empty;
             BtnEliminar.Size = new Size(122, 36);
             BtnEliminar.TabIndex = 6;
-            BtnEliminar.Text = "Habilitar";
+            BtnEliminar.Text = "Deshabilitar";
             BtnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnEliminar.UseAccentColor = false;
             BtnEliminar.UseVisualStyleBackColor = true;
@@ -252,7 +251,6 @@
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(255, 255, 255);
             panel1.Controls.Add(labelTitulo);
-            panel1.Controls.Add(materialButton1);
             panel1.Controls.Add(CmbFiltroCat);
             panel1.Controls.Add(LstProductos);
             panel1.Controls.Add(TxtBuscar);
@@ -282,27 +280,6 @@
             labelTitulo.Size = new Size(231, 29);
             labelTitulo.TabIndex = 9;
             labelTitulo.Text = "Listado de Productos";
-            // 
-            // materialButton1
-            // 
-            materialButton1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            materialButton1.Depth = 0;
-            materialButton1.HighEmphasis = true;
-            materialButton1.Icon = null;
-            materialButton1.Location = new Point(691, 148);
-            materialButton1.Margin = new Padding(4);
-            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton1.Name = "materialButton1";
-            materialButton1.NoAccentTextColor = Color.Empty;
-            materialButton1.Size = new Size(122, 36);
-            materialButton1.TabIndex = 8;
-            materialButton1.Text = "Deshabilitar";
-            materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            materialButton1.UseAccentColor = false;
-            materialButton1.UseVisualStyleBackColor = true;
-            materialButton1.Click += materialButton1_Click;
             // 
             // FormProductos
             // 
@@ -338,7 +315,6 @@
         private MaterialSkin.Controls.MaterialButton BtnEliminar;
         private MaterialSkin.Controls.MaterialButton BtnGestionarCat;
         private MaterialSkin.Controls.MaterialCard panel1;
-        private MaterialSkin.Controls.MaterialButton materialButton1;
         private MaterialSkin.Controls.MaterialLabel labelTitulo;
     }
 }

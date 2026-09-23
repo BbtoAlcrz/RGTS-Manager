@@ -24,7 +24,7 @@ namespace RGTS.LogicaNegocio.Servicios
             UsuarioValidacion.Validar(nombre, apellido, dni, email, idRol, contrasena, esNuevo: true);
 
             // Hashea la contraseña con BCrypt
-            string contrasenaHash = BCrypt.Net.BCrypt.HashPassword(contrasena.Trim());
+            // string contrasenaHash = BCrypt.Net.BCrypt.HashPassword(contrasena.Trim());
 
             // Empaqueta una entidad y la envía al metodo en AccesoDatos->Repositorio
             Usuario nuevoUsuario = new Usuario
@@ -34,7 +34,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 Apellido = apellido.Trim(),
                 Email = email.Trim(),
                 IdRol = idRol,
-                ContrasenaHash = contrasenaHash,
+                ContrasenaHash = contrasena,
                 Activo = true
             };
 
@@ -50,11 +50,11 @@ namespace RGTS.LogicaNegocio.Servicios
             // Si escribe en el campo de contraseña, validamos que tenga mínimo 8 caracteres
             UsuarioValidacion.Validar(nombre, apellido, dni, email, idRol, contrasenaNueva, esNuevo: cambioContrasena);
 
-            string hash = string.Empty;
-            if (cambioContrasena)
-            {
-                hash = BCrypt.Net.BCrypt.HashPassword(contrasenaNueva.Trim());
-            }
+          //  string hash = string.Empty;
+          //  if (cambioContrasena)
+          //  {
+          //      hash = BCrypt.Net.BCrypt.HashPassword(contrasenaNueva.Trim());
+          //  }
 
             Usuario usuario = new Usuario
             {
@@ -63,7 +63,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 Apellido = apellido.Trim(),
                 Email = email.Trim(),
                 IdRol = idRol,
-                ContrasenaHash = hash
+                ContrasenaHash = contrasenaNueva
             };
 
             _usuarioRepositorio.Actualizar(usuario, cambioContrasena);

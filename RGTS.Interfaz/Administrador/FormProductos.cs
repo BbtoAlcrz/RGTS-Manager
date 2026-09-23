@@ -153,7 +153,7 @@ namespace RGTS.Interfaz
         {
             if (LstProductos.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Seleccioná un producto para eliminar.",
+                MessageBox.Show("Seleccioná un producto para Deshabilitar.",
                     "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -161,7 +161,7 @@ namespace RGTS.Interfaz
             Producto? seleccionado = LstProductos.SelectedItems[0].Tag as Producto;
             if (seleccionado == null) return;
             var confirmacion = MessageBox.Show(
-                $"¿Estás seguro de que querés eliminar el producto '{seleccionado.Nombre}'?",
+                $"¿Estás seguro de que querés Deshabilitar el producto '{seleccionado.Nombre}'?",
                 "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirmacion == DialogResult.Yes)
@@ -169,7 +169,7 @@ namespace RGTS.Interfaz
                 try
                 {
                     _productoServicio.EliminarProducto(seleccionado.IdProducto);
-                    MessageBox.Show("Producto eliminado correctamente.",
+                    MessageBox.Show("Producto Habilitado correctamente.",
                         "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarGrilla();
                 }

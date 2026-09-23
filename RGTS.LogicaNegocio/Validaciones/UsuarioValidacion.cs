@@ -26,7 +26,7 @@ namespace RGTS.LogicaNegocio.Validaciones
         {
             // Valida campos vacios o en blanco
             if(string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(apellido) || 
-               string.IsNullOrWhiteSpace(dni) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(contrasena))
+               string.IsNullOrWhiteSpace(dni) || string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentException("Debe completar todos los campos");
             }

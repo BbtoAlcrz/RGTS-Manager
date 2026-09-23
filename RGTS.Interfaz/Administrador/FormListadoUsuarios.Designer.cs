@@ -122,6 +122,7 @@ namespace RGTS.Interfaz.Administrador
             ListaUsuarios.OwnerDraw = true;
             ListaUsuarios.Size = new Size(805, 254);
             ListaUsuarios.TabIndex = 2;
+            ListaUsuarios.TabStop = false;
             ListaUsuarios.UseCompatibleStateImageBehavior = false;
             ListaUsuarios.View = View.Details;
             ListaUsuarios.SelectedIndexChanged += ListaUsuarios_SelectedIndexChanged;
@@ -200,7 +201,7 @@ namespace RGTS.Interfaz.Administrador
             BtnCambiarEstadoUsuario.TabIndex = 6;
             BtnCambiarEstadoUsuario.Text = "Deshabilitar";
             BtnCambiarEstadoUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
-            BtnCambiarEstadoUsuario.UseAccentColor = true;
+            BtnCambiarEstadoUsuario.UseAccentColor = false;
             BtnCambiarEstadoUsuario.UseVisualStyleBackColor = false;
             BtnCambiarEstadoUsuario.Click += BtnCambiarEstadoUsuario_Click;
             // 
@@ -213,7 +214,7 @@ namespace RGTS.Interfaz.Administrador
             BtnEditarUsuario.Depth = 0;
             BtnEditarUsuario.HighEmphasis = true;
             BtnEditarUsuario.Icon = null;
-            BtnEditarUsuario.Location = new Point(180, 500);
+            BtnEditarUsuario.Location = new Point(162, 500);
             BtnEditarUsuario.Margin = new Padding(4, 6, 4, 6);
             BtnEditarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditarUsuario.Name = "BtnEditarUsuario";
@@ -239,9 +240,9 @@ namespace RGTS.Interfaz.Administrador
             BtnAgregarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAgregarUsuario.Name = "BtnAgregarUsuario";
             BtnAgregarUsuario.NoAccentTextColor = Color.Empty;
-            BtnAgregarUsuario.Size = new Size(153, 36);
+            BtnAgregarUsuario.Size = new Size(134, 36);
             BtnAgregarUsuario.TabIndex = 1;
-            BtnAgregarUsuario.Text = "Agregar Usuario";
+            BtnAgregarUsuario.Text = "Nuevo Usuario";
             BtnAgregarUsuario.Type = MaterialButton.MaterialButtonType.Contained;
             BtnAgregarUsuario.UseAccentColor = false;
             BtnAgregarUsuario.UseVisualStyleBackColor = true;

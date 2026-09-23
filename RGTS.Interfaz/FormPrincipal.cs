@@ -99,6 +99,7 @@ namespace RGTS.Interfaz
         // configura la navegacion de los botones del menu para sus formularios por rol
         private void ConfigurarNavegacionPorRol(string? rolActual)
         {
+            rolActual = rolActual?.Trim();
             // ocultams todos los botones primero (para resetear el panel)
             OcultarTodosLosBotones();
 
@@ -138,6 +139,8 @@ namespace RGTS.Interfaz
             {
                 boton.Visible = true;
             }
+            PanelBotones.PerformLayout();
+            PanelBotones.Refresh();
         }
 
         private void OcultarTodosLosBotones()

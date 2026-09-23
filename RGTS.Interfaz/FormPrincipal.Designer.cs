@@ -264,6 +264,7 @@
             BotonModuloVentas.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BotonModuloVentas.UseAccentColor = false;
             BotonModuloVentas.UseVisualStyleBackColor = true;
+            BotonModuloVentas.Click += BotonModuloVentas_Click;
             // 
             // BotonModuloCompras
             // 

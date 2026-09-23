@@ -11,6 +11,7 @@ using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.Interfaz.Administrador;
 using RGTS.Interfaz.EncargadoDeposito;
+using RGTS.Interfaz.Vendedor;
 
 
 namespace RGTS.Interfaz
@@ -191,6 +192,11 @@ namespace RGTS.Interfaz
         private void BotonModuloCompras_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel<FormListadoCompras>();
+        }
+
+        private void BotonModuloVentas_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormListadoVentas>();
         }
     }
 }

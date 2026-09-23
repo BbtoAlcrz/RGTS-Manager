@@ -98,6 +98,7 @@
             BtnVerDetalleProveedor.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnVerDetalleProveedor.UseAccentColor = false;
             BtnVerDetalleProveedor.UseVisualStyleBackColor = true;
+            BtnVerDetalleProveedor.Click += BtnVerDetalleProveedor_Click;
             // 
             // TextBoxBuscarProveedor
             // 

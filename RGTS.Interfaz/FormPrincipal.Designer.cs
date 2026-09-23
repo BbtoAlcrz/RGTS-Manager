@@ -54,12 +54,12 @@
             PanelContenedorVistas.BackColor = Color.FromArgb(255, 255, 255);
             PanelContenedorVistas.Depth = 0;
             PanelContenedorVistas.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            PanelContenedorVistas.Location = new Point(218, 69);
-            PanelContenedorVistas.Margin = new Padding(15);
+            PanelContenedorVistas.Location = new Point(249, 92);
+            PanelContenedorVistas.Margin = new Padding(17, 20, 17, 20);
             PanelContenedorVistas.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorVistas.Name = "PanelContenedorVistas";
-            PanelContenedorVistas.Padding = new Padding(15);
-            PanelContenedorVistas.Size = new Size(610, 468);
+            PanelContenedorVistas.Padding = new Padding(17, 20, 17, 20);
+            PanelContenedorVistas.Size = new Size(697, 624);
             PanelContenedorVistas.TabIndex = 2;
             // 
             // PanelPerfilInfo
@@ -71,12 +71,12 @@
             PanelPerfilInfo.Controls.Add(BotonCerrarSesion);
             PanelPerfilInfo.Depth = 0;
             PanelPerfilInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            PanelPerfilInfo.Location = new Point(10, 351);
-            PanelPerfilInfo.Margin = new Padding(14);
+            PanelPerfilInfo.Location = new Point(11, 468);
+            PanelPerfilInfo.Margin = new Padding(16, 19, 16, 19);
             PanelPerfilInfo.MouseState = MaterialSkin.MouseState.HOVER;
             PanelPerfilInfo.Name = "PanelPerfilInfo";
-            PanelPerfilInfo.Padding = new Padding(10);
-            PanelPerfilInfo.Size = new Size(188, 100);
+            PanelPerfilInfo.Padding = new Padding(11, 13, 11, 13);
+            PanelPerfilInfo.Size = new Size(215, 133);
             PanelPerfilInfo.TabIndex = 3;
             // 
             // LabelRolUsuario
@@ -85,7 +85,7 @@
             LabelRolUsuario.Depth = 0;
             LabelRolUsuario.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             LabelRolUsuario.FontType = MaterialSkin.MaterialSkinManager.fontType.Caption;
-            LabelRolUsuario.Location = new Point(13, 34);
+            LabelRolUsuario.Location = new Point(15, 45);
             LabelRolUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             LabelRolUsuario.Name = "LabelRolUsuario";
             LabelRolUsuario.Size = new Size(79, 14);
@@ -98,7 +98,7 @@
             LabelNombreUsuario.Depth = 0;
             LabelNombreUsuario.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             LabelNombreUsuario.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            LabelNombreUsuario.Location = new Point(13, 10);
+            LabelNombreUsuario.Location = new Point(15, 13);
             LabelNombreUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             LabelNombreUsuario.Name = "LabelNombreUsuario";
             LabelNombreUsuario.Size = new Size(117, 17);
@@ -115,18 +115,19 @@
             BotonCerrarSesion.Dock = DockStyle.Bottom;
             BotonCerrarSesion.HighEmphasis = false;
             BotonCerrarSesion.Icon = null;
-            BotonCerrarSesion.Location = new Point(10, 54);
-            BotonCerrarSesion.Margin = new Padding(4, 6, 4, 6);
+            BotonCerrarSesion.Location = new Point(11, 72);
+            BotonCerrarSesion.Margin = new Padding(5, 8, 5, 8);
             BotonCerrarSesion.MouseState = MaterialSkin.MouseState.HOVER;
             BotonCerrarSesion.Name = "BotonCerrarSesion";
             BotonCerrarSesion.NoAccentTextColor = Color.Empty;
-            BotonCerrarSesion.Size = new Size(168, 36);
+            BotonCerrarSesion.Size = new Size(193, 48);
             BotonCerrarSesion.TabIndex = 6;
             BotonCerrarSesion.TabStop = false;
             BotonCerrarSesion.Text = "Cerrar Sesión";
             BotonCerrarSesion.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BotonCerrarSesion.UseAccentColor = false;
             BotonCerrarSesion.UseVisualStyleBackColor = true;
+            BotonCerrarSesion.Click += BotonCerrarSesion_Click;
             // 
             // PanelBotones
             // 
@@ -140,10 +141,10 @@
             PanelBotones.Controls.Add(BotonModuloCompras);
             PanelBotones.Dock = DockStyle.Top;
             PanelBotones.FlowDirection = FlowDirection.TopDown;
-            PanelBotones.Location = new Point(10, 10);
+            PanelBotones.Location = new Point(11, 13);
             PanelBotones.Margin = new Padding(0);
             PanelBotones.Name = "PanelBotones";
-            PanelBotones.Size = new Size(188, 319);
+            PanelBotones.Size = new Size(216, 425);
             PanelBotones.TabIndex = 1;
             // 
             // BotonModuloUsuarios
@@ -157,12 +158,12 @@
             BotonModuloUsuarios.DrawShadows = false;
             BotonModuloUsuarios.HighEmphasis = true;
             BotonModuloUsuarios.Icon = null;
-            BotonModuloUsuarios.Location = new Point(4, 6);
-            BotonModuloUsuarios.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloUsuarios.Location = new Point(5, 8);
+            BotonModuloUsuarios.Margin = new Padding(5, 8, 5, 8);
             BotonModuloUsuarios.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloUsuarios.Name = "BotonModuloUsuarios";
             BotonModuloUsuarios.NoAccentTextColor = Color.Empty;
-            BotonModuloUsuarios.Size = new Size(180, 36);
+            BotonModuloUsuarios.Size = new Size(206, 48);
             BotonModuloUsuarios.TabIndex = 1;
             BotonModuloUsuarios.Text = "Usuarios";
             BotonModuloUsuarios.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -181,12 +182,12 @@
             BotonModuloProductos.DrawShadows = false;
             BotonModuloProductos.HighEmphasis = true;
             BotonModuloProductos.Icon = null;
-            BotonModuloProductos.Location = new Point(4, 54);
-            BotonModuloProductos.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloProductos.Location = new Point(5, 72);
+            BotonModuloProductos.Margin = new Padding(5, 8, 5, 8);
             BotonModuloProductos.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloProductos.Name = "BotonModuloProductos";
             BotonModuloProductos.NoAccentTextColor = Color.Empty;
-            BotonModuloProductos.Size = new Size(180, 36);
+            BotonModuloProductos.Size = new Size(206, 48);
             BotonModuloProductos.TabIndex = 2;
             BotonModuloProductos.Text = "Productos";
             BotonModuloProductos.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -205,12 +206,12 @@
             BotonModuloProveedores.DrawShadows = false;
             BotonModuloProveedores.HighEmphasis = true;
             BotonModuloProveedores.Icon = null;
-            BotonModuloProveedores.Location = new Point(4, 102);
-            BotonModuloProveedores.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloProveedores.Location = new Point(5, 136);
+            BotonModuloProveedores.Margin = new Padding(5, 8, 5, 8);
             BotonModuloProveedores.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloProveedores.Name = "BotonModuloProveedores";
             BotonModuloProveedores.NoAccentTextColor = Color.Empty;
-            BotonModuloProveedores.Size = new Size(180, 36);
+            BotonModuloProveedores.Size = new Size(206, 48);
             BotonModuloProveedores.TabIndex = 6;
             BotonModuloProveedores.Text = "Proveedores";
             BotonModuloProveedores.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -229,12 +230,12 @@
             BotonModuloClientes.DrawShadows = false;
             BotonModuloClientes.HighEmphasis = true;
             BotonModuloClientes.Icon = null;
-            BotonModuloClientes.Location = new Point(4, 150);
-            BotonModuloClientes.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloClientes.Location = new Point(5, 200);
+            BotonModuloClientes.Margin = new Padding(5, 8, 5, 8);
             BotonModuloClientes.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloClientes.Name = "BotonModuloClientes";
             BotonModuloClientes.NoAccentTextColor = Color.Empty;
-            BotonModuloClientes.Size = new Size(180, 36);
+            BotonModuloClientes.Size = new Size(206, 48);
             BotonModuloClientes.TabIndex = 3;
             BotonModuloClientes.Text = "Clientes";
             BotonModuloClientes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -253,12 +254,12 @@
             BotonModuloVentas.DrawShadows = false;
             BotonModuloVentas.HighEmphasis = true;
             BotonModuloVentas.Icon = null;
-            BotonModuloVentas.Location = new Point(4, 198);
-            BotonModuloVentas.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloVentas.Location = new Point(5, 264);
+            BotonModuloVentas.Margin = new Padding(5, 8, 5, 8);
             BotonModuloVentas.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloVentas.Name = "BotonModuloVentas";
             BotonModuloVentas.NoAccentTextColor = Color.Empty;
-            BotonModuloVentas.Size = new Size(180, 36);
+            BotonModuloVentas.Size = new Size(206, 48);
             BotonModuloVentas.TabIndex = 4;
             BotonModuloVentas.Text = "Ventas";
             BotonModuloVentas.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -277,12 +278,12 @@
             BotonModuloCompras.DrawShadows = false;
             BotonModuloCompras.HighEmphasis = true;
             BotonModuloCompras.Icon = null;
-            BotonModuloCompras.Location = new Point(4, 246);
-            BotonModuloCompras.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloCompras.Location = new Point(5, 328);
+            BotonModuloCompras.Margin = new Padding(5, 8, 5, 8);
             BotonModuloCompras.MouseState = MaterialSkin.MouseState.HOVER;
             BotonModuloCompras.Name = "BotonModuloCompras";
             BotonModuloCompras.NoAccentTextColor = Color.Empty;
-            BotonModuloCompras.Size = new Size(180, 36);
+            BotonModuloCompras.Size = new Size(206, 48);
             BotonModuloCompras.TabIndex = 5;
             BotonModuloCompras.Text = "Compras";
             BotonModuloCompras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -298,25 +299,26 @@
             PanelContenedorMenu.Controls.Add(PanelPerfilInfo);
             PanelContenedorMenu.Depth = 0;
             PanelContenedorMenu.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            PanelContenedorMenu.Location = new Point(5, 70);
-            PanelContenedorMenu.Margin = new Padding(10);
+            PanelContenedorMenu.Location = new Point(6, 93);
+            PanelContenedorMenu.Margin = new Padding(11, 13, 11, 13);
             PanelContenedorMenu.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorMenu.Name = "PanelContenedorMenu";
-            PanelContenedorMenu.Padding = new Padding(10);
-            PanelContenedorMenu.Size = new Size(208, 466);
+            PanelContenedorMenu.Padding = new Padding(11, 13, 11, 13);
+            PanelContenedorMenu.Size = new Size(238, 621);
             PanelContenedorMenu.TabIndex = 0;
             // 
             // FormPrincipal
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(833, 542);
+            ClientSize = new Size(952, 723);
             Controls.Add(PanelContenedorVistas);
             Controls.Add(PanelContenedorMenu);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormPrincipal";
-            Padding = new Padding(5, 69, 5, 5);
+            Padding = new Padding(6, 92, 6, 7);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "RGTS - Manager";
             WindowState = FormWindowState.Maximized;

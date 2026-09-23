@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +11,6 @@ using RGTS.Entidades;
 using RGTS.Interfaz.Administrador;
 using RGTS.Interfaz.EncargadoDeposito;
 using RGTS.Interfaz.Vendedor;
-
 
 namespace RGTS.Interfaz
 {
@@ -50,7 +48,7 @@ namespace RGTS.Interfaz
         {
             if (_formularioActivo != null && _formularioActivo.GetType() == typeof(T))
             {
-                //el formulario ya está abierto
+                // el formulario ya está abierto
                 return;
             }
 
@@ -77,8 +75,7 @@ namespace RGTS.Interfaz
             _formularioActivo.BringToFront();
         }
 
-
-
+        // sobrecarga para abrir un formulario ya instanciado desde afuera de esta clase
         public void AbrirFormularioEnPanel(Form formularioHijo)
         {
             if (_formularioActivo != null)
@@ -98,10 +95,6 @@ namespace RGTS.Interfaz
             formularioHijo.Show();
             formularioHijo.BringToFront();
         }
-
-
-
-
 
         // configura la navegacion de los botones del menu para sus formularios por rol
         private void ConfigurarNavegacionPorRol(string? rolActual)
@@ -147,7 +140,6 @@ namespace RGTS.Interfaz
             }
         }
 
-
         private void OcultarTodosLosBotones()
         {
             // Todos los botones del panel lateral vuelven a false
@@ -160,14 +152,12 @@ namespace RGTS.Interfaz
             }
         }
 
-
-
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Al cerrar el FormPrincipal, cerramos toda la aplicación
+            // Al cerrar el FormPrincipal (con la X de la ventana), cerramos toda la aplicación.
+            // No hay relogin en caliente: para volver a entrar hay que reabrir el ejecutable.
             Environment.Exit(0);
         }
-
 
         private void BotonModuloUsuarios_Click(object sender, EventArgs e)
         {
@@ -193,10 +183,34 @@ namespace RGTS.Interfaz
         {
             AbrirFormularioEnPanel<FormListadoCompras>();
         }
-
         private void BotonModuloVentas_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel<FormListadoVentas>();
         }
+
+        private void BotonCerrarSesion_Click(object sender, EventArgs e)
+        {
+            // Muestra la ventana emergente con botones de Sí y No, y un ícono de pregunta.
+            // "Cerrar Sesión" en esta versión cierra directamente el programa completo
+            // (no vuelve al login): decisión tomada para evitar los problemas de
+            // relogin en caliente con MaterialSkin, priorizando estabilidad para la entrega.
+            DialogResult resultado = MessageBox.Show(
+                "¿Seguro que desea cerrar el programa?",
+                "Confirmar Cierre",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2 // Deja el foco por defecto en la opción NO por seguridad
+            );
+
+            if (resultado == DialogResult.Yes)
+            {
+                // Limpiar sesión activa antes de terminar el proceso
+                UsuarioSesion = null;
+                RolSesion = null;
+                Environment.Exit(0);
+            }
+            // Si presiona "No", el bloque no se ejecuta y permanece en la pantalla actual
+        }
+
     }
 }

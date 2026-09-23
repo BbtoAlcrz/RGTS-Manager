@@ -21,9 +21,9 @@ namespace RGTS.Interfaz.Administrador
         // Compras hardcodeadas para esta entrega
         private readonly List<Compra> _compras = new List<Compra>
         {
-            new Compra { IdCompra = 1, IdProveedor = 1, NombreProveedor = "TechImport SA", Fecha = DateTime.Today.AddDays(-5), Total = 450000, Estado = "Pendiente" },
-            new Compra { IdCompra = 2, IdProveedor = 2, NombreProveedor = "Gamer Distribuidora", Fecha = DateTime.Today.AddDays(-2), Total = 120000, Estado = "Recibida" },
-            new Compra { IdCompra = 3, IdProveedor = 3, NombreProveedor = "ElectroSur", Fecha = DateTime.Today, Total = 89000, Estado = "Cancelada" }
+            new Compra { IdCompra = 1, DniUsuario = "Carlos", IdProveedor = 1, NombreProveedor = "TechImport SA", Fecha = DateTime.Today.AddDays(-5), Total = 450000, Estado = "Pendiente" },
+            new Compra { IdCompra = 2, DniUsuario = "María", IdProveedor = 2, NombreProveedor = "Gamer Distribuidora", Fecha = DateTime.Today.AddDays(-2), Total = 120000, Estado = "Recibida" },
+            new Compra { IdCompra = 3, DniUsuario = "Carlos", IdProveedor = 3, NombreProveedor = "ElectroSur", Fecha = DateTime.Today, Total = 89000, Estado = "Cancelada" }
         };
 
         // Detalle de cada compra, indexado por IdCompra (hardcodeado para esta entrega)
@@ -49,9 +49,28 @@ namespace RGTS.Interfaz.Administrador
             pnlEdicionContenedor.BringToFront();
         }
 
+        private void CmbFiltroProvee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Reaplicar filtros cuando el usuario cambia el proveedor seleccionado
+            CargarGrilla();
+        }
+
+        private void DtpDesde_ValueChanged(object sender, EventArgs e)
+        {
+            CargarGrilla();
+        }
+
+        private void DtpHasta_ValueChanged(object sender, EventArgs e)
+        {
+            CargarGrilla();
+        }
+
         private void FormListadoCompras_Load(object sender, EventArgs e)
         {
             CargarComboProveedor();
+            // Asegura un rango por defecto que incluya las compras precargadas
+            DtpHasta.Value = DateTime.Today;
+            DtpDesde.Value = DateTime.Today.AddDays(-30);
             CargarGrilla();
         }
 
@@ -79,11 +98,13 @@ namespace RGTS.Interfaz.Administrador
             foreach (var compra in filtradas)
             {
                 var row = new ListViewItem(compra.IdCompra.ToString());
+                // Rellenar subitems en el mismo orden que las columnas: Proveedor, Usuario, Fecha, Total, Estado
                 row.SubItems.Add(compra.NombreProveedor);
-                row.SubItems.Add(compra.Estado);
-                row.SubItems.Add("—"); // usuario: sin datos reales para esta entrega
+                // Usuario (DniUsuario usado como nombre para esta entrega)
+                row.SubItems.Add(string.IsNullOrWhiteSpace(compra.DniUsuario) ? "—" : compra.DniUsuario);
                 row.SubItems.Add(compra.Fecha.ToString("dd/MM/yyyy"));
                 row.SubItems.Add(compra.Total.ToString("C"));
+                row.SubItems.Add(compra.Estado);
                 row.Tag = compra;
                 lstClientes.Items.Add(row);
             }

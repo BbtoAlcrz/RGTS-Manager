@@ -4,6 +4,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
+
 namespace RGTS.Interfaz
 {
     public partial class FormIniciarSesion : MaterialForm
@@ -38,22 +39,16 @@ namespace RGTS.Interfaz
                     MessageBoxIcon.Information
                 );
 
-                // Ocultamos el login
+                // Ocultamos el login (no lo cerramos: este form sigue siendo el
+                // MainForm de Application.Run, así que si se cierra del todo la app termina)
                 this.Hide();
 
                 // Abrimos el formulario principal pasándole el usuario logueado
-                //FormPrincipal formPrincipal = new FormPrincipal(usuarioAutenticado);
-
-                // Si cierran el FormPrincipal, se cierra la aplicación por completo
-                //formPrincipal.FormClosed += (s, args) => this.Close();
-                //formPrincipal.Show();
-
-                // despues de ocultar el login abre la ventana de gestion de clientes del administrador
-                //Administrador.FormListadoUsuarios abrirEste = new Administrador.FormListadoUsuarios();
                 FormPrincipal abrirEste = new FormPrincipal(usuarioAutenticado);
                 abrirEste.Show();
 
-                // al cerrar la ventana, se cierra la aplicacion por completo con applition.exit()
+                // Al cerrar FormPrincipal (con la X o con "Cerrar Sesión"), la app
+                // se cierra por completo con Environment.Exit(0) — no hay relogin en caliente.
             }
             catch (ArgumentException ex)
             {
@@ -68,8 +63,9 @@ namespace RGTS.Interfaz
             catch (Exception ex)
             {
                 // Errores no controlados o de conexión SQL (RNF#11)
-                MessageBox.Show($"Ocurrió un error al comunicarse con el servidor: {ex.Message}", "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al comunicarse con el servidor: {ex.Message}",
+                    "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    } 
+    }
 }

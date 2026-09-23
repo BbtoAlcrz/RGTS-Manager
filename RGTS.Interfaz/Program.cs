@@ -25,6 +25,8 @@ namespace RGTS.Interfaz
                 TextShade.WHITE
             );
 
+            // Arranca la app directamente en el login. FormPrincipal se abre desde ahí
+            // una vez autenticado; cerrar sesión termina el proceso completo (ver FormPrincipal).
             Application.Run(new FormIniciarSesion());
         }
     }

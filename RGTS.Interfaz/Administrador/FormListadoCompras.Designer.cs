@@ -109,6 +109,7 @@
             DtpDesde.Name = "DtpDesde";
             DtpDesde.Size = new Size(133, 23);
             DtpDesde.TabIndex = 23;
+            DtpDesde.ValueChanged += DtpDesde_ValueChanged;
             // 
             // DtpHasta
             // 
@@ -120,6 +121,7 @@
             DtpHasta.Name = "DtpHasta";
             DtpHasta.Size = new Size(133, 23);
             DtpHasta.TabIndex = 22;
+            DtpHasta.ValueChanged += DtpHasta_ValueChanged;
             // 
             // CmbFiltroProvee
             // 
@@ -145,6 +147,7 @@
             CmbFiltroProvee.Size = new Size(502, 49);
             CmbFiltroProvee.StartIndex = 0;
             CmbFiltroProvee.TabIndex = 21;
+            CmbFiltroProvee.SelectedIndexChanged += CmbFiltroProvee_SelectedIndexChanged;
             // 
             // BtnRecibido
             // 
@@ -241,6 +244,7 @@
             lstClientes.AutoSizeTable = false;
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
+            // Column order: ID, Proveedor, Usuario, Fecha, Total, Estado
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, Proveedor, Usuario, Fecha, Total, Estado });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;

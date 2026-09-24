@@ -196,7 +196,7 @@ namespace RGTS.Interfaz
             // Muestra la ventana emergente con botones de Sí y No, y un ícono de pregunta.
             // "Cerrar Sesión" en esta versión cierra directamente el programa completo
             // (no vuelve al login): decisión tomada para evitar los problemas de
-            // relogin en caliente con MaterialSkin, priorizando estabilidad para la entrega.
+            // relogin en caliente con MaterialSkin,
             DialogResult resultado = MessageBox.Show(
                 "¿Seguro que desea cerrar el programa?",
                 "Confirmar Cierre",

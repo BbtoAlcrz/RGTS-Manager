@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewGroup listViewGroup1 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup2 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
-            ListViewGroup listViewGroup3 = new ListViewGroup("ListViewGroup", HorizontalAlignment.Left);
             panel2 = new MaterialSkin.Controls.MaterialCard();
             BtnAlta = new MaterialSkin.Controls.MaterialButton();
             BtnNuevo = new MaterialSkin.Controls.MaterialButton();
@@ -169,15 +166,6 @@
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, DNI, Apellido, Nombre, Teléfono, Email, Estado });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
-            listViewGroup1.CollapsedState = ListViewGroupCollapsedState.Expanded;
-            listViewGroup1.Footer = "ID";
-            listViewGroup1.Header = "ListViewGroup";
-            listViewGroup1.Name = "ID";
-            listViewGroup2.Header = "ListViewGroup";
-            listViewGroup2.Name = "DNI";
-            listViewGroup3.Header = "ListViewGroup";
-            listViewGroup3.Name = "listViewGroup1";
-            lstClientes.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3 });
             lstClientes.Location = new Point(16, 109);
             lstClientes.Margin = new Padding(3, 2, 3, 2);
             lstClientes.MinimumSize = new Size(175, 75);

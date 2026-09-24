@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewGroup listViewGroup1 = new ListViewGroup("Codigo", HorizontalAlignment.Left);
             TxtBuscar = new MaterialSkin.Controls.MaterialTextBox2();
             CmbFiltroCat = new MaterialSkin.Controls.MaterialComboBox();
             LstProductos = new MaterialSkin.Controls.MaterialListView();
@@ -115,9 +114,6 @@
             LstProductos.Columns.AddRange(new ColumnHeader[] { Codigo, Nombre, Categoria, Precio, Existencias, Estado });
             LstProductos.Depth = 0;
             LstProductos.FullRowSelect = true;
-            listViewGroup1.Header = "Codigo";
-            listViewGroup1.Name = "listViewGroup1";
-            LstProductos.Groups.AddRange(new ListViewGroup[] { listViewGroup1 });
             LstProductos.Location = new Point(15, 104);
             LstProductos.Margin = new Padding(3, 2, 3, 2);
             LstProductos.MinimumSize = new Size(175, 75);

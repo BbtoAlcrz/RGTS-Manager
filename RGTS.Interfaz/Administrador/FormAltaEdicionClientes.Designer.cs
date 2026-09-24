@@ -1,6 +1,6 @@
 ﻿namespace RGTS.Interfaz.Administrador
 {
-    partial class FormClientesAltaEdicion
+    partial class FormAltaEdicionClientes
     {
         /// <summary>
         /// Required designer variable.
@@ -47,7 +47,6 @@
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(255, 255, 255);
             panel1.Controls.Add(labelTitulo);
             panel1.Controls.Add(btnCancelar);
@@ -63,13 +62,14 @@
             panel1.Controls.Add(txtApellido);
             panel1.Controls.Add(txtNombre);
             panel1.Depth = 0;
+            panel1.Dock = DockStyle.Fill;
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(15, 10);
+            panel1.Location = new Point(3, 0);
             panel1.Margin = new Padding(12, 10, 12, 10);
             panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12, 10, 12, 10);
-            panel1.Size = new Size(931, 515);
+            panel1.Size = new Size(956, 535);
             panel1.TabIndex = 1;
             // 
             // labelTitulo
@@ -94,7 +94,7 @@
             btnCancelar.Depth = 0;
             btnCancelar.HighEmphasis = true;
             btnCancelar.Icon = null;
-            btnCancelar.Location = new Point(705, 453);
+            btnCancelar.Location = new Point(718, 473);
             btnCancelar.Margin = new Padding(4);
             btnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancelar.Name = "btnCancelar";
@@ -116,7 +116,7 @@
             btnGuardar.Depth = 0;
             btnGuardar.HighEmphasis = true;
             btnGuardar.Icon = null;
-            btnGuardar.Location = new Point(813, 453);
+            btnGuardar.Location = new Point(826, 473);
             btnGuardar.Margin = new Padding(4);
             btnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardar.Name = "btnGuardar";
@@ -182,7 +182,7 @@
             LDni.AutoSize = true;
             LDni.Depth = 0;
             LDni.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LDni.Location = new Point(41, 220);
+            LDni.Location = new Point(41, 222);
             LDni.MouseState = MaterialSkin.MouseState.HOVER;
             LDni.Name = "LDni";
             LDni.Size = new Size(31, 19);
@@ -195,7 +195,7 @@
             txtTelefono.BorderStyle = BorderStyle.None;
             txtTelefono.Depth = 0;
             txtTelefono.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtTelefono.Hint = "Teléfono de contacto";
+            txtTelefono.Hint = "(Opcional)";
             txtTelefono.LeadingIcon = null;
             txtTelefono.Location = new Point(596, 90);
             txtTelefono.Margin = new Padding(3, 2, 3, 2);
@@ -207,7 +207,6 @@
             txtTelefono.TabIndex = 4;
             txtTelefono.Text = "";
             txtTelefono.TrailingIcon = null;
-            txtTelefono.TextChanged += txtTelefono_TextChanged;
             // 
             // txtEmail
             // 
@@ -215,7 +214,7 @@
             txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Depth = 0;
             txtEmail.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtEmail.Hint = "Correo electrónico";
+            txtEmail.Hint = "(Opcional)";
             txtEmail.LeadingIcon = null;
             txtEmail.Location = new Point(596, 155);
             txtEmail.Margin = new Padding(3, 2, 3, 2);
@@ -234,7 +233,6 @@
             txtDni.BorderStyle = BorderStyle.None;
             txtDni.Depth = 0;
             txtDni.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtDni.Hint = "DNI (Solo números)";
             txtDni.LeadingIcon = null;
             txtDni.Location = new Point(113, 220);
             txtDni.Margin = new Padding(3, 2, 3, 2);
@@ -253,7 +251,6 @@
             txtApellido.BorderStyle = BorderStyle.None;
             txtApellido.Depth = 0;
             txtApellido.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtApellido.Hint = "Apellido";
             txtApellido.LeadingIcon = null;
             txtApellido.Location = new Point(113, 155);
             txtApellido.Margin = new Padding(3, 2, 3, 2);
@@ -272,7 +269,6 @@
             txtNombre.BorderStyle = BorderStyle.None;
             txtNombre.Depth = 0;
             txtNombre.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtNombre.Hint = "Nombre";
             txtNombre.LeadingIcon = null;
             txtNombre.Location = new Point(113, 90);
             txtNombre.Margin = new Padding(3, 2, 3, 2);
@@ -285,7 +281,7 @@
             txtNombre.Text = "";
             txtNombre.TrailingIcon = null;
             // 
-            // FormClientesAltaEdicion
+            // FormAltaEdicionClientes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -293,7 +289,7 @@
             Controls.Add(panel1);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Margin = new Padding(3, 2, 3, 2);
-            Name = "FormClientesAltaEdicion";
+            Name = "FormAltaEdicionClientes";
             Padding = new Padding(3, 0, 3, 2);
             Sizable = false;
             Text = "Datos del Cliente";

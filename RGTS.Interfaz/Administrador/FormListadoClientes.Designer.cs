@@ -1,6 +1,6 @@
 ﻿namespace RGTS.Interfaz
 {
-    partial class FormGestionClientes
+    partial class FormListadoClientes
     {
         /// <summary>
         /// Required designer variable.
@@ -29,10 +29,9 @@
         private void InitializeComponent()
         {
             panel2 = new MaterialSkin.Controls.MaterialCard();
-            BtnAlta = new MaterialSkin.Controls.MaterialButton();
             BtnNuevo = new MaterialSkin.Controls.MaterialButton();
-            BtnEditar = new MaterialSkin.Controls.MaterialButton();
-            btnEliminar = new MaterialSkin.Controls.MaterialButton();
+            btnEditar = new MaterialSkin.Controls.MaterialButton();
+            btnCambiarEstado = new MaterialSkin.Controls.MaterialButton();
             lstClientes = new MaterialSkin.Controls.MaterialListView();
             ID = new ColumnHeader();
             DNI = new ColumnHeader();
@@ -48,48 +47,23 @@
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.FromArgb(255, 255, 255);
-            panel2.Controls.Add(BtnAlta);
             panel2.Controls.Add(BtnNuevo);
-            panel2.Controls.Add(BtnEditar);
-            panel2.Controls.Add(btnEliminar);
+            panel2.Controls.Add(btnEditar);
+            panel2.Controls.Add(btnCambiarEstado);
             panel2.Controls.Add(lstClientes);
             panel2.Controls.Add(TxtBuscar);
             panel2.Controls.Add(LListado);
             panel2.Depth = 0;
+            panel2.Dock = DockStyle.Fill;
             panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel2.Location = new Point(4, 8);
+            panel2.Location = new Point(3, 0);
             panel2.Margin = new Padding(12, 10, 12, 10);
             panel2.MouseState = MaterialSkin.MouseState.HOVER;
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12, 10, 12, 10);
-            panel2.Size = new Size(832, 411);
+            panel2.Size = new Size(835, 422);
             panel2.TabIndex = 1;
-            // 
-            // BtnAlta
-            // 
-            BtnAlta.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            BtnAlta.AutoSize = false;
-            BtnAlta.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BtnAlta.BackColor = Color.IndianRed;
-            BtnAlta.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            BtnAlta.Depth = 0;
-            BtnAlta.ForeColor = Color.Firebrick;
-            BtnAlta.HighEmphasis = true;
-            BtnAlta.Icon = null;
-            BtnAlta.Location = new Point(550, 55);
-            BtnAlta.Margin = new Padding(4);
-            BtnAlta.MouseState = MaterialSkin.MouseState.HOVER;
-            BtnAlta.Name = "BtnAlta";
-            BtnAlta.NoAccentTextColor = Color.Empty;
-            BtnAlta.Size = new Size(112, 48);
-            BtnAlta.TabIndex = 20;
-            BtnAlta.Text = "DAR DE ALTA";
-            BtnAlta.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            BtnAlta.UseAccentColor = false;
-            BtnAlta.UseVisualStyleBackColor = true;
-            BtnAlta.Click += BtnAlta_Click;
             // 
             // BtnNuevo
             // 
@@ -99,7 +73,7 @@
             BtnNuevo.Depth = 0;
             BtnNuevo.HighEmphasis = true;
             BtnNuevo.Icon = null;
-            BtnNuevo.Location = new Point(16, 361);
+            BtnNuevo.Location = new Point(16, 372);
             BtnNuevo.Margin = new Padding(4);
             BtnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevo.Name = "BtnNuevo";
@@ -112,50 +86,50 @@
             BtnNuevo.UseVisualStyleBackColor = true;
             BtnNuevo.Click += BtnNuevo_Click;
             // 
-            // BtnEditar
+            // btnEditar
             // 
-            BtnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            BtnEditar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            BtnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            BtnEditar.Depth = 0;
-            BtnEditar.HighEmphasis = true;
-            BtnEditar.Icon = null;
-            BtnEditar.Location = new Point(155, 361);
-            BtnEditar.Margin = new Padding(4);
-            BtnEditar.MouseState = MaterialSkin.MouseState.HOVER;
-            BtnEditar.Name = "BtnEditar";
-            BtnEditar.NoAccentTextColor = Color.Empty;
-            BtnEditar.Size = new Size(133, 36);
-            BtnEditar.TabIndex = 18;
-            BtnEditar.Text = "Editar Cliente";
-            BtnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            BtnEditar.UseAccentColor = false;
-            BtnEditar.UseVisualStyleBackColor = true;
-            BtnEditar.Click += BtnEditar_Click;
+            btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnEditar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnEditar.Depth = 0;
+            btnEditar.HighEmphasis = true;
+            btnEditar.Icon = null;
+            btnEditar.Location = new Point(155, 372);
+            btnEditar.Margin = new Padding(4);
+            btnEditar.MouseState = MaterialSkin.MouseState.HOVER;
+            btnEditar.Name = "btnEditar";
+            btnEditar.NoAccentTextColor = Color.Empty;
+            btnEditar.Size = new Size(133, 36);
+            btnEditar.TabIndex = 18;
+            btnEditar.Text = "Editar Cliente";
+            btnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnEditar.UseAccentColor = false;
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += BtnEditar_Click;
             // 
-            // btnEliminar
+            // btnCambiarEstado
             // 
-            btnEliminar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnEliminar.AutoSize = false;
-            btnEliminar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnEliminar.BackColor = Color.IndianRed;
-            btnEliminar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnEliminar.Depth = 0;
-            btnEliminar.ForeColor = Color.Firebrick;
-            btnEliminar.HighEmphasis = true;
-            btnEliminar.Icon = null;
-            btnEliminar.Location = new Point(670, 55);
-            btnEliminar.Margin = new Padding(4);
-            btnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.NoAccentTextColor = Color.Empty;
-            btnEliminar.Size = new Size(112, 48);
-            btnEliminar.TabIndex = 14;
-            btnEliminar.Text = "DAR DE BAJA";
-            btnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
-            btnEliminar.UseAccentColor = false;
-            btnEliminar.UseVisualStyleBackColor = true;
-            btnEliminar.Click += btnEliminar_Click;
+            btnCambiarEstado.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCambiarEstado.AutoSize = false;
+            btnCambiarEstado.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCambiarEstado.BackColor = Color.IndianRed;
+            btnCambiarEstado.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnCambiarEstado.Depth = 0;
+            btnCambiarEstado.ForeColor = Color.Firebrick;
+            btnCambiarEstado.HighEmphasis = true;
+            btnCambiarEstado.Icon = null;
+            btnCambiarEstado.Location = new Point(707, 55);
+            btnCambiarEstado.Margin = new Padding(4);
+            btnCambiarEstado.MouseState = MaterialSkin.MouseState.HOVER;
+            btnCambiarEstado.Name = "btnCambiarEstado";
+            btnCambiarEstado.NoAccentTextColor = Color.Empty;
+            btnCambiarEstado.Size = new Size(112, 48);
+            btnCambiarEstado.TabIndex = 14;
+            btnCambiarEstado.Text = "Estado";
+            btnCambiarEstado.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnCambiarEstado.UseAccentColor = false;
+            btnCambiarEstado.UseVisualStyleBackColor = true;
+            btnCambiarEstado.Click += btnCambiarEstado_Click;
             // 
             // lstClientes
             // 
@@ -163,7 +137,7 @@
             lstClientes.AutoSizeTable = false;
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
-            lstClientes.Columns.AddRange(new ColumnHeader[] { ID, DNI, Apellido, Nombre, Teléfono, Email, Estado });
+            lstClientes.Columns.AddRange(new ColumnHeader[] { ID, DNI, Nombre, Apellido, Teléfono, Email, Estado });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
             lstClientes.Location = new Point(16, 109);
@@ -173,7 +147,7 @@
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(766, 156);
+            lstClientes.Size = new Size(803, 156);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
@@ -202,17 +176,17 @@
             // Teléfono
             // 
             Teléfono.Text = "Teléfono";
-            Teléfono.Width = 100;
+            Teléfono.Width = 140;
             // 
             // Email
             // 
             Email.Text = "Email";
-            Email.Width = 100;
+            Email.Width = 140;
             // 
             // Estado
             // 
             Estado.Text = "Estado";
-            Estado.Width = 100;
+            Estado.Width = 110;
             // 
             // TxtBuscar
             // 
@@ -221,7 +195,7 @@
             TxtBuscar.BorderStyle = BorderStyle.None;
             TxtBuscar.Depth = 0;
             TxtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            TxtBuscar.Hint = "Buscar DNI";
+            TxtBuscar.Hint = "Buscar por DNI, Nombre o Apellido";
             TxtBuscar.LeadingIcon = null;
             TxtBuscar.Location = new Point(16, 55);
             TxtBuscar.Margin = new Padding(3, 2, 3, 2);
@@ -229,7 +203,7 @@
             TxtBuscar.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscar.Multiline = false;
             TxtBuscar.Name = "TxtBuscar";
-            TxtBuscar.Size = new Size(527, 50);
+            TxtBuscar.Size = new Size(684, 50);
             TxtBuscar.TabIndex = 13;
             TxtBuscar.Text = "";
             TxtBuscar.TrailingIcon = null;
@@ -248,7 +222,7 @@
             LListado.TabIndex = 15;
             LListado.Text = "Listado de Clientes ";
             // 
-            // FormGestionClientes
+            // FormListadoClientes
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -256,11 +230,11 @@
             Controls.Add(panel2);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Margin = new Padding(3, 2, 3, 2);
-            Name = "FormGestionClientes";
+            Name = "FormListadoClientes";
             Padding = new Padding(3, 0, 3, 2);
             Sizable = false;
             Text = "Gestion de Cliente";
-            Load += AdminGestionCliente_Load;
+            Load += FormListadoClientes_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
@@ -279,10 +253,9 @@
         private ColumnHeader Nombre;
         private ColumnHeader Teléfono;
         private ColumnHeader Email;
-        private MaterialSkin.Controls.MaterialButton btnEliminar;
-        private MaterialSkin.Controls.MaterialButton BtnEditar;
+        private MaterialSkin.Controls.MaterialButton btnCambiarEstado;
+        private MaterialSkin.Controls.MaterialButton btnEditar;
         private MaterialSkin.Controls.MaterialButton BtnNuevo;
         private ColumnHeader Estado;
-        private MaterialSkin.Controls.MaterialButton BtnAlta;
     }
 }

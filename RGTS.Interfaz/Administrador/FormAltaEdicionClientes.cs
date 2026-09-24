@@ -6,17 +6,15 @@ using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
 {
-    public partial class FormClientesAltaEdicion : MaterialForm
+    public partial class FormAltaEdicionClientes : MaterialForm
     {
         private readonly ClienteServicio _clienteServicio;
         private readonly Cliente? _clienteEditar;
 
         // si clienteEditar es null => modo alta, si tiene datos => modo edición
-        public FormClientesAltaEdicion(Cliente? clienteEditar = null)
+        public FormAltaEdicionClientes(Cliente? clienteEditar = null)
         {
             InitializeComponent();
-            Sizable = false;
-            FormStyle = FormStyles.StatusAndActionBar_None;
             _clienteServicio = new ClienteServicio();
             _clienteEditar = clienteEditar;
             ConfigurarModo();
@@ -24,7 +22,6 @@ namespace RGTS.Interfaz.Administrador
 
         private void ConfigurarModo()
         {
-            Text = _clienteEditar == null ? "Agregar Cliente" : "Editar Cliente";
             labelTitulo.Text = _clienteEditar == null ? "Agregar Nuevo Cliente" : "Editar Cliente";
         }
 
@@ -44,22 +41,37 @@ namespace RGTS.Interfaz.Administrador
         {
             try
             {
-                int id = _clienteEditar?.IdCliente ?? 0;
-                bool estado = _clienteEditar?.Estado ?? true;
-
-                Cliente cliente = _clienteServicio.ValidarYArmarCliente(
-                    id, txtNombre.Text, txtApellido.Text, txtDni.Text, txtTelefono.Text, txtEmail.Text, estado);
-
                 if (_clienteEditar == null)
-                    MessageBox.Show("Cliente registrado correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    _clienteServicio.RegistrarCliente(
+                        txtNombre.Text,
+                        txtApellido.Text,
+                        txtDni.Text,
+                        txtTelefono?.Text,
+                        txtEmail?.Text
+                    );
+                    MessageBox.Show("Cliente registrado correctamente.","Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 else
-                    MessageBox.Show("Cliente modificado correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    _clienteServicio.ModificarCliente(
+                        _clienteEditar.IdCliente,
+                        txtNombre.Text,
+                        txtApellido.Text,
+                        txtDni.Text,
+                        txtTelefono?.Text,
+                        txtEmail?.Text
+                    );
+                    MessageBox.Show("Cliente modificado correctamente.","Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 this.Close();
             }
             catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Datos Inválidos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -73,11 +85,6 @@ namespace RGTS.Interfaz.Administrador
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void txtTelefono_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

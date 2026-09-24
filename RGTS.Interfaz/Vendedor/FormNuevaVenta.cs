@@ -11,8 +11,9 @@ namespace RGTS.Interfaz.Vendedor
     public partial class FormNuevaVenta : MaterialForm
     {
         private readonly VentaServicio _ventaServicio;
-        private readonly List<DetalleVenta> _carrito = new();
+        private readonly ClienteServicio _clienteServicio;
         private Cliente? _clienteSeleccionado;
+        private readonly List<DetalleVenta> _carrito = new();
         private Producto? _productoSeleccionado;
 
 
@@ -22,6 +23,7 @@ namespace RGTS.Interfaz.Vendedor
         public FormNuevaVenta()
         {
             InitializeComponent();
+            _clienteServicio = new ClienteServicio();
             _ventaServicio = new VentaServicio();
             ConfigurarControles();
         }
@@ -41,7 +43,7 @@ namespace RGTS.Interfaz.Vendedor
         private void BtnBuscarDniCliente_Click(object? sender, EventArgs e)
         {
             string dni = txtBuscarDniCliente.Text.Trim();
-            _clienteSeleccionado = _ventaServicio.BuscarClientePorDni(dni);
+            _clienteSeleccionado = _clienteServicio.BuscarPorDni(dni);
 
             if (_clienteSeleccionado != null)
             {

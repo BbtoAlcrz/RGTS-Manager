@@ -9,11 +9,7 @@ namespace RGTS.LogicaNegocio.Servicios
     public class VentaServicio
     {
         // Datos temporales
-        private readonly List<Cliente> _clientesTemporales = new()
-        {
-            new Cliente { IdCliente = 1, DNI = "12345678", Nombre = "Carlos", Apellido = "Gómez", Estado = true },
-            new Cliente { IdCliente = 2, DNI = "87654321", Nombre = "María", Apellido = "López", Estado = true }
-        };
+        
 
         private readonly List<Producto> _catalogoTemporal = new()
         {
@@ -58,13 +54,6 @@ namespace RGTS.LogicaNegocio.Servicios
             }
         };
 
-
-
-        public Cliente? BuscarClientePorDni(string dni)
-        {
-            if (string.IsNullOrWhiteSpace(dni)) return null;
-            return _clientesTemporales.FirstOrDefault(c => c.DNI == dni.Trim() && c.Estado);
-        }
 
 
         public Producto? BuscarProducto(string filtro)

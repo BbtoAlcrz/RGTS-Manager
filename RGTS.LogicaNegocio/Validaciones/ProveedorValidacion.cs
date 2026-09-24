@@ -5,11 +5,7 @@ namespace RGTS.LogicaNegocio.Validaciones
 {
     public static class ProveedorValidacion
     {
-        private static readonly Regex TelefonoRegex = new Regex(
-            @"^\+?[\d\s-]{7,15}$",
-            RegexOptions.Compiled
-        );
-
+        
         private static readonly Regex EmailRegex = new Regex(
             @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase
         );
@@ -53,7 +49,7 @@ namespace RGTS.LogicaNegocio.Validaciones
                 throw new ArgumentException("El Teléfono es un campo obligatorio.");
             }
 
-            if (!TelefonoRegex.IsMatch(telefono.Trim()))
+            if (!RegexValidaciones.Telefono.IsMatch(telefono.Trim()))
             {
                 throw new ArgumentException("El Teléfono ingresado no posee un formato válido");
             }

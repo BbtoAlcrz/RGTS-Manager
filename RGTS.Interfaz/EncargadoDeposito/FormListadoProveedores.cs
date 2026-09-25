@@ -1,10 +1,11 @@
 ﻿using MaterialSkin.Controls;
+using RGTS.Entidades;
+using RGTS.LogicaNegocio;
+using RGTS.LogicaNegocio.Servicios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using RGTS.Entidades;
-using RGTS.LogicaNegocio;
 
 namespace RGTS.Interfaz.EncargadoDeposito
 {
@@ -74,6 +75,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             BtnVerDetalleProveedor.Click += BtnVerDetalleProveedor_Click;
 
             CargarProveedores();
+            ConfigurarPermisosPorRol();
         }
 
         private void CargarProveedores(string? criterioBusqueda = null)
@@ -112,6 +114,15 @@ namespace RGTS.Interfaz.EncargadoDeposito
             materialListView1.EndUpdate();
         }
 
+        private void ConfigurarPermisosPorRol()
+        {
+            bool puedeGestionar = FormPrincipal.RolSesion == "Administrador";
+
+            BtnAgregarProveedor.Visible = puedeGestionar;
+            BtnEditarProveedor.Visible = puedeGestionar;
+            BtnCambiarEstado.Visible = puedeGestionar;
+        }
+
         private void TextBoxBuscarProveedor_TextChanged(object? sender, EventArgs e)
         {
             CargarProveedores(TextBoxBuscarProveedor.Text);
@@ -122,7 +133,16 @@ namespace RGTS.Interfaz.EncargadoDeposito
             bool haySeleccion = materialListView1.SelectedItems.Count > 0;
             BtnEditarProveedor.Enabled = haySeleccion;
             BtnVerDetalleProveedor.Enabled = haySeleccion;
+            if (!haySeleccion)
+            {
+                BtnCambiarEstado.Text = "Estado";
+                return;
+            }
+
+            var proveedor = (Proveedor)materialListView1.SelectedItems[0].Tag;
+            BtnCambiarEstado.Text = proveedor.Activo ? "Deshabilitar" : "Habilitar";
         }
+        
 
         private void MostrarSubVentana(Form subFormulario)
         {
@@ -162,6 +182,47 @@ namespace RGTS.Interfaz.EncargadoDeposito
             {
                 var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
                 MostrarSubVentana(new FormDetalleProveedor(provSeleccionado));
+            }
+        }
+
+        private void btnCambiarEstado_Click(object sender, EventArgs e)
+        {
+            if (materialListView1.SelectedItems.Count == 0) return;
+
+            var proveedor = (Proveedor)materialListView1.SelectedItems[0].Tag;
+
+            bool nuevoEstado = !proveedor.Activo;
+            string accion = nuevoEstado ? "Habilita" : "Deshabilita";
+
+            // Confirmación con foco predeterminado en 'No'
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Está seguro de que desea {accion.ToLower()}r el siguiente proveedor?\n\n" +
+                $" Razón Social: {proveedor.RazonSocial}\n" +
+                $" Nombre Comercial: {proveedor.NombreComercial}\n",
+                $"Confirmar {accion}do",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
+            );
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                try
+                {
+                    // No hay servicio/repositorio en este formulario: se modifica directo
+                    // el objeto en memoria dentro de _proveedores (misma lista que alimenta la grilla)
+                    proveedor.Activo = nuevoEstado;
+
+                    MessageBox.Show($"Proveedor {accion.ToLower()}do correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al modificar estado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    CargarProveedores(TextBoxBuscarProveedor.Text);
+                }
             }
         }
     }

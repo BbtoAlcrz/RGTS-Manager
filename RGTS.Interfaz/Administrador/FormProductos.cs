@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.Interfaz.Administrador;
 using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz
@@ -35,6 +36,7 @@ namespace RGTS.Interfaz
         {
             CargarComboCategoria();
             CargarGrilla();
+            ConfigurarPermisosPorRol();
         }
 
         // Carga el combo con "Todas las categorías" como primer ítem y las categorías hardcodeadas
@@ -75,12 +77,26 @@ namespace RGTS.Interfaz
                     item.Tag = p; // guardamos el objeto completo para usarlo en Editar/Eliminar
                     LstProductos.Items.Add(item);
                 }
+                BtnEliminar.Text = "Estado"; // reset al recargar, sin selección
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ocurrió un error al comunicarse con el servidor: {ex.Message}",
                     "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Vendedor solo puede ver y buscar productos; Administrador y Encargado de Depósito
+        // pueden gestionarlos por completo (alta, edición, habilitar/deshabilitar)
+        private void ConfigurarPermisosPorRol()
+        {
+            bool puedeGestionar = FormPrincipal.RolSesion == "Administrador"
+                                || FormPrincipal.RolSesion == "Encargado de Deposito";
+
+            BtnNuevo.Visible = puedeGestionar;
+            BtnEditar.Visible = puedeGestionar;
+            BtnEliminar.Visible = puedeGestionar; 
+            BtnGestionarCat.Visible = puedeGestionar;
         }
 
         // Filtra al presionar Enter en el buscador
@@ -148,35 +164,42 @@ namespace RGTS.Interfaz
             MostrarSubVentana(new FormProductoAltaEdicion(_categorias, seleccionado));
         }
 
-        // Realiza la baja lógica del producto seleccionado
+        // Alterna el estado del producto seleccionado: Habilitar si está inactivo, Deshabilitar si está activo
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            if (LstProductos.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Seleccioná un producto para Deshabilitar.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (LstProductos.SelectedItems.Count == 0) return;
 
-            Producto? seleccionado = LstProductos.SelectedItems[0].Tag as Producto;
-            if (seleccionado == null) return;
-            var confirmacion = MessageBox.Show(
-                $"¿Estás seguro de que querés Deshabilitar el producto '{seleccionado.Nombre}'?",
-                "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var producto = (Producto)LstProductos.SelectedItems[0].Tag;
+
+            bool nuevoEstado = !producto.Activo;
+            string accion = nuevoEstado ? "Habilita" : "Deshabilita";
+
+            // Confirmación con foco predeterminado en 'No'
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Está seguro de que desea {accion.ToLower()}r el siguiente producto?\n\n" +
+                $" Código: {producto.Codigo}\n" +
+                $" Nombre: {producto.Nombre}\n",
+                $"Confirmar {accion}do",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
+            );
 
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
-                    _productoServicio.EliminarProducto(seleccionado.IdProducto);
-                    MessageBox.Show("Producto Habilitado correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CargarGrilla();
+                    _productoServicio.CambiarEstadoProducto(producto.IdProducto, nuevoEstado);
+
+                    MessageBox.Show($"Producto {accion.ToLower()}do correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ocurrió un error al comunicarse con el servidor: {ex.Message}",
-                        "Error de Conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al modificar estado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    CargarGrilla(TxtBuscar.Text);
                 }
             }
         }
@@ -184,9 +207,8 @@ namespace RGTS.Interfaz
         // Abre el formulario de gestión de categorías
         private void BtnGestionarCat_Click(object sender, EventArgs e)
         {
-            // Por implementar en próxima entrega
-            MessageBox.Show("Funcionalidad disponible en la próxima entrega.",
-                "En desarrollo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MostrarSubVentana(new FormCategoriaListado());
+            
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
@@ -201,11 +223,20 @@ namespace RGTS.Interfaz
             // Por ahora no tiene lógica específica
         }
 
-        // Manejador para el evento SelectedIndexChanged del ListBox de productos
+        
+        // Actualiza el texto del botón según el estado del producto seleccionado
         private void LstProductos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Este evento se dispara cuando cambiad la selección en la lista de productos
-            // Por ahora no tiene lógica específica
+            if (LstProductos.SelectedItems.Count == 0)
+            {
+                BtnEliminar.Text = "Habilitar/Deshabilitar";
+                return;
+            }
+
+            Producto? seleccionado = LstProductos.SelectedItems[0].Tag as Producto;
+            if (seleccionado == null) return;
+
+            BtnEliminar.Text = seleccionado.Activo ? "Deshabilitar" : "Habilitar";
         }
     }
 }

@@ -150,5 +150,16 @@ namespace RGTS.LogicaNegocio.Servicios
             return query.OrderByDescending(v => v.Fecha).ToList();
         }
 
+        public List<Producto> BuscarCoincidenciasProducto(string filtro, int maxResultados = 10)
+        {
+            if (string.IsNullOrWhiteSpace(filtro)) return new List<Producto>();
+            string normalizado = filtro.Trim().ToLower();
+
+            return _catalogoTemporal
+                .Where(p => p.Activo &&
+                    (p.Codigo.ToLower().Contains(normalizado) || p.Nombre.ToLower().Contains(normalizado)))
+                .Take(maxResultados)
+                .ToList();
+        }
     }
 }

@@ -57,8 +57,7 @@
             TxtBuscar.HideSelection = true;
             TxtBuscar.Hint = "Buscar por codigo o nombre";
             TxtBuscar.LeadingIcon = null;
-            TxtBuscar.Location = new Point(15, 51);
-            TxtBuscar.Margin = new Padding(3, 2, 3, 2);
+            TxtBuscar.Location = new Point(17, 68);
             TxtBuscar.MaxLength = 32767;
             TxtBuscar.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscar.Name = "TxtBuscar";
@@ -70,7 +69,7 @@
             TxtBuscar.SelectionLength = 0;
             TxtBuscar.SelectionStart = 0;
             TxtBuscar.ShortcutsEnabled = true;
-            TxtBuscar.Size = new Size(491, 48);
+            TxtBuscar.Size = new Size(561, 48);
             TxtBuscar.TabIndex = 0;
             TxtBuscar.TabStop = false;
             TxtBuscar.TextAlign = HorizontalAlignment.Left;
@@ -95,12 +94,11 @@
             CmbFiltroCat.Hint = "Categorias";
             CmbFiltroCat.IntegralHeight = false;
             CmbFiltroCat.ItemHeight = 43;
-            CmbFiltroCat.Location = new Point(512, 51);
-            CmbFiltroCat.Margin = new Padding(3, 2, 3, 2);
+            CmbFiltroCat.Location = new Point(585, 68);
             CmbFiltroCat.MaxDropDownItems = 4;
             CmbFiltroCat.MouseState = MaterialSkin.MouseState.OUT;
             CmbFiltroCat.Name = "CmbFiltroCat";
-            CmbFiltroCat.Size = new Size(301, 49);
+            CmbFiltroCat.Size = new Size(343, 49);
             CmbFiltroCat.StartIndex = 0;
             CmbFiltroCat.TabIndex = 1;
             CmbFiltroCat.SelectedIndexChanged += CmbFiltroCat_SelectedIndexChanged;
@@ -114,14 +112,13 @@
             LstProductos.Columns.AddRange(new ColumnHeader[] { Codigo, Nombre, Categoria, Precio, Existencias, Estado });
             LstProductos.Depth = 0;
             LstProductos.FullRowSelect = true;
-            LstProductos.Location = new Point(15, 104);
-            LstProductos.Margin = new Padding(3, 2, 3, 2);
-            LstProductos.MinimumSize = new Size(175, 75);
+            LstProductos.Location = new Point(17, 139);
+            LstProductos.MinimumSize = new Size(200, 100);
             LstProductos.MouseLocation = new Point(-1, -1);
             LstProductos.MouseState = MaterialSkin.MouseState.OUT;
             LstProductos.Name = "LstProductos";
             LstProductos.OwnerDraw = true;
-            LstProductos.Size = new Size(660, 220);
+            LstProductos.Size = new Size(754, 293);
             LstProductos.TabIndex = 3;
             LstProductos.UseCompatibleStateImageBehavior = false;
             LstProductos.View = View.Details;
@@ -165,8 +162,8 @@
             BtnNuevo.Depth = 0;
             BtnNuevo.HighEmphasis = true;
             BtnNuevo.Icon = null;
-            BtnNuevo.Location = new Point(24, 358);
-            BtnNuevo.Margin = new Padding(4);
+            BtnNuevo.Location = new Point(27, 489);
+            BtnNuevo.Margin = new Padding(5, 5, 5, 5);
             BtnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevo.Name = "BtnNuevo";
             BtnNuevo.NoAccentTextColor = Color.Empty;
@@ -186,8 +183,8 @@
             BtnEditar.Depth = 0;
             BtnEditar.HighEmphasis = true;
             BtnEditar.Icon = null;
-            BtnEditar.Location = new Point(182, 358);
-            BtnEditar.Margin = new Padding(4);
+            BtnEditar.Location = new Point(208, 489);
+            BtnEditar.Margin = new Padding(5, 5, 5, 5);
             BtnEditar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditar.Name = "BtnEditar";
             BtnEditar.NoAccentTextColor = Color.Empty;
@@ -208,14 +205,14 @@
             BtnEliminar.Depth = 0;
             BtnEliminar.HighEmphasis = true;
             BtnEliminar.Icon = null;
-            BtnEliminar.Location = new Point(691, 106);
-            BtnEliminar.Margin = new Padding(4);
+            BtnEliminar.Location = new Point(790, 141);
+            BtnEliminar.Margin = new Padding(5, 5, 5, 5);
             BtnEliminar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEliminar.Name = "BtnEliminar";
             BtnEliminar.NoAccentTextColor = Color.Empty;
-            BtnEliminar.Size = new Size(122, 36);
+            BtnEliminar.Size = new Size(139, 48);
             BtnEliminar.TabIndex = 6;
-            BtnEliminar.Text = "Deshabilitar";
+            BtnEliminar.Text = "estado";
             BtnEliminar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnEliminar.UseAccentColor = false;
             BtnEliminar.UseVisualStyleBackColor = true;
@@ -229,8 +226,8 @@
             BtnGestionarCat.Depth = 0;
             BtnGestionarCat.HighEmphasis = true;
             BtnGestionarCat.Icon = null;
-            BtnGestionarCat.Location = new Point(619, 358);
-            BtnGestionarCat.Margin = new Padding(4);
+            BtnGestionarCat.Location = new Point(735, 489);
+            BtnGestionarCat.Margin = new Padding(5, 5, 5, 5);
             BtnGestionarCat.MouseState = MaterialSkin.MouseState.HOVER;
             BtnGestionarCat.Name = "BtnGestionarCat";
             BtnGestionarCat.NoAccentTextColor = Color.Empty;
@@ -256,12 +253,12 @@
             panel1.Controls.Add(BtnEliminar);
             panel1.Depth = 0;
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(3, 3);
-            panel1.Margin = new Padding(12, 10, 12, 10);
+            panel1.Location = new Point(3, 4);
+            panel1.Margin = new Padding(14, 13, 14, 13);
             panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
-            panel1.Padding = new Padding(12, 10, 12, 10);
-            panel1.Size = new Size(829, 408);
+            panel1.Padding = new Padding(14, 13, 14, 13);
+            panel1.Size = new Size(947, 544);
             panel1.TabIndex = 8;
             // 
             // labelTitulo
@@ -270,7 +267,7 @@
             labelTitulo.Depth = 0;
             labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(15, 10);
+            labelTitulo.Location = new Point(17, 13);
             labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelTitulo.Name = "labelTitulo";
             labelTitulo.Size = new Size(231, 29);
@@ -279,14 +276,13 @@
             // 
             // FormProductos
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(836, 414);
+            ClientSize = new Size(955, 552);
             Controls.Add(panel1);
             FormStyle = FormStyles.StatusAndActionBar_None;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "FormProductos";
-            Padding = new Padding(3, 0, 3, 2);
+            Padding = new Padding(3, 0, 3, 3);
             Sizable = false;
             Text = "Gestion de Producto";
             Load += FormProductos_Load;

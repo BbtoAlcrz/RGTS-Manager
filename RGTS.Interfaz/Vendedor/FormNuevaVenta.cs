@@ -15,6 +15,13 @@ namespace RGTS.Interfaz.Vendedor
         private Cliente? _clienteSeleccionado;
         private readonly List<DetalleVenta> _carrito = new();
         private Producto? _productoSeleccionado;
+        private ListBox? _listaSugerencias;
+        private EventHandler? _listaClickHandler;
+        private KeyEventHandler? _listaKeyHandler;
+        private EventHandler? _listaLostFocusHandler;
+        private bool _evitarReentrada = false;
+        private Action<int>? _callbackSeleccionActual;
+
 
 
         // DNI de vendedor simulado (luego se pasa UsuarioSesion.Dni)
@@ -26,6 +33,8 @@ namespace RGTS.Interfaz.Vendedor
             _clienteServicio = new ClienteServicio();
             _ventaServicio = new VentaServicio();
             ConfigurarControles();
+            txtBuscarDniCliente.TextChanged += TxtBuscarDniCliente_TextChanged;
+            txtBuscarProducto.TextChanged += TxtBuscarProducto_TextChanged;
         }
 
         private void ConfigurarControles()
@@ -64,6 +73,131 @@ namespace RGTS.Interfaz.Vendedor
             labelApellidoValor.Text = "-";
         }
 
+        private void MostrarSugerencias(MaterialTextBox2 buscador, List<string> itemsCoincidentes, Action<int> alSeleccionarItem)
+        {
+            // Si no hay texto o no hay coincidencias en los servicios, ocultamos la lista inmediatamente
+            if (itemsCoincidentes == null || itemsCoincidentes.Count == 0 || string.IsNullOrWhiteSpace(buscador.Text))
+            {
+                OcultarSugerenciasFlotantes();
+                return;
+            }
+
+            // Actualizamos el callback vigente en CADA llamada, sin importar si el ListBox ya existía
+            _callbackSeleccionActual = alSeleccionarItem;
+
+            // Si todavía no se creó el contenedor de coincidencias, lo instanciamos y estilizamos
+            if (_listaSugerencias == null)
+            {
+                _listaSugerencias = new ListBox
+                {
+                    BorderStyle = BorderStyle.None,                // Sin bordes toscos de Windows antiguo
+                    Font = new Font("Roboto", 10F, FontStyle.Regular, GraphicsUnit.Point),
+                    BackColor = Color.FromArgb(242, 242, 242),   // Gris claro sutil integrado a MaterialSkin
+                    ForeColor = Color.FromArgb(33, 33, 33),       // Alta legibilidad para el texto
+                    SelectionMode = SelectionMode.One,
+                    IntegralHeight = false,
+                    TabStop = false
+                };
+
+                // Los handlers ahora leen SIEMPRE _callbackSeleccionActual, nunca un parámetro capturado
+                _listaClickHandler = (s, e) =>
+                {
+                    if (_listaSugerencias?.SelectedIndex >= 0)
+                    {
+                        _callbackSeleccionActual?.Invoke(_listaSugerencias.SelectedIndex);
+                        OcultarSugerenciasFlotantes();
+                    }
+                };
+
+                _listaKeyHandler = (s, ke) =>
+                {
+                    if (_listaSugerencias == null) return;
+                    if (ke.KeyCode == Keys.Down)
+                    {
+                        if (_listaSugerencias.SelectedIndex < _listaSugerencias.Items.Count - 1)
+                            _listaSugerencias.SelectedIndex++;
+                        ke.Handled = true;
+                    }
+                    else if (ke.KeyCode == Keys.Up)
+                    {
+                        if (_listaSugerencias.SelectedIndex > 0)
+                            _listaSugerencias.SelectedIndex--;
+                        ke.Handled = true;
+                    }
+                    else if (ke.KeyCode == Keys.Enter)
+                    {
+                        if (_listaSugerencias.SelectedIndex >= 0)
+                        {
+                            _callbackSeleccionActual?.Invoke(_listaSugerencias.SelectedIndex);
+                            OcultarSugerenciasFlotantes();
+                        }
+                        ke.Handled = true;
+                    }
+                    else if (ke.KeyCode == Keys.Escape)
+                    {
+                        OcultarSugerenciasFlotantes();
+                        ke.Handled = true;
+                    }
+                };
+
+                _listaLostFocusHandler = (s, e) =>
+                {
+                    OcultarSugerenciasFlotantes();
+                };
+            }
+
+
+            // Limpiamos los resultados de la búsqueda anterior e inyectamos las nuevas coincidencias
+            _listaSugerencias.Items.Clear();
+            _listaSugerencias.Items.AddRange(itemsCoincidentes.ToArray());
+
+            // Asegurar que la lista está en el mismo contenedor que el buscador
+            Control parent = buscador.Parent ?? this;
+            if (_listaSugerencias.Parent != parent)
+            {
+                _listaSugerencias.Parent?.Controls.Remove(_listaSugerencias);
+                parent.Controls.Add(_listaSugerencias);
+            }
+
+            // Posicionar correctamente transformando coordenadas
+            var screenPt = buscador.PointToScreen(Point.Empty);
+            var clientPt = parent.PointToClient(screenPt);
+            _listaSugerencias.Location = new Point(clientPt.X, clientPt.Y + buscador.Height);
+
+            // Configuración de altura dinámica: tope de 3 filas visibles con scroll automático de ser necesario
+            int altoFila = 26;
+            _listaSugerencias.Height = Math.Min(itemsCoincidentes.Count, 3) * altoFila + 2;
+            _listaSugerencias.Width = buscador.Width;
+
+            // Suscribir handlers (aseguramos no duplicar suscripciones)
+            try { if (_listaClickHandler != null) _listaSugerencias.Click -= _listaClickHandler; } catch { }
+            try { if (_listaKeyHandler != null) _listaSugerencias.KeyDown -= _listaKeyHandler; } catch { }
+            try { if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus -= _listaLostFocusHandler; } catch { }
+
+            if (_listaClickHandler != null) _listaSugerencias.Click += _listaClickHandler;
+            if (_listaKeyHandler != null) _listaSugerencias.KeyDown += _listaKeyHandler;
+            if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus += _listaLostFocusHandler;
+
+            // Forzamos que se dibuje por encima de cualquier otro control o panel del diseño
+            _listaSugerencias.BringToFront();
+            _listaSugerencias.Visible = true;
+        }
+
+        private void OcultarSugerenciasFlotantes()
+        {
+            if (_listaSugerencias != null)
+            {
+                try
+                {
+                    _listaSugerencias.Visible = false;
+                    _listaSugerencias.Items.Clear();
+                    if (_listaKeyHandler != null) _listaSugerencias.KeyDown -= _listaKeyHandler;
+                    if (_listaClickHandler != null) _listaSugerencias.Click -= _listaClickHandler;
+                    if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus -= _listaLostFocusHandler;
+                }
+                catch { }
+            }
+        }
 
         private void btnBuscarProducto_Click(object sender, EventArgs e)
         {
@@ -237,5 +371,58 @@ namespace RGTS.Interfaz.Vendedor
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
         }
 
+        // Muestra sugerencias de clientes activos que coincidan por DNI, nombre o apellido
+        private void TxtBuscarDniCliente_TextChanged(object? sender, EventArgs e)
+        {
+            if (_evitarReentrada) return;
+
+            string texto = txtBuscarDniCliente.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                OcultarSugerenciasFlotantes();
+                return;
+            }
+
+            var coincidencias = _clienteServicio.ObtenerTodos(texto).Where(c => c.Estado).ToList();
+            var textos = coincidencias.Select(c => $"{c.Nombre} {c.Apellido} - DNI {c.DNI}").ToList();
+
+            MostrarSugerencias(txtBuscarDniCliente, textos, indice =>
+            {
+                var seleccionado = coincidencias[indice];
+                _evitarReentrada = true;
+                txtBuscarDniCliente.Text = seleccionado.DNI;
+                _evitarReentrada = false;
+
+                // Reutiliza la lógica ya existente de carga de datos del cliente
+                BtnBuscarDniCliente_Click(this, EventArgs.Empty);
+            });
+        }
+
+        // Muestra sugerencias de productos activos que coincidan por código o nombre
+        private void TxtBuscarProducto_TextChanged(object? sender, EventArgs e)
+        {
+            if (_evitarReentrada) return;
+
+            string texto = txtBuscarProducto.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                OcultarSugerenciasFlotantes();
+                return;
+            }
+
+            var coincidencias = _ventaServicio.BuscarCoincidenciasProducto(texto);
+            var textos = coincidencias.Select(p => $"{p.Nombre} ({p.Codigo}) - {p.Precio:C2}").ToList();
+
+            MostrarSugerencias(txtBuscarProducto, textos, indice =>
+            {
+                var seleccionado = coincidencias[indice];
+                _evitarReentrada = true;
+                txtBuscarProducto.Text = seleccionado.Codigo;
+                _evitarReentrada = false;
+
+                // Reutiliza la lógica ya existente de carga de datos y stock del producto
+                btnBuscarProducto_Click(this, EventArgs.Empty);
+            });
+        }
     }
 }

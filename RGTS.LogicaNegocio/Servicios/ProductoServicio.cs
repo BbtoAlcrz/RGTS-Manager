@@ -95,6 +95,16 @@ namespace RGTS.LogicaNegocio.Servicios
             }
         }
 
+        // TEMPORAL: trabaja en memoria. Cambia el estado activo/inactivo del producto (toggle)
+        public void CambiarEstadoProducto(int idProducto, bool nuevoEstado)
+        {
+            var producto = _productos.FirstOrDefault(p => p.IdProducto == idProducto);
+            if (producto == null)
+                throw new ArgumentException("El producto no existe.");
+
+            producto.Activo = nuevoEstado;
+        }
+
         // Devuelve todos los productos con su categoría asociada
         public List<Producto> ListarProductos()
         {

@@ -8,6 +8,10 @@ namespace RGTS.LogicaNegocio.Validaciones
             @"^([A-Za-zÑñÁáÉéÍíÓóÚú]+[\s]*)+$", RegexOptions.Compiled
         );
 
+        public static readonly Regex NoSoloNumeros = new Regex(
+            @"^(?!\d+$).+$", RegexOptions.Compiled
+        );
+
         public static readonly Regex Dni = new Regex(
             @"^\d{7,8}$", RegexOptions.Compiled
         );

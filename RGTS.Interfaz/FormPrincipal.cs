@@ -169,7 +169,7 @@ namespace RGTS.Interfaz
 
         private void BotonModuloProductos_Click(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel<FormProductos>();
+            AbrirFormularioEnPanel<FormListadoProductos>();
         }
 
         private void BotonModuloClientes_Click(object sender, EventArgs e)

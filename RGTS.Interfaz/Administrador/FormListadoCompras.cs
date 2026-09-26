@@ -9,6 +9,8 @@ namespace RGTS.Interfaz.Administrador
 {
     public partial class FormListadoCompras : MaterialForm
     {
+        private readonly BuscadorSugerencias _buscadorProveedor;
+        private Proveedor? _proveedorFiltroSeleccionado; // null = sin filtro (todos)
         private readonly Panel pnlEdicionContenedor = new();
         // Proveedores hardcodeados (mismos que en FormNuevaCompra, para esta entrega)
         private readonly List<Proveedor> _proveedores = new List<Proveedor>
@@ -47,6 +49,35 @@ namespace RGTS.Interfaz.Administrador
             pnlEdicionContenedor.Visible = false;
             Controls.Add(pnlEdicionContenedor);
             pnlEdicionContenedor.BringToFront();
+
+            _buscadorProveedor = new BuscadorSugerencias(this);
+            TxtFiltroProveedor.TextChanged += TxtFiltroProveedor_TextChanged;
+        }
+
+        private void TxtFiltroProveedor_TextChanged(object? sender, EventArgs e)
+        {
+            string texto = TxtFiltroProveedor.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                _proveedorFiltroSeleccionado = null;
+                _buscadorProveedor.Ocultar();
+                CargarGrilla();
+                return;
+            }
+
+            var coincidencias = _proveedores
+                .Where(p => p.NombreComercial.Contains(texto, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var textos = coincidencias.Select(p => p.NombreComercial).ToList();
+
+            _buscadorProveedor.Mostrar(TxtFiltroProveedor, textos, indice =>
+            {
+                _proveedorFiltroSeleccionado = coincidencias[indice];
+                TxtFiltroProveedor.Text = coincidencias[indice].NombreComercial;
+                CargarGrilla();
+            });
         }
 
         private void CmbFiltroProvee_SelectedIndexChanged(object sender, EventArgs e)
@@ -67,21 +98,14 @@ namespace RGTS.Interfaz.Administrador
 
         private void FormListadoCompras_Load(object sender, EventArgs e)
         {
-            CargarComboProveedor();
+            
             // Asegura un rango por defecto que incluya las compras precargadas
             DtpHasta.Value = DateTime.Today;
             DtpDesde.Value = DateTime.Today.AddDays(-30);
             CargarGrilla();
         }
 
-        private void CargarComboProveedor()
-        {
-            CmbFiltroProvee.Items.Clear();
-            CmbFiltroProvee.Items.Add("Todos los proveedores");
-            foreach (var prov in _proveedores)
-                CmbFiltroProvee.Items.Add(prov.NombreComercial);
-            CmbFiltroProvee.SelectedIndex = 0;
-        }
+        
 
         // Carga la grilla aplicando los filtros de fecha y proveedor actuales
         private void CargarGrilla()
@@ -91,10 +115,8 @@ namespace RGTS.Interfaz.Administrador
             var filtradas = _compras.Where(c =>
                 c.Fecha.Date >= DtpDesde.Value.Date &&
                 c.Fecha.Date <= DtpHasta.Value.Date &&
-                (CmbFiltroProvee.SelectedIndex <= 0 ||
-                 c.NombreProveedor == _proveedores[CmbFiltroProvee.SelectedIndex - 1].NombreComercial)
+                (_proveedorFiltroSeleccionado == null || c.NombreProveedor == _proveedorFiltroSeleccionado.NombreComercial)
             );
-
             foreach (var compra in filtradas)
             {
                 var row = new ListViewItem(compra.IdCompra.ToString());
@@ -153,9 +175,9 @@ namespace RGTS.Interfaz.Administrador
             Compra? seleccionada = ObtenerCompraSeleccionada();
             if (seleccionada == null) return;
 
-            if (seleccionada.Estado == "Cancelada")
+            if (seleccionada.Estado != "Pendiente")
             {
-                MessageBox.Show("No se puede marcar como recibida una compra cancelada.",
+                MessageBox.Show($"Solo se pueden marcar como recibidas las compras en estado Pendiente. Esta compra está {seleccionada.Estado}.",
                     "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -172,9 +194,9 @@ namespace RGTS.Interfaz.Administrador
             Compra? seleccionada = ObtenerCompraSeleccionada();
             if (seleccionada == null) return;
 
-            if (seleccionada.Estado == "Recibida")
+            if (seleccionada.Estado != "Pendiente")
             {
-                MessageBox.Show("No se puede cancelar una compra que ya fue recibida.",
+                MessageBox.Show($"Solo se pueden cancelar las compras en estado Pendiente. Esta compra está {seleccionada.Estado}.",
                     "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -196,7 +218,8 @@ namespace RGTS.Interfaz.Administrador
         {
             DtpDesde.Value = DateTime.Today.AddMonths(-1);
             DtpHasta.Value = DateTime.Today;
-            CmbFiltroProvee.SelectedIndex = 0;
+            TxtFiltroProveedor.Clear();
+            _proveedorFiltroSeleccionado = null;
             CargarGrilla();
         }
 

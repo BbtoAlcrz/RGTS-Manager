@@ -29,24 +29,24 @@
         private void InitializeComponent()
         {
             panel2 = new MaterialSkin.Controls.MaterialCard();
+            TxtFiltroProveedor = new MaterialSkin.Controls.MaterialTextBox();
+            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
+            labelHasta = new MaterialSkin.Controls.MaterialLabel();
+            labelDesde = new MaterialSkin.Controls.MaterialLabel();
             BtnCancelarC = new MaterialSkin.Controls.MaterialButton();
             DtpDesde = new DateTimePicker();
             DtpHasta = new DateTimePicker();
-            CmbFiltroProvee = new MaterialSkin.Controls.MaterialComboBox();
             BtnRecibido = new MaterialSkin.Controls.MaterialButton();
             btnLimpiar = new MaterialSkin.Controls.MaterialButton();
             BtnDetalleComp = new MaterialSkin.Controls.MaterialButton();
             BtnNuevaCompra = new MaterialSkin.Controls.MaterialButton();
             lstClientes = new MaterialSkin.Controls.MaterialListView();
             ID = new ColumnHeader();
-            Estado = new ColumnHeader();
             Proveedor = new ColumnHeader();
             Usuario = new ColumnHeader();
             Fecha = new ColumnHeader();
             Total = new ColumnHeader();
-            labelDesde = new MaterialSkin.Controls.MaterialLabel();
-            labelHasta = new MaterialSkin.Controls.MaterialLabel();
-            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
+            Estado = new ColumnHeader();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
@@ -54,13 +54,13 @@
             // 
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.FromArgb(255, 255, 255);
+            panel2.Controls.Add(TxtFiltroProveedor);
             panel2.Controls.Add(labelTitulo);
             panel2.Controls.Add(labelHasta);
             panel2.Controls.Add(labelDesde);
             panel2.Controls.Add(BtnCancelarC);
             panel2.Controls.Add(DtpDesde);
             panel2.Controls.Add(DtpHasta);
-            panel2.Controls.Add(CmbFiltroProvee);
             panel2.Controls.Add(BtnRecibido);
             panel2.Controls.Add(btnLimpiar);
             panel2.Controls.Add(BtnDetalleComp);
@@ -68,13 +68,70 @@
             panel2.Controls.Add(lstClientes);
             panel2.Depth = 0;
             panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel2.Location = new Point(4, 4);
-            panel2.Margin = new Padding(12, 10, 12, 10);
+            panel2.Location = new Point(5, 5);
+            panel2.Margin = new Padding(14, 13, 14, 13);
             panel2.MouseState = MaterialSkin.MouseState.HOVER;
             panel2.Name = "panel2";
-            panel2.Padding = new Padding(12, 10, 12, 10);
-            panel2.Size = new Size(810, 519);
+            panel2.Padding = new Padding(14, 13, 14, 13);
+            panel2.Size = new Size(926, 692);
             panel2.TabIndex = 3;
+            // 
+            // TxtFiltroProveedor
+            // 
+            TxtFiltroProveedor.AnimateReadOnly = false;
+            TxtFiltroProveedor.BorderStyle = BorderStyle.None;
+            TxtFiltroProveedor.Depth = 0;
+            TxtFiltroProveedor.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            TxtFiltroProveedor.Hint = "Proveedor";
+            TxtFiltroProveedor.LeadingIcon = null;
+            TxtFiltroProveedor.Location = new Point(28, 87);
+            TxtFiltroProveedor.MaxLength = 50;
+            TxtFiltroProveedor.MouseState = MaterialSkin.MouseState.OUT;
+            TxtFiltroProveedor.Multiline = false;
+            TxtFiltroProveedor.Name = "TxtFiltroProveedor";
+            TxtFiltroProveedor.Size = new Size(564, 50);
+            TxtFiltroProveedor.TabIndex = 28;
+            TxtFiltroProveedor.Text = "";
+            TxtFiltroProveedor.TrailingIcon = null;
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.AutoSize = true;
+            labelTitulo.Depth = 0;
+            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            labelTitulo.Location = new Point(17, 27);
+            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(217, 29);
+            labelTitulo.TabIndex = 27;
+            labelTitulo.Text = "Listado de Compras";
+            // 
+            // labelHasta
+            // 
+            labelHasta.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelHasta.AutoSize = true;
+            labelHasta.Depth = 0;
+            labelHasta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelHasta.Location = new Point(757, 89);
+            labelHasta.MouseState = MaterialSkin.MouseState.HOVER;
+            labelHasta.Name = "labelHasta";
+            labelHasta.Size = new Size(47, 19);
+            labelHasta.TabIndex = 26;
+            labelHasta.Text = "Hasta:";
+            // 
+            // labelDesde
+            // 
+            labelDesde.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            labelDesde.AutoSize = true;
+            labelDesde.Depth = 0;
+            labelDesde.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelDesde.Location = new Point(598, 89);
+            labelDesde.MouseState = MaterialSkin.MouseState.HOVER;
+            labelDesde.Name = "labelDesde";
+            labelDesde.Size = new Size(49, 19);
+            labelDesde.TabIndex = 25;
+            labelDesde.Text = "Desde:";
             // 
             // BtnCancelarC
             // 
@@ -86,12 +143,12 @@
             BtnCancelarC.ForeColor = Color.Firebrick;
             BtnCancelarC.HighEmphasis = true;
             BtnCancelarC.Icon = null;
-            BtnCancelarC.Location = new Point(159, 296);
-            BtnCancelarC.Margin = new Padding(4, 4, 4, 4);
+            BtnCancelarC.Location = new Point(182, 395);
+            BtnCancelarC.Margin = new Padding(5);
             BtnCancelarC.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelarC.Name = "BtnCancelarC";
             BtnCancelarC.NoAccentTextColor = Color.Empty;
-            BtnCancelarC.Size = new Size(132, 35);
+            BtnCancelarC.Size = new Size(151, 47);
             BtnCancelarC.TabIndex = 24;
             BtnCancelarC.Text = "Cancelar Compra";
             BtnCancelarC.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -104,10 +161,9 @@
             DtpDesde.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             DtpDesde.CustomFormat = "dd/MM/yyyy";
             DtpDesde.Format = DateTimePickerFormat.Custom;
-            DtpDesde.Location = new Point(523, 88);
-            DtpDesde.Margin = new Padding(3, 2, 3, 2);
+            DtpDesde.Location = new Point(598, 117);
             DtpDesde.Name = "DtpDesde";
-            DtpDesde.Size = new Size(133, 23);
+            DtpDesde.Size = new Size(151, 27);
             DtpDesde.TabIndex = 23;
             DtpDesde.ValueChanged += DtpDesde_ValueChanged;
             // 
@@ -116,38 +172,11 @@
             DtpHasta.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             DtpHasta.CustomFormat = "dd/MM/yyyy";
             DtpHasta.Format = DateTimePickerFormat.Custom;
-            DtpHasta.Location = new Point(662, 88);
-            DtpHasta.Margin = new Padding(3, 2, 3, 2);
+            DtpHasta.Location = new Point(757, 117);
             DtpHasta.Name = "DtpHasta";
-            DtpHasta.Size = new Size(133, 23);
+            DtpHasta.Size = new Size(151, 27);
             DtpHasta.TabIndex = 22;
             DtpHasta.ValueChanged += DtpHasta_ValueChanged;
-            // 
-            // CmbFiltroProvee
-            // 
-            CmbFiltroProvee.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            CmbFiltroProvee.AutoResize = false;
-            CmbFiltroProvee.BackColor = Color.FromArgb(255, 255, 255);
-            CmbFiltroProvee.Depth = 0;
-            CmbFiltroProvee.DrawMode = DrawMode.OwnerDrawVariable;
-            CmbFiltroProvee.DropDownHeight = 174;
-            CmbFiltroProvee.DropDownStyle = ComboBoxStyle.DropDownList;
-            CmbFiltroProvee.DropDownWidth = 121;
-            CmbFiltroProvee.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            CmbFiltroProvee.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            CmbFiltroProvee.FormattingEnabled = true;
-            CmbFiltroProvee.Hint = "Proveedor";
-            CmbFiltroProvee.IntegralHeight = false;
-            CmbFiltroProvee.ItemHeight = 43;
-            CmbFiltroProvee.Location = new Point(15, 62);
-            CmbFiltroProvee.Margin = new Padding(3, 2, 3, 2);
-            CmbFiltroProvee.MaxDropDownItems = 4;
-            CmbFiltroProvee.MouseState = MaterialSkin.MouseState.OUT;
-            CmbFiltroProvee.Name = "CmbFiltroProvee";
-            CmbFiltroProvee.Size = new Size(502, 49);
-            CmbFiltroProvee.StartIndex = 0;
-            CmbFiltroProvee.TabIndex = 21;
-            CmbFiltroProvee.SelectedIndexChanged += CmbFiltroProvee_SelectedIndexChanged;
             // 
             // BtnRecibido
             // 
@@ -159,12 +188,12 @@
             BtnRecibido.ForeColor = Color.Firebrick;
             BtnRecibido.HighEmphasis = true;
             BtnRecibido.Icon = null;
-            BtnRecibido.Location = new Point(15, 296);
-            BtnRecibido.Margin = new Padding(4, 4, 4, 4);
+            BtnRecibido.Location = new Point(17, 395);
+            BtnRecibido.Margin = new Padding(5);
             BtnRecibido.MouseState = MaterialSkin.MouseState.HOVER;
             BtnRecibido.Name = "BtnRecibido";
             BtnRecibido.NoAccentTextColor = Color.Empty;
-            BtnRecibido.Size = new Size(132, 35);
+            BtnRecibido.Size = new Size(151, 47);
             BtnRecibido.TabIndex = 20;
             BtnRecibido.Text = "Compra Recibida";
             BtnRecibido.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -183,12 +212,12 @@
             btnLimpiar.ForeColor = Color.Firebrick;
             btnLimpiar.HighEmphasis = true;
             btnLimpiar.Icon = null;
-            btnLimpiar.Location = new Point(698, 296);
-            btnLimpiar.Margin = new Padding(4, 4, 4, 4);
+            btnLimpiar.Location = new Point(798, 395);
+            btnLimpiar.Margin = new Padding(5);
             btnLimpiar.MouseState = MaterialSkin.MouseState.HOVER;
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.NoAccentTextColor = Color.Empty;
-            btnLimpiar.Size = new Size(97, 35);
+            btnLimpiar.Size = new Size(111, 47);
             btnLimpiar.TabIndex = 14;
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -204,8 +233,8 @@
             BtnDetalleComp.Depth = 0;
             BtnDetalleComp.HighEmphasis = true;
             BtnDetalleComp.Icon = null;
-            BtnDetalleComp.Location = new Point(159, 465);
-            BtnDetalleComp.Margin = new Padding(4, 4, 4, 4);
+            BtnDetalleComp.Location = new Point(182, 632);
+            BtnDetalleComp.Margin = new Padding(5);
             BtnDetalleComp.MouseState = MaterialSkin.MouseState.HOVER;
             BtnDetalleComp.Name = "BtnDetalleComp";
             BtnDetalleComp.NoAccentTextColor = Color.Empty;
@@ -225,8 +254,8 @@
             BtnNuevaCompra.Depth = 0;
             BtnNuevaCompra.HighEmphasis = true;
             BtnNuevaCompra.Icon = null;
-            BtnNuevaCompra.Location = new Point(17, 465);
-            BtnNuevaCompra.Margin = new Padding(4, 4, 4, 4);
+            BtnNuevaCompra.Location = new Point(19, 632);
+            BtnNuevaCompra.Margin = new Padding(5);
             BtnNuevaCompra.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevaCompra.Name = "BtnNuevaCompra";
             BtnNuevaCompra.NoAccentTextColor = Color.Empty;
@@ -244,18 +273,16 @@
             lstClientes.AutoSizeTable = false;
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
-            // Column order: ID, Proveedor, Usuario, Fecha, Total, Estado
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, Proveedor, Usuario, Fecha, Total, Estado });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
-            lstClientes.Location = new Point(15, 115);
-            lstClientes.Margin = new Padding(3, 2, 3, 2);
-            lstClientes.MinimumSize = new Size(175, 75);
+            lstClientes.Location = new Point(17, 153);
+            lstClientes.MinimumSize = new Size(200, 100);
             lstClientes.MouseLocation = new Point(-1, -1);
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(780, 175);
+            lstClientes.Size = new Size(891, 233);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
@@ -264,11 +291,6 @@
             // 
             ID.Text = "ID";
             ID.Width = 50;
-            // 
-            // Estado
-            // 
-            Estado.Text = "Estado";
-            Estado.Width = 100;
             // 
             // Proveedor
             // 
@@ -290,55 +312,20 @@
             Total.Text = "Total";
             Total.Width = 100;
             // 
-            // labelDesde
+            // Estado
             // 
-            labelDesde.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelDesde.AutoSize = true;
-            labelDesde.Depth = 0;
-            labelDesde.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelDesde.Location = new Point(523, 67);
-            labelDesde.MouseState = MaterialSkin.MouseState.HOVER;
-            labelDesde.Name = "labelDesde";
-            labelDesde.Size = new Size(49, 19);
-            labelDesde.TabIndex = 25;
-            labelDesde.Text = "Desde:";
-            // 
-            // labelHasta
-            // 
-            labelHasta.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelHasta.AutoSize = true;
-            labelHasta.Depth = 0;
-            labelHasta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelHasta.Location = new Point(662, 67);
-            labelHasta.MouseState = MaterialSkin.MouseState.HOVER;
-            labelHasta.Name = "labelHasta";
-            labelHasta.Size = new Size(47, 19);
-            labelHasta.TabIndex = 26;
-            labelHasta.Text = "Hasta:";
-            // 
-            // labelTitulo
-            // 
-            labelTitulo.AutoSize = true;
-            labelTitulo.Depth = 0;
-            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(15, 20);
-            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTitulo.Name = "labelTitulo";
-            labelTitulo.Size = new Size(217, 29);
-            labelTitulo.TabIndex = 27;
-            labelTitulo.Text = "Listado de Compras";
+            Estado.Text = "Estado";
+            Estado.Width = 100;
             // 
             // FormListadoCompras
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(817, 528);
+            ClientSize = new Size(934, 704);
             Controls.Add(panel2);
             FormStyle = FormStyles.StatusAndActionBar_None;
-            Margin = new Padding(3, 2, 3, 2);
             Name = "FormListadoCompras";
-            Padding = new Padding(3, 0, 3, 2);
+            Padding = new Padding(3, 0, 3, 3);
             Sizable = false;
             Text = "Listado de las Compras";
             Load += FormListadoCompras_Load;
@@ -363,10 +350,10 @@
         private ColumnHeader Total;
         private DateTimePicker DtpDesde;
         private DateTimePicker DtpHasta;
-        private MaterialSkin.Controls.MaterialComboBox CmbFiltroProvee;
         private MaterialSkin.Controls.MaterialButton BtnCancelarC;
         private MaterialSkin.Controls.MaterialLabel labelHasta;
         private MaterialSkin.Controls.MaterialLabel labelDesde;
         private MaterialSkin.Controls.MaterialLabel labelTitulo;
+        private MaterialSkin.Controls.MaterialTextBox TxtFiltroProveedor;
     }
 }

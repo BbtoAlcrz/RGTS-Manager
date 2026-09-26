@@ -11,6 +11,9 @@ namespace RGTS.Interfaz.Administrador
     public partial class FormNuevaCompra : MaterialForm
     {
         private readonly CompraServicio _compraServicio;
+        private readonly BuscadorSugerencias _buscadorProveedor;
+        private readonly BuscadorSugerencias _buscadorProducto;
+        private Proveedor? _proveedorSeleccionado;
 
         private readonly List<Proveedor> _proveedores = new List<Proveedor>
         {
@@ -35,40 +38,88 @@ namespace RGTS.Interfaz.Administrador
             Sizable = false;
             FormStyle = FormStyles.StatusAndActionBar_None;
             _compraServicio = new CompraServicio();
+
+            _buscadorProveedor = new BuscadorSugerencias(this);
+            _buscadorProducto = new BuscadorSugerencias(this);
+
+            TxtBuscarProveedor.TextChanged += TxtBuscarProveedor_TextChanged;
+            TxtBuscarCoN.TextChanged += TxtBuscarCoN_TextChanged;
         }
 
         private void FormNuevaCompra_Load(object sender, EventArgs e)
         {
-            CargarComboProveedor();
+
+            //  el proveedor se elige escribiendo en TxtBuscarProveedor con autocompletado
         }
 
-        private void CargarComboProveedor()
+        private void TxtBuscarProveedor_TextChanged(object? sender, EventArgs e)
         {
-            CmbFiltroProvee.Items.Clear();
-            foreach (var prov in _proveedores)
-                CmbFiltroProvee.Items.Add(prov.NombreComercial);
+            string texto = TxtBuscarProveedor.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                _proveedorSeleccionado = null;
+                _buscadorProveedor.Ocultar();
+                return;
+            }
+
+            var coincidencias = _proveedores
+                .Where(p => p.NombreComercial.Contains(texto, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var textos = coincidencias.Select(p => p.NombreComercial).ToList();
+
+            _buscadorProveedor.Mostrar(TxtBuscarProveedor, textos, indice =>
+            {
+                _proveedorSeleccionado = coincidencias[indice];
+                TxtBuscarProveedor.Text = coincidencias[indice].NombreComercial;
+            });
+        }
+
+        // Muestra sugerencias de producto mientras se escribe (sin filtrar por proveedor todavía:
+        // esa relación no existe en el modelo actual de Proveedor/Producto)
+        private void TxtBuscarCoN_TextChanged(object? sender, EventArgs e)
+        {
+            string texto = TxtBuscarCoN.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                _buscadorProducto.Ocultar();
+                return;
+            }
+
+            var coincidencias = _productos
+                .Where(p => p.Codigo.Contains(texto, StringComparison.OrdinalIgnoreCase)
+                         || p.Nombre.Contains(texto, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            var textos = coincidencias.Select(p => $"{p.Nombre} ({p.Codigo})").ToList();
+
+            _buscadorProducto.Mostrar(TxtBuscarCoN, textos, indice =>
+            {
+                TxtBuscarCoN.Text = coincidencias[indice].Codigo;
+            });
         }
 
         private void BtnRecibido_Click(object sender, EventArgs e)
         {
             try
             {
-                string busqueda = TxtBuscarCoN.Text.Trim();
+                if (_proveedorSeleccionado == null)
+                    throw new ArgumentException("Debe seleccionar un proveedor.");
 
-                // Parseo previo: si no son numéricos, quedan en 0 para que la validación los rechace con mensaje claro
+                string busqueda = TxtBuscarCoN.Text.Trim();
                 decimal.TryParse(TxtCostoUni.Text.Trim(), out decimal costoUnitario);
                 int.TryParse(TxtCantidad.Text.Trim(), out int cantidad);
 
                 Producto? producto = _productos.FirstOrDefault(p =>
-                    p.Codigo.Equals(busqueda, StringComparison.OrdinalIgnoreCase) ||
-                    p.Nombre.Contains(busqueda, StringComparison.OrdinalIgnoreCase));
+                  p.Codigo.Equals(busqueda, StringComparison.OrdinalIgnoreCase) ||
+                  p.Nombre.Contains(busqueda, StringComparison.OrdinalIgnoreCase));
 
                 if (producto == null)
                     throw new ArgumentException("No se encontró ningún producto con ese código o nombre.");
 
                 // El servicio valida y arma el ítem
                 var nuevoItem = _compraServicio.ValidarYArmarItem(
-                    CmbFiltroProvee.SelectedIndex, producto, busqueda, costoUnitario, cantidad, _correlativoDetalle);
+                    _proveedorSeleccionado.IdProveedor, producto, busqueda, costoUnitario, cantidad, _correlativoDetalle);
 
                 // Evita duplicar el mismo producto en el detalle; si ya está, acumula la cantidad
                 var existente = _detalle.FirstOrDefault(d => d.IdProducto == producto.IdProducto);
@@ -123,8 +174,10 @@ namespace RGTS.Interfaz.Administrador
         {
             try
             {
-                // El servicio valida que la compra esté lista para registrarse
-                _compraServicio.ValidarRegistro(CmbFiltroProvee.SelectedIndex, _detalle.Count);
+                if (_proveedorSeleccionado == null)
+                    throw new ArgumentException("Debe seleccionar un proveedor.");
+
+                _compraServicio.ValidarRegistro(_proveedorSeleccionado.IdProveedor, _detalle.Count);
 
                 MessageBox.Show("Orden de compra registrada correctamente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

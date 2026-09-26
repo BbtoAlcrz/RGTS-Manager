@@ -91,7 +91,6 @@ namespace RGTS.Interfaz.Administrador
             // materialCard1
             // 
             materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            materialCard1.AutoSize = true;
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
             materialCard1.Controls.Add(ListaUsuarios);
             materialCard1.Depth = 0;

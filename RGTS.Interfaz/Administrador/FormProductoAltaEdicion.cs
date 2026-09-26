@@ -13,22 +13,19 @@ namespace RGTS.Interfaz
         private readonly List<Categoria> _categorias;
         private readonly Producto? _productoEditar;
 
-        // si productoEditar es null => modo alta, si tiene datos => modo edición
         public FormProductoAltaEdicion(List<Categoria> categorias, Producto? productoEditar = null)
         {
             InitializeComponent();
-            Sizable = false;
-            FormStyle = FormStyles.StatusAndActionBar_None;
             _productoServicio = new ProductoServicio();
             _categorias = categorias;
             _productoEditar = productoEditar;
             ConfigurarModo();
         }
 
+        // si productoEditar es null => modo alta, si tiene datos => modo edición
         private void ConfigurarModo()
         {
             Text = _productoEditar == null ? "Agregar Producto" : "Editar Producto";
-            labelTitulo.Text = Text.ToUpperInvariant();
         }
 
         private void FormProductoAltaEdicion_Load(object sender, EventArgs e)
@@ -55,10 +52,6 @@ namespace RGTS.Interfaz
                         break;
                     }
                 }
-            }
-            else
-            {
-                // Modo alta: formulario vacío
             }
         }
 

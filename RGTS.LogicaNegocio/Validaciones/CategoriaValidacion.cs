@@ -18,6 +18,9 @@ namespace RGTS.LogicaNegocio.Validaciones
             // (opcional, pero con límite si se ingresa)
             if (!string.IsNullOrWhiteSpace(descripcion) && descripcion.Trim().Length > 200)
                 throw new ArgumentException("La descripción no puede superar los 200 caracteres.");
+
+            if (!RegexValidaciones.NoSoloNumeros.IsMatch(descripcion))
+                throw new ArgumentException("La descripción de la categoría no puede ser solo numérico");
         }
     }
 }

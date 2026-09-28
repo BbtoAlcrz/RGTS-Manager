@@ -11,21 +11,16 @@ namespace RGTS.Interfaz
     public partial class FormListadoProductos : MaterialForm
     {
         private readonly ProductoServicio _productoServicio;
-        private readonly Panel pnlEdicionContenedor = new();
+        private readonly CategoriaServicio _categoriaServicio;
+        private List<Categoria> _categorias = new();
 
-        // MOVER A CATEGORIAS SERVICIO
-        private readonly List<Categoria> _categorias = new List<Categoria>
-        {
-            new Categoria { IdCategoria = 1, NombreCategoria = "Consolas" },
-            new Categoria { IdCategoria = 2, NombreCategoria = "Mandos" },
-            new Categoria { IdCategoria = 3, NombreCategoria = "Portátiles" },
-            new Categoria { IdCategoria = 4, NombreCategoria = "Accesorios" }
-        };
+        private readonly Panel pnlEdicionContenedor = new();
 
         public FormListadoProductos()
         {
             InitializeComponent();
             _productoServicio = new ProductoServicio();
+            _categoriaServicio = new CategoriaServicio();
 
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
@@ -53,6 +48,8 @@ namespace RGTS.Interfaz
         private void CargarComboCategoria()
         {
             CmbFiltroCat.SelectedIndexChanged -= CmbFiltroCat_SelectedIndexChanged;
+
+            _categorias = _categoriaServicio.ObtenerTodas();
 
             CmbFiltroCat.Items.Clear();
             CmbFiltroCat.Items.Add("Todas las categorías");
@@ -141,6 +138,7 @@ namespace RGTS.Interfaz
             {
                 pnlEdicionContenedor.Visible = false;
                 pnlEdicionContenedor.Controls.Clear();
+                CargarComboCategoria(); // Actualiza por si se agregaron o modificaron categorías
                 RefrescarGrilla();
             };
             pnlEdicionContenedor.Controls.Add(subFormulario);
@@ -152,7 +150,7 @@ namespace RGTS.Interfaz
         // Abre el formulario de alta de producto
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormAltaEdicionProducto(_categorias));
+            MostrarSubVentana(new FormAltaEdicionProducto());
         }
 
         // Abre el formulario de edición con los datos del producto seleccionado
@@ -161,7 +159,7 @@ namespace RGTS.Interfaz
             if (LstProductos.SelectedItems.Count == 0) return;
 
             var producto = (Producto)LstProductos.SelectedItems[0].Tag;
-            MostrarSubVentana(new FormAltaEdicionProducto(_categorias, producto));
+            MostrarSubVentana(new FormAltaEdicionProducto(producto));
         }
 
         // Alterna el estado del producto seleccionado: Habilitar si está inactivo, Deshabilitar si está activo
@@ -229,7 +227,5 @@ namespace RGTS.Interfaz
                 BtnEliminar.Text = "Deshabilitar";
             }
         }
-
-        
     }
 }

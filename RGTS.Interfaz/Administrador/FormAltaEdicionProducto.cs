@@ -10,14 +10,16 @@ namespace RGTS.Interfaz
     public partial class FormAltaEdicionProducto : MaterialForm
     {
         private readonly ProductoServicio _productoServicio;
+        private readonly CategoriaServicio _categoriaServicio;
         private readonly List<Categoria> _categorias;
         private readonly Producto? _productoEditar;
 
-        public FormAltaEdicionProducto(List<Categoria> categorias, Producto? productoEditar = null)
+        public FormAltaEdicionProducto(Producto? productoEditar = null)
         {
             InitializeComponent();
             _productoServicio = new ProductoServicio();
-            _categorias = categorias;
+            _categoriaServicio = new CategoriaServicio();
+            _categorias = _categoriaServicio.ObtenerTodas(soloActivas: true);
             _productoEditar = productoEditar;
             ConfigurarModo();
         }
@@ -25,7 +27,7 @@ namespace RGTS.Interfaz
         // si productoEditar es null => modo alta, si tiene datos => modo edición
         private void ConfigurarModo()
         {
-            Text = _productoEditar == null ? "Agregar Producto" : "Editar Producto";
+            labelTitulo.Text = _productoEditar == null ? "Agregar Producto" : "Editar Producto";
         }
 
         private void FormProductoAltaEdicion_Load(object sender, EventArgs e)

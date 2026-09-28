@@ -39,28 +39,30 @@ namespace RGTS.Interfaz.Administrador
         {
             try
             {
-                int id = _categoriaEditar?.IdCategoria ?? 0;
-
-                // Valida y arma la entidad a través del servicio
-                Categoria categoria = _categoriaServicio.ValidarYArmarCategoria(id, txtNombre.Text, MltDescripcion.Text);
-
                 if (_categoriaEditar == null)
-                    MessageBox.Show("Categoría registrada correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    _categoriaServicio.RegistrarCategoria(txtNombre.Text, MltDescripcion.Text);
+                    MessageBox.Show("Categoría registrada correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 else
-                    MessageBox.Show("Categoría modificada correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                {
+                    _categoriaServicio.ModificarCategoria(_categoriaEditar.IdCategoria, txtNombre.Text, MltDescripcion.Text);
+                    MessageBox.Show("Categoría modificada correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
-                this.Close();
+                this.Close(); // Dispara FormClosed en el listado y refresca automáticamente
             }
             catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Datos Inválidos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (InvalidOperationException ex)
             {
                 MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

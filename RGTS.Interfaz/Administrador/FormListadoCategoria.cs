@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
 {
     public partial class FormListadoCategoria : MaterialForm
     {
+        private readonly CategoriaServicio _categoriaServicio;
         private readonly Panel pnlEdicionContenedor = new();
-
-        // Lista hardcodeada para esta entrega
-        private List<Categoria> _categorias = new List<Categoria>
-        {
-            new Categoria { IdCategoria = 1, NombreCategoria = "Consolas",  Descripcion = "Consolas de videojuegos", Activo = true },
-            new Categoria { IdCategoria = 2, NombreCategoria = "Mandos",    Descripcion = "Mandos y controles", Activo = true },
-            new Categoria { IdCategoria = 3, NombreCategoria = "Portátiles", Descripcion = "Consolas portátiles", Activo = true },
-            new Categoria { IdCategoria = 4, NombreCategoria = "Accesorios", Descripcion = "Accesorios varios", Activo = true }
-        };
 
         public FormListadoCategoria()
         {
             InitializeComponent();
+            _categoriaServicio = new CategoriaServicio();
+
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
             Controls.Add(pnlEdicionContenedor);
@@ -34,29 +28,42 @@ namespace RGTS.Interfaz.Administrador
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ConfigurarListView();
             CargarGrilla();
         }
 
-        // Carga la grilla, opcionalmente filtrada por nombre
+        private void ConfigurarListView()
+        {
+            lstClientes.View = View.Details;
+            lstClientes.FullRowSelect = true;
+            lstClientes.MultiSelect = false;
+            lstClientes.GridLines = true;
+        }
+
+        // Carga la grilla delegando la obtención y el filtro en CategoriaServicio
         private void CargarGrilla(string filtroNombre = "")
         {
+            lstClientes.BeginUpdate();
             lstClientes.Items.Clear();
 
-            var filtradas = string.IsNullOrWhiteSpace(filtroNombre)
-                ? _categorias
-                : _categorias.Where(c => c.NombreCategoria.Contains(filtroNombre, StringComparison.OrdinalIgnoreCase)).ToList();
+            // Bloquear botones dependientes de fila hasta que haya selección
+            BtnEditar.Enabled = false;
+            BtnCambiarEstado.Enabled = false;
+            BtnCambiarEstado.Text = "Deshabilitar";
 
-            foreach (var cat in filtradas)
+            List<Categoria> categorias = _categoriaServicio.ObtenerTodas(filtroNombre);
+
+            foreach (var cat in categorias)
             {
                 var item = new ListViewItem(cat.IdCategoria.ToString());
                 item.SubItems.Add(cat.NombreCategoria);
                 item.SubItems.Add(cat.Descripcion);
-                item.SubItems.Add(cat.Activo ? "Activo" : "Inactivo");
+                item.SubItems.Add(cat.Activo ? "Habilitado" : "Deshabilitado");
                 item.Tag = cat;
                 lstClientes.Items.Add(item);
             }
 
-            BtnCambiarEstado.Text = "Estado";
+            lstClientes.EndUpdate();
         }
 
         // Filtra la grilla mientras se escribe
@@ -65,19 +72,23 @@ namespace RGTS.Interfaz.Administrador
             CargarGrilla(TxtBuscarNombre.Text.Trim());
         }
 
-        // Actualiza el texto del botón según el estado de la categoría seleccionada
+        // Habilita botones y actualiza el texto según el estado de la selección
         private void LstClientes_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (lstClientes.SelectedItems.Count == 0)
+            if (lstClientes.SelectedItems.Count > 0)
             {
-                BtnCambiarEstado.Text = "Estado";
-                return;
+                var seleccionada = (Categoria)lstClientes.SelectedItems[0].Tag;
+
+                BtnEditar.Enabled = true;
+                BtnCambiarEstado.Enabled = true;
+                BtnCambiarEstado.Text = seleccionada.Activo ? "Deshabilitar" : "Habilitar";
             }
-
-            var seleccionada = lstClientes.SelectedItems[0].Tag as Categoria;
-            if (seleccionada == null) return;
-
-            BtnCambiarEstado.Text = seleccionada.Activo ? "Deshabilitar" : "Habilitar";
+            else
+            {
+                BtnEditar.Enabled = false;
+                BtnCambiarEstado.Enabled = false;
+                BtnCambiarEstado.Text = "Deshabilitar";
+            }
         }
 
         private void MostrarSubVentana(Form subFormulario)
@@ -105,48 +116,44 @@ namespace RGTS.Interfaz.Administrador
 
         private void BtnEditar_Click(object sender, EventArgs e)
         {
-            if (lstClientes.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Seleccioná una categoría para editar.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (lstClientes.SelectedItems.Count == 0) return;
 
-            Categoria? seleccionada = lstClientes.SelectedItems[0].Tag as Categoria;
-            if (seleccionada == null) return;
-
+            var seleccionada = (Categoria)lstClientes.SelectedItems[0].Tag;
             MostrarSubVentana(new FormAgregarCategoria(seleccionada));
         }
 
-        // Toggle: alterna el estado activo/inactivo de la categoría seleccionada
+        // Alterna el estado activo/inactivo a través de CategoriaServicio
         private void BtnCambiarEstado_Click(object sender, EventArgs e)
         {
-            if (lstClientes.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Seleccioná una categoría para cambiar su estado.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (lstClientes.SelectedItems.Count == 0) return;
 
-            var seleccionada = lstClientes.SelectedItems[0].Tag as Categoria;
-            if (seleccionada == null) return;
+            var seleccionada = (Categoria)lstClientes.SelectedItems[0].Tag;
             bool nuevoEstado = !seleccionada.Activo;
             string accion = nuevoEstado ? "Habilita" : "Deshabilita";
 
             DialogResult confirmacion = MessageBox.Show(
-                $"¿Estás seguro de que querés {accion.ToLower()}r la categoría '{seleccionada.NombreCategoria}'?",
-                $"Confirmar {accion}do",
+                $"¿Está seguro de que desea {accion.ToLower()}r la categoría '{seleccionada.NombreCategoria}'?",
+                $"Confirmar {accion}",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning,
+                MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2
             );
 
             if (confirmacion == DialogResult.Yes)
             {
-                seleccionada.Activo = nuevoEstado;
-                MessageBox.Show($"Categoría {(nuevoEstado ? "habilitada" : "deshabilitada")} correctamente.",
-                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CargarGrilla(TxtBuscarNombre.Text.Trim());
+                try
+                {
+                    _categoriaServicio.CambiarEstadoCategoria(seleccionada.IdCategoria, nuevoEstado);
+                    MessageBox.Show($"Categoría {accion.ToLower()}da correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    CargarGrilla(TxtBuscarNombre.Text.Trim());
+                }
             }
         }
     }

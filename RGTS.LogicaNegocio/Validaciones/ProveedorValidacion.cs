@@ -5,11 +5,6 @@ namespace RGTS.LogicaNegocio.Validaciones
 {
     public static class ProveedorValidacion
     {
-        
-        private static readonly Regex EmailRegex = new Regex(
-            @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase
-        );
-
         public static void Validar(
             string razonSocial,
             string nombreComercial,
@@ -32,6 +27,10 @@ namespace RGTS.LogicaNegocio.Validaciones
                 throw new ArgumentException("La Razón Social debe contener entre 3 y 100 caracteres");
             }
 
+            if (!RegexValidaciones.NoSoloNumeros.IsMatch(razonSocial.Trim()))
+            {
+                throw new ArgumentException("La Razón Social no debe contener solo números");
+            }
 
             if (string.IsNullOrWhiteSpace(nombreComercial))
             {
@@ -43,17 +42,20 @@ namespace RGTS.LogicaNegocio.Validaciones
                 throw new ArgumentException("El Nombre Comercial debe tener entre 3 y 100 caracteres");
             }
 
+            if (!RegexValidaciones.NoSoloNumeros.IsMatch(nombreComercial.Trim()))
+            {
+                throw new ArgumentException("El Nombre Comercial no debe contener solo números");
+            }
 
             if (string.IsNullOrWhiteSpace(telefono))
             {
-                throw new ArgumentException("El Teléfono es un campo obligatorio.");
+                throw new ArgumentException("El Teléfono es un campo obligatorio");
             }
 
             if (!RegexValidaciones.Telefono.IsMatch(telefono.Trim()))
             {
                 throw new ArgumentException("El Teléfono ingresado no posee un formato válido");
             }
-
 
             if (string.IsNullOrWhiteSpace(direccion))
             {
@@ -65,22 +67,56 @@ namespace RGTS.LogicaNegocio.Validaciones
                 throw new ArgumentException("La Dirección debe tener entre 5 y 150 caracteres");
             }
 
-
-
-            // datos opcionales
-            if (!string.IsNullOrWhiteSpace(nombre) && (nombre.Trim().Length < 2 || nombre.Trim().Length > 50))
+            if (!RegexValidaciones.NoSoloNumeros.IsMatch(direccion.Trim()))
             {
-                throw new ArgumentException("El nombre de contacto debe tener entre 2 y 50 caracteres");
+                throw new ArgumentException("La Dirección no debe contener solo números");
             }
 
-            if (!string.IsNullOrWhiteSpace(apellido) && (apellido.Trim().Length < 2 || apellido.Trim().Length > 50))
+
+
+            if (!string.IsNullOrWhiteSpace(nombre))
             {
-                throw new ArgumentException("El apellido de contacto debe tener entre 2 y 50 caracteres");
+                var nombreLimpio = nombre.Trim();
+
+                if (nombreLimpio.Length < 2 || nombreLimpio.Length > 50)
+                {
+                    throw new ArgumentException("El nombre de contacto debe tener entre 2 y 50 caracteres");
+                }
+
+                if (!RegexValidaciones.SoloTexto.IsMatch(nombreLimpio))
+                {
+                    throw new ArgumentException("El nombre de contacto no puede contener números");
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(email) && !EmailRegex.IsMatch(email.Trim()))
+            if (!string.IsNullOrWhiteSpace(apellido))
             {
-                throw new ArgumentException("El correo electrónico no posee un formato válido");
+                var apellidoLimpio = apellido.Trim();
+
+                if (apellidoLimpio.Length < 2 || apellidoLimpio.Length > 50)
+                {
+                    throw new ArgumentException("El apellido de contacto debe tener entre 2 y 50 caracteres");
+                }
+
+                if (!RegexValidaciones.SoloTexto.IsMatch(apellidoLimpio))
+                {
+                    throw new ArgumentException("El apellido de contacto no puede contener números");
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                var emailLimpio = email.Trim();
+
+                if (emailLimpio.Length > 100) // ajustá al largo de tu columna en la BD
+                {
+                    throw new ArgumentException("El correo electrónico no puede superar los 80 caracteres");
+                }
+
+                if (!RegexValidaciones.Email.IsMatch(emailLimpio))
+                {
+                    throw new ArgumentException("El correo electrónico no posee un formato válido");
+                }
             }
         }
     }

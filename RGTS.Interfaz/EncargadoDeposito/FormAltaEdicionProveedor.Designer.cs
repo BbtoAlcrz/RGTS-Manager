@@ -1,7 +1,7 @@
 ﻿using MaterialSkin.Controls;
 namespace RGTS.Interfaz.EncargadoDeposito
 {
-    partial class FormAgregarProveedor
+    partial class FormAltaEdicionProveedor
     {
         /// <summary> 
         /// Variable del diseñador necesaria.

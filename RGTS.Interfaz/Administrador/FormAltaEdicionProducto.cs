@@ -7,13 +7,13 @@ using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz
 {
-    public partial class FormProductoAltaEdicion : MaterialForm
+    public partial class FormAltaEdicionProducto : MaterialForm
     {
         private readonly ProductoServicio _productoServicio;
         private readonly List<Categoria> _categorias;
         private readonly Producto? _productoEditar;
 
-        public FormProductoAltaEdicion(List<Categoria> categorias, Producto? productoEditar = null)
+        public FormAltaEdicionProducto(List<Categoria> categorias, Producto? productoEditar = null)
         {
             InitializeComponent();
             _productoServicio = new ProductoServicio();

@@ -164,7 +164,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
 
         private void BtnAgregarProveedor_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormAgregarProveedor());
+            MostrarSubVentana(new FormAltaEdicionProveedor());
         }
 
         private void BtnEditarProveedor_Click(object sender, EventArgs e)
@@ -172,7 +172,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             if (materialListView1.SelectedItems.Count > 0)
             {
                 var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
-                MostrarSubVentana(new FormAgregarProveedor(provSeleccionado));
+                MostrarSubVentana(new FormAltaEdicionProveedor(provSeleccionado));
             }
         }
 

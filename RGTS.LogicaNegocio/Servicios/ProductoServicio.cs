@@ -115,5 +115,25 @@ namespace RGTS.LogicaNegocio.Servicios
 
             producto.Activo = nuevoEstado;
         }
+
+
+        public void IncrementarStock(int idProducto, int cantidad)
+        {
+            if (cantidad <= 0)
+                throw new ArgumentException("La cantidad a ingresar debe ser mayor a cero");
+
+            var producto = _productos.FirstOrDefault(p => p.IdProducto == idProducto)
+                ?? throw new InvalidOperationException($"No se encontró el producto con ID {idProducto} en el inventario");
+
+            if (producto.StockActual + cantidad > producto.StockMaximo)
+            {
+                throw new InvalidOperationException(
+                    $"No se puede recibir {cantidad} unidades para '{producto.Nombre}'" +
+                    $"Ésto superaría el stock máximo permitido de ({producto.StockMaximo})" +
+                    $"Stock actual: {producto.StockActual}");
+            }
+
+            producto.StockActual += cantidad;
+        }
     }
 }

@@ -154,7 +154,7 @@ namespace RGTS.Interfaz.Administrador
 
         private void BtnAgregarUsuario_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormAgregarUsuario());
+            MostrarSubVentana(new FormAltaEdicionUsuario());
         }
 
         private void BtnEditarUsuario_Click(object sender, EventArgs e)
@@ -164,7 +164,7 @@ namespace RGTS.Interfaz.Administrador
                 ListViewItem usuarioSeleccionado = ListaUsuarios.SelectedItems[0];
                 Usuario usuario = (Usuario)usuarioSeleccionado.Tag;
 
-                MostrarSubVentana(new FormAgregarUsuario(usuario));
+                MostrarSubVentana(new FormAltaEdicionUsuario(usuario));
             }
         }
 

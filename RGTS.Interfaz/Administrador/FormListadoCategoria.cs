@@ -7,7 +7,7 @@ using RGTS.Entidades;
 
 namespace RGTS.Interfaz.Administrador
 {
-    public partial class FormCategoriaListado : MaterialForm
+    public partial class FormListadoCategoria : MaterialForm
     {
         private readonly Panel pnlEdicionContenedor = new();
 
@@ -20,7 +20,7 @@ namespace RGTS.Interfaz.Administrador
             new Categoria { IdCategoria = 4, NombreCategoria = "Accesorios", Descripcion = "Accesorios varios", Activo = true }
         };
 
-        public FormCategoriaListado()
+        public FormListadoCategoria()
         {
             InitializeComponent();
             pnlEdicionContenedor.Dock = DockStyle.Fill;

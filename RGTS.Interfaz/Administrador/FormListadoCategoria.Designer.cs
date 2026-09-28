@@ -1,6 +1,6 @@
 ﻿namespace RGTS.Interfaz.Administrador
 {
-    partial class FormCategoriaListado
+    partial class FormListadoCategoria
     {
         /// <summary>
         /// Required designer variable.

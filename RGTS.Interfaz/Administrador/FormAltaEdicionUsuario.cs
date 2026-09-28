@@ -11,13 +11,13 @@ using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
 {
-    public partial class FormAgregarUsuario : MaterialForm
+    public partial class FormAltaEdicionUsuario : MaterialForm
     {
         private readonly UsuarioServicio _usuarioServicio;
         private readonly Usuario? _usuarioEditar;
         private readonly bool _esEdicion;
 
-        public FormAgregarUsuario()
+        public FormAltaEdicionUsuario()
         {
             InitializeComponent();
             Sizable = false;
@@ -28,7 +28,7 @@ namespace RGTS.Interfaz.Administrador
             ConfigurarModo();
         }
 
-        public FormAgregarUsuario(Usuario usuario) : this()
+        public FormAltaEdicionUsuario(Usuario usuario) : this()
         {
             _usuarioEditar = usuario;
             _esEdicion = true;

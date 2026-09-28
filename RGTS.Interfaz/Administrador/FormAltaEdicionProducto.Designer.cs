@@ -1,6 +1,6 @@
 ﻿namespace RGTS.Interfaz
 {
-    partial class FormProductoAltaEdicion
+    partial class FormAltaEdicionProducto
     {
         /// <summary>
         /// Required designer variable.

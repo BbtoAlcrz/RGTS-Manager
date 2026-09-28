@@ -3,7 +3,7 @@ using MaterialSkin.Controls;
 
 namespace RGTS.Interfaz.Administrador
 {
-    partial class FormAgregarUsuario
+    partial class FormAltaEdicionUsuario
     {
         /// <summary>
         /// Required designer variable.

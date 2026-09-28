@@ -152,7 +152,7 @@ namespace RGTS.Interfaz
         // Abre el formulario de alta de producto
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormProductoAltaEdicion(_categorias));
+            MostrarSubVentana(new FormAltaEdicionProducto(_categorias));
         }
 
         // Abre el formulario de edición con los datos del producto seleccionado
@@ -161,7 +161,7 @@ namespace RGTS.Interfaz
             if (LstProductos.SelectedItems.Count == 0) return;
 
             var producto = (Producto)LstProductos.SelectedItems[0].Tag;
-            MostrarSubVentana(new FormProductoAltaEdicion(_categorias, producto));
+            MostrarSubVentana(new FormAltaEdicionProducto(_categorias, producto));
         }
 
         // Alterna el estado del producto seleccionado: Habilitar si está inactivo, Deshabilitar si está activo
@@ -207,7 +207,7 @@ namespace RGTS.Interfaz
         // Abre el formulario de gestión de categorías
         private void BtnGestionarCat_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormCategoriaListado());
+            MostrarSubVentana(new FormListadoCategoria());
         }
 
 

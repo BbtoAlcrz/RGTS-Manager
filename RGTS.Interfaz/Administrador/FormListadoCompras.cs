@@ -4,55 +4,119 @@ using System.Linq;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
 {
     public partial class FormListadoCompras : MaterialForm
     {
+        private readonly CompraServicio _compraServicio;
         private readonly BuscadorSugerencias _buscadorProveedor;
-        private Proveedor? _proveedorFiltroSeleccionado; // null = sin filtro (todos)
+        private Proveedor? _proveedorFiltroSeleccionado;
         private readonly Panel pnlEdicionContenedor = new();
-        // Proveedores hardcodeados (mismos que en FormNuevaCompra, para esta entrega)
-        private readonly List<Proveedor> _proveedores = new List<Proveedor>
+
+        // Proveedores de prueba en memoria para el buscador de sugerencias
+        private readonly List<Proveedor> _proveedores = new()
         {
             new Proveedor { IdProveedor = 1, NombreComercial = "TechImport SA" },
             new Proveedor { IdProveedor = 2, NombreComercial = "Gamer Distribuidora" },
             new Proveedor { IdProveedor = 3, NombreComercial = "ElectroSur" }
         };
 
-        // Compras hardcodeadas para esta entrega
-        private readonly List<Compra> _compras = new List<Compra>
-        {
-            new Compra { IdCompra = 1, DniUsuario = "Carlos", IdProveedor = 1, NombreProveedor = "TechImport SA", Fecha = DateTime.Today.AddDays(-5), Total = 450000, Estado = "Pendiente" },
-            new Compra { IdCompra = 2, DniUsuario = "María", IdProveedor = 2, NombreProveedor = "Gamer Distribuidora", Fecha = DateTime.Today.AddDays(-2), Total = 120000, Estado = "Recibida" },
-            new Compra { IdCompra = 3, DniUsuario = "Carlos", IdProveedor = 3, NombreProveedor = "ElectroSur", Fecha = DateTime.Today, Total = 89000, Estado = "Cancelada" }
-        };
-
-        // Detalle de cada compra, indexado por IdCompra (hardcodeado para esta entrega)
-        private readonly Dictionary<int, List<DetalleCompra>> _detallesPorCompra = new Dictionary<int, List<DetalleCompra>>
-        {
-            { 1, new List<DetalleCompra> {
-                new DetalleCompra { IdDetalleCompra = 1, IdProducto = 1, CodigoProducto = "CONS-001", NombreProducto = "PlayStation 5", Cantidad = 3, CostoUnitario = 150000 }
-            }},
-            { 2, new List<DetalleCompra> {
-                new DetalleCompra { IdDetalleCompra = 2, IdProducto = 2, CodigoProducto = "MAN-001", NombreProducto = "Joystick DualSense", Cantidad = 6, CostoUnitario = 20000 }
-            }},
-            { 3, new List<DetalleCompra> {
-                new DetalleCompra { IdDetalleCompra = 3, IdProducto = 3, CodigoProducto = "PORT-001", NombreProducto = "Nintendo Switch OLED", Cantidad = 1, CostoUnitario = 89000 }
-            }}
-        };
-
         public FormListadoCompras()
         {
             InitializeComponent();
+
+            _compraServicio = new CompraServicio();
+
+            // Configurar panel superpuesto para subformularios integrados
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
             Controls.Add(pnlEdicionContenedor);
             pnlEdicionContenedor.BringToFront();
 
             _buscadorProveedor = new BuscadorSugerencias(this);
-            TxtFiltroProveedor.TextChanged += TxtFiltroProveedor_TextChanged;
         }
+
+        private void FormListadoCompras_Load(object sender, EventArgs e)
+        {
+            ConfigurarListView();
+
+            // Rango de fechas por defecto: últimos 30 días
+            DtpHasta.Value = DateTime.Today;
+            DtpDesde.Value = DateTime.Today.AddDays(-30);
+
+            DtpDesde.ValueChanged += (s, args) => RefrescarGrilla();
+            DtpHasta.ValueChanged += (s, args) => RefrescarGrilla();
+
+            RefrescarGrilla();
+        }
+
+        private void ConfigurarListView()
+        {
+            lstClientes.View = View.Details;
+            lstClientes.FullRowSelect = true;
+            lstClientes.MultiSelect = false;
+            lstClientes.GridLines = true;
+        }
+
+        
+
+        private void RefrescarGrilla()
+        {
+            lstClientes.BeginUpdate();
+            lstClientes.Items.Clear();
+
+            // Resetear botones dependientes de selección
+            BtnDetalleComp.Enabled = false;
+            BtnRecibido.Enabled = false;
+            BtnCancelarC.Enabled = false;
+
+            int? idProveedor = _proveedorFiltroSeleccionado?.IdProveedor;
+            List<Compra> compras = _compraServicio.ObtenerCompras(DtpDesde.Value, DtpHasta.Value, idProveedor);
+
+            foreach (var compra in compras)
+            {
+                var row = new ListViewItem(compra.IdCompra.ToString());
+                // Subitems: Proveedor, Usuario, Fecha, Total, Estado
+                row.SubItems.Add(compra.NombreProveedor);
+                row.SubItems.Add(string.IsNullOrWhiteSpace(compra.DniUsuario) ? "—" : compra.DniUsuario);
+                row.SubItems.Add(compra.Fecha.ToString("dd/MM/yyyy"));
+                row.SubItems.Add(compra.Total.ToString("C2"));
+                row.SubItems.Add(compra.Estado);
+                row.Tag = compra;
+
+                lstClientes.Items.Add(row);
+            }
+
+            lstClientes.EndUpdate();
+        }
+
+        
+
+        private void LstClientes_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count > 0)
+            {
+                var compraSeleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
+
+                // Ver detalle siempre habilitado si hay selección
+                BtnDetalleComp.Enabled = true;
+
+                // Solo se pueden recibir o cancelar compras en estado Pendiente
+                bool esPendiente = compraSeleccionada.Estado == "Pendiente";
+                BtnRecibido.Enabled = esPendiente;
+                BtnCancelarC.Enabled = esPendiente;
+            }
+            else
+            {
+                BtnDetalleComp.Enabled = false;
+                BtnRecibido.Enabled = false;
+                BtnCancelarC.Enabled = false;
+            }
+        }
+
+    
 
         private void TxtFiltroProveedor_TextChanged(object? sender, EventArgs e)
         {
@@ -62,7 +126,7 @@ namespace RGTS.Interfaz.Administrador
             {
                 _proveedorFiltroSeleccionado = null;
                 _buscadorProveedor.Ocultar();
-                CargarGrilla();
+                RefrescarGrilla();
                 return;
             }
 
@@ -76,61 +140,93 @@ namespace RGTS.Interfaz.Administrador
             {
                 _proveedorFiltroSeleccionado = coincidencias[indice];
                 TxtFiltroProveedor.Text = coincidencias[indice].NombreComercial;
-                CargarGrilla();
+                RefrescarGrilla();
             });
         }
 
-        private void CmbFiltroProvee_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            // Reaplicar filtros cuando el usuario cambia el proveedor seleccionado
-            CargarGrilla();
-        }
-
-        private void DtpDesde_ValueChanged(object sender, EventArgs e)
-        {
-            CargarGrilla();
-        }
-
-        private void DtpHasta_ValueChanged(object sender, EventArgs e)
-        {
-            CargarGrilla();
-        }
-
-        private void FormListadoCompras_Load(object sender, EventArgs e)
-        {
-            
-            // Asegura un rango por defecto que incluya las compras precargadas
+            DtpDesde.Value = DateTime.Today.AddMonths(-1);
             DtpHasta.Value = DateTime.Today;
-            DtpDesde.Value = DateTime.Today.AddDays(-30);
-            CargarGrilla();
+            TxtFiltroProveedor.Clear();
+            _proveedorFiltroSeleccionado = null;
+            RefrescarGrilla();
         }
 
-        
 
-        // Carga la grilla aplicando los filtros de fecha y proveedor actuales
-        private void CargarGrilla()
+        private void BtnNuevaCompra_Click(object sender, EventArgs e)
         {
-            lstClientes.Items.Clear();
+            MostrarSubVentana(new FormNuevaCompra());
+        }
 
-            var filtradas = _compras.Where(c =>
-                c.Fecha.Date >= DtpDesde.Value.Date &&
-                c.Fecha.Date <= DtpHasta.Value.Date &&
-                (_proveedorFiltroSeleccionado == null || c.NombreProveedor == _proveedorFiltroSeleccionado.NombreComercial)
+        private void BtnDetalleComp_Click(object sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count == 0) return;
+
+            var seleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
+            List<DetalleCompra> detalles = _compraServicio.ObtenerDetallesPorCompra(seleccionada.IdCompra);
+
+            MostrarSubVentana(new FormDetalleCompra(seleccionada, detalles));
+        }
+
+        private void BtnRecibido_Click(object sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count == 0) return;
+
+            var seleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
+
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Desea marcar como recibida la compra #{seleccionada.IdCompra} del proveedor '{seleccionada.NombreProveedor}'?\n\nTotal: {seleccionada.Total:C2}",
+                "Confirmar Recepción",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
             );
-            foreach (var compra in filtradas)
+
+            if (confirmacion == DialogResult.Yes)
             {
-                var row = new ListViewItem(compra.IdCompra.ToString());
-                // Rellenar subitems en el mismo orden que las columnas: Proveedor, Usuario, Fecha, Total, Estado
-                row.SubItems.Add(compra.NombreProveedor);
-                // Usuario (DniUsuario usado como nombre para esta entrega)
-                row.SubItems.Add(string.IsNullOrWhiteSpace(compra.DniUsuario) ? "—" : compra.DniUsuario);
-                row.SubItems.Add(compra.Fecha.ToString("dd/MM/yyyy"));
-                row.SubItems.Add(compra.Total.ToString("C"));
-                row.SubItems.Add(compra.Estado);
-                row.Tag = compra;
-                lstClientes.Items.Add(row);
+                try
+                {
+                    _compraServicio.CambiarEstadoCompra(seleccionada.IdCompra, "Recibida");
+                    MessageBox.Show("Compra marcada como recibida.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefrescarGrilla();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
+
+        private void BtnCancelarC_Click(object sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count == 0) return;
+
+            var seleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
+
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Está seguro de que desea cancelar la compra #{seleccionada.IdCompra}?\n\n• Proveedor: {seleccionada.NombreProveedor}\n• Total: {seleccionada.Total:C2}",
+                "Confirmar Cancelación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2
+            );
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                try
+                {
+                    _compraServicio.CambiarEstadoCompra(seleccionada.IdCompra, "Cancelada");
+                    MessageBox.Show("Compra cancelada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefrescarGrilla();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
 
         private void MostrarSubVentana(Form subFormulario)
         {
@@ -142,98 +238,12 @@ namespace RGTS.Interfaz.Administrador
             {
                 pnlEdicionContenedor.Visible = false;
                 pnlEdicionContenedor.Controls.Clear();
-                CargarGrilla();
+                RefrescarGrilla();
             };
             pnlEdicionContenedor.Controls.Add(subFormulario);
             pnlEdicionContenedor.Visible = true;
             pnlEdicionContenedor.BringToFront();
             subFormulario.Show();
-        }
-
-        // Abre el formulario de nueva compra
-        private void BtnNuevaCompra_Click(object sender, EventArgs e)
-        {
-            MostrarSubVentana(new FormNuevaCompra());
-        }
-
-        // Abre el detalle de solo lectura de la compra seleccionada
-        private void BtnDetalleComp_Click(object sender, EventArgs e)
-        {
-            Compra? seleccionada = ObtenerCompraSeleccionada();
-            if (seleccionada == null) return;
-
-            var detalle = _detallesPorCompra.ContainsKey(seleccionada.IdCompra)
-                ? _detallesPorCompra[seleccionada.IdCompra]
-                : new List<DetalleCompra>();
-
-            MostrarSubVentana(new FormDetalleCompra(seleccionada, detalle));
-        }
-
-        // Cambia el estado de la compra seleccionada a "Recibida"
-        private void BtnRecibido_Click(object sender, EventArgs e)
-        {
-            Compra? seleccionada = ObtenerCompraSeleccionada();
-            if (seleccionada == null) return;
-
-            if (seleccionada.Estado != "Pendiente")
-            {
-                MessageBox.Show($"Solo se pueden marcar como recibidas las compras en estado Pendiente. Esta compra está {seleccionada.Estado}.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            seleccionada.Estado = "Recibida";
-            MessageBox.Show("Compra marcada como recibida.",
-                "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            CargarGrilla();
-        }
-
-        // Cambia el estado de la compra seleccionada a "Cancelada"
-        private void BtnCancelarC_Click(object sender, EventArgs e)
-        {
-            Compra? seleccionada = ObtenerCompraSeleccionada();
-            if (seleccionada == null) return;
-
-            if (seleccionada.Estado != "Pendiente")
-            {
-                MessageBox.Show($"Solo se pueden cancelar las compras en estado Pendiente. Esta compra está {seleccionada.Estado}.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var confirmacion = MessageBox.Show(
-                $"¿Estás seguro de que querés cancelar la compra #{seleccionada.IdCompra}?",
-                "Confirmar cancelación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (confirmacion == DialogResult.Yes)
-            {
-                seleccionada.Estado = "Cancelada";
-                MessageBox.Show("Compra cancelada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CargarGrilla();
-            }
-        }
-
-        // Restablece los filtros de fecha y proveedor
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            DtpDesde.Value = DateTime.Today.AddMonths(-1);
-            DtpHasta.Value = DateTime.Today;
-            TxtFiltroProveedor.Clear();
-            _proveedorFiltroSeleccionado = null;
-            CargarGrilla();
-        }
-
-        // Devuelve la compra seleccionada en la grilla, o null si no hay ninguna
-        private Compra? ObtenerCompraSeleccionada()
-        {
-            if (lstClientes.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Seleccioná una compra.",
-                    "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return null;
-            }
-
-            return lstClientes.SelectedItems[0].Tag as Compra;
         }
     }
 }

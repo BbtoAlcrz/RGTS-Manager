@@ -11,14 +11,14 @@ using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.EncargadoDeposito
 {
-    public partial class FormAgregarProveedor : MaterialForm
+    public partial class FormAltaEdicionProveedor : MaterialForm
     {
         private readonly ProveedorServicio _proveedorServicio;
         private readonly Proveedor? _proveedorEditar;
         
         private readonly bool _esEdicion;
 
-        public FormAgregarProveedor()
+        public FormAltaEdicionProveedor()
         {
             InitializeComponent();
             Sizable = false;
@@ -29,7 +29,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             ConfigurarModo();
         }
 
-        public FormAgregarProveedor(Proveedor proveedor) : this()
+        public FormAltaEdicionProveedor(Proveedor proveedor) : this()
         {
             _proveedorEditar = proveedor;
             _esEdicion = true;

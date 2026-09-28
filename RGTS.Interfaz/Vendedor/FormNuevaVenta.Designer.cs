@@ -414,6 +414,8 @@
             txtBuscarProducto.TextAlign = HorizontalAlignment.Left;
             txtBuscarProducto.TrailingIcon = null;
             txtBuscarProducto.UseSystemPasswordChar = false;
+            txtBuscarProducto.KeyDown += TxtBuscarProducto_KeyDown;
+            txtBuscarProducto.TextChanged += TxtBuscarProducto_TextChanged;
             // 
             // labelApellidoValor
             // 
@@ -514,6 +516,7 @@
             txtBuscarDniCliente.TextAlign = HorizontalAlignment.Left;
             txtBuscarDniCliente.TrailingIcon = null;
             txtBuscarDniCliente.UseSystemPasswordChar = false;
+            txtBuscarDniCliente.TextChanged += TxtBuscarDniCliente_TextChanged;
             // 
             // labelProducto
             // 
@@ -571,11 +574,10 @@
             ListaDetalleVenta.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             ListaDetalleVenta.AutoSizeTable = false;
             ListaDetalleVenta.BackColor = Color.FromArgb(255, 255, 255);
-            ListaDetalleVenta.BorderStyle = BorderStyle.FixedSingle;
+            ListaDetalleVenta.BorderStyle = BorderStyle.None;
             ListaDetalleVenta.Columns.AddRange(new ColumnHeader[] { Codigo, Producto, Cantidad, Precio, Subtotal });
             ListaDetalleVenta.Depth = 0;
             ListaDetalleVenta.FullRowSelect = true;
-            ListaDetalleVenta.GridLines = true;
             ListaDetalleVenta.Location = new Point(428, 56);
             ListaDetalleVenta.MinimumSize = new Size(200, 100);
             ListaDetalleVenta.MouseLocation = new Point(-1, -1);

@@ -10,13 +10,16 @@ namespace RGTS.Interfaz.Administrador
     {
         private readonly ClienteServicio _clienteServicio;
         private readonly Cliente? _clienteEditar;
+        private readonly string? _dniInicial;
 
         // si clienteEditar es null => modo alta, si tiene datos => modo edición
-        public FormAltaEdicionClientes(Cliente? clienteEditar = null)
+        public FormAltaEdicionClientes(Cliente? clienteEditar = null, string? dniInicial = null)
         {
             InitializeComponent();
+            
             _clienteServicio = new ClienteServicio();
             _clienteEditar = clienteEditar;
+            _dniInicial = dniInicial;
             ConfigurarModo();
         }
 
@@ -34,6 +37,11 @@ namespace RGTS.Interfaz.Administrador
                 txtDni.Text = _clienteEditar.DNI;
                 txtTelefono.Text = _clienteEditar.Telefono;
                 txtEmail.Text = _clienteEditar.Email;
+            }
+            else if (!string.IsNullOrWhiteSpace(_dniInicial))
+            {
+                // Precarga el DNI buscado en la vista de venta
+                txtDni.Text = _dniInicial.Trim();
             }
         }
 

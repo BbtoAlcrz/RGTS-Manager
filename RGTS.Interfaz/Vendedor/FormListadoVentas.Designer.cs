@@ -222,6 +222,7 @@
             ComboBoxVendedor.Size = new Size(272, 49);
             ComboBoxVendedor.StartIndex = 0;
             ComboBoxVendedor.TabIndex = 31;
+            ComboBoxVendedor.SelectedValueChanged += ComboBoxVendedor_SelectedIndexChanged;
             // 
             // labelHasta
             // 

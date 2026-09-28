@@ -12,12 +12,12 @@ namespace RGTS.Interfaz.Vendedor
     public partial class FormListadoVentas : MaterialForm
     {
         private readonly VentaServicio _ventaServicio;
-        private readonly string? _rolActual;
+        private readonly string _rolActual;
         private readonly string? _dniUsuarioActual;
 
         private readonly Panel pnlEdicionContenedor = new();
 
-        // Auxiliar para el filtro de vendedores
+        // Auxiliar para el combo de filtrado
         private class VendedorFiltro
         {
             public string Texto { get; set; } = string.Empty;
@@ -27,6 +27,7 @@ namespace RGTS.Interfaz.Vendedor
         public FormListadoVentas()
         {
             InitializeComponent();
+
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
             this.Controls.Add(pnlEdicionContenedor);
@@ -44,14 +45,16 @@ namespace RGTS.Interfaz.Vendedor
 
         private void ConfigurarVistaPorRol()
         {
-            // Si es Vendedor, no debe poder seleccionar otros vendedores
+            // El Vendedor únicamente visualiza sus propias ventas registradas
             if (_rolActual == "Vendedor")
             {
                 ComboBoxVendedor.Visible = false;
+                BtnNuevaVenta.Enabled = true;
             }
             else
             {
                 ComboBoxVendedor.Visible = true;
+                BtnNuevaVenta.Enabled = false;
             }
         }
 
@@ -61,24 +64,36 @@ namespace RGTS.Interfaz.Vendedor
             listaVentas.FullRowSelect = true;
             listaVentas.MultiSelect = false;
             listaVentas.GridLines = true;
+            listaVentas.HideSelection = false;
 
             BtnDetalleVenta.Enabled = false;
 
-            // Por defecto: último mes hasta hoy
+            // Rango predeterminado de fechas: último mes a hoy
             DtpDesde.Value = DateTime.Today.AddMonths(-1);
             DtpHasta.Value = DateTime.Today;
         }
 
         private void CargarFiltroVendedores()
         {
+            if (_rolActual == "Vendedor") return;
+
             ComboBoxVendedor.SelectedIndexChanged -= ComboBoxVendedor_SelectedIndexChanged;
 
             var lista = new List<VendedorFiltro>
             {
-                new VendedorFiltro { Texto = "Todos los Vendedores", Dni = null },
-                new VendedorFiltro { Texto = "Fausto Avalos (41234567)", Dni = "41234567" },
-                new VendedorFiltro { Texto = "Benito Alcaraz (45020546)", Dni = "45020546" }
+                new VendedorFiltro { Texto = "Todos los Vendedores", Dni = null }
             };
+
+            // Consulta al servicio de ventas
+            var vendedores = _ventaServicio.ObtenerVendedoresConVentas();
+            foreach (var v in vendedores)
+            {
+                lista.Add(new VendedorFiltro
+                {
+                    Texto = $"{v.NombreCompleto} ({v.Dni})",
+                    Dni = v.Dni
+                });
+            }
 
             ComboBoxVendedor.DataSource = lista;
             ComboBoxVendedor.DisplayMember = "Texto";
@@ -96,6 +111,7 @@ namespace RGTS.Interfaz.Vendedor
 
             string? dniVendedorFiltro = null;
 
+            // Restricción por rol de usuario
             if (_rolActual == "Vendedor")
             {
                 dniVendedorFiltro = _dniUsuarioActual ?? "41234567";
@@ -142,6 +158,7 @@ namespace RGTS.Interfaz.Vendedor
             {
                 pnlEdicionContenedor.Visible = false;
                 pnlEdicionContenedor.Controls.Clear();
+                CargarFiltroVendedores();
                 RefrescarVentas();
             };
 
@@ -167,7 +184,7 @@ namespace RGTS.Interfaz.Vendedor
             DtpDesde.Value = DateTime.Today.AddMonths(-1);
             DtpHasta.Value = DateTime.Today;
 
-            if (ComboBoxVendedor.Items.Count > 0)
+            if (ComboBoxVendedor.Visible && ComboBoxVendedor.Items.Count > 0)
             {
                 ComboBoxVendedor.SelectedIndex = 0;
             }
@@ -180,8 +197,6 @@ namespace RGTS.Interfaz.Vendedor
             if (listaVentas.SelectedItems.Count == 0) return;
 
             var ventaSeleccionada = (Venta)listaVentas.SelectedItems[0].Tag;
-
-            // Se abre FormDetalleVenta incrustado en el panel
             MostrarSubVentana(new FormDetalleVenta(ventaSeleccionada));
         }
 

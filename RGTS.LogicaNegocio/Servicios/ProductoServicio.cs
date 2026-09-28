@@ -75,6 +75,29 @@ namespace RGTS.LogicaNegocio.Servicios
             _productos.Add(nuevo);
         }
 
+        public Producto? BuscarActivoParaVenta(string filtro)
+        {
+            if (string.IsNullOrWhiteSpace(filtro)) return null;
+            string normalizado = filtro.Trim().ToLower();
+
+            return _productos.FirstOrDefault(p =>
+                p.Activo && (p.Codigo.ToLower() == normalizado || p.Nombre.ToLower().Contains(normalizado)));
+        }
+
+
+        public List<Producto> BuscarCoincidenciasActivos(string filtro, int maxResultados = 10)
+        {
+            if (string.IsNullOrWhiteSpace(filtro)) return new List<Producto>();
+            string normalizado = filtro.Trim().ToLower();
+
+            return _productos
+                .Where(p => p.Activo &&
+                    (p.Codigo.ToLower().Contains(normalizado) || p.Nombre.ToLower().Contains(normalizado)))
+                .Take(maxResultados)
+                .ToList();
+        }
+
+
         public void ModificarProducto(int idProducto, string codigo, string nombre, string descripcion,
             int idCategoria, decimal precio, int stockActual, int stockMinimo, int stockMaximo)
         {
@@ -134,6 +157,24 @@ namespace RGTS.LogicaNegocio.Servicios
             }
 
             producto.StockActual += cantidad;
+        }
+
+
+        public void DescontarStock(int idProducto, int cantidad)
+        {
+            if (cantidad <= 0)
+                throw new ArgumentException("La cantidad a descontar debe ser mayor a cero.");
+
+            var producto = _productos.FirstOrDefault(p => p.IdProducto == idProducto)
+                ?? throw new InvalidOperationException($"No se encontró el producto con ID {idProducto}.");
+
+            if (producto.StockActual < cantidad)
+            {
+                throw new InvalidOperationException(
+                    $"No hay stock suficiente para '{producto.Nombre}'. Stock actual: {producto.StockActual}, solicitado: {cantidad}.");
+            }
+
+            producto.StockActual -= cantidad;
         }
     }
 }

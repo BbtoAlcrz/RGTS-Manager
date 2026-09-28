@@ -45,9 +45,9 @@
             BtnCancelar = new MaterialSkin.Controls.MaterialButton();
             BtnGuardar = new MaterialSkin.Controls.MaterialButton();
             panel1 = new MaterialSkin.Controls.MaterialCard();
+            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
             TxtExistenciasMax = new MaterialSkin.Controls.MaterialTextBox2();
             LExistenciasMax = new MaterialSkin.Controls.MaterialLabel();
-            labelTitulo = new MaterialSkin.Controls.MaterialLabel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -92,7 +92,7 @@
             LExistenciasA.AutoSize = true;
             LExistenciasA.Depth = 0;
             LExistenciasA.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LExistenciasA.Location = new Point(15, 259);
+            LExistenciasA.Location = new Point(15, 365);
             LExistenciasA.MouseState = MaterialSkin.MouseState.HOVER;
             LExistenciasA.Name = "LExistenciasA";
             LExistenciasA.Size = new Size(146, 19);
@@ -104,7 +104,7 @@
             LExistenciasMin.AutoSize = true;
             LExistenciasMin.Depth = 0;
             LExistenciasMin.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LExistenciasMin.Location = new Point(15, 353);
+            LExistenciasMin.Location = new Point(15, 278);
             LExistenciasMin.MouseState = MaterialSkin.MouseState.HOVER;
             LExistenciasMin.Name = "LExistenciasMin";
             LExistenciasMin.Size = new Size(147, 19);
@@ -159,7 +159,6 @@
             TxtCodigo.ShortcutsEnabled = true;
             TxtCodigo.Size = new Size(357, 48);
             TxtCodigo.TabIndex = 7;
-            TxtCodigo.TabStop = false;
             TxtCodigo.TextAlign = HorizontalAlignment.Left;
             TxtCodigo.TrailingIcon = null;
             TxtCodigo.UseSystemPasswordChar = false;
@@ -188,7 +187,6 @@
             TxtNombre.ShortcutsEnabled = true;
             TxtNombre.Size = new Size(397, 48);
             TxtNombre.TabIndex = 8;
-            TxtNombre.TabStop = false;
             TxtNombre.TextAlign = HorizontalAlignment.Left;
             TxtNombre.TrailingIcon = null;
             TxtNombre.UseSystemPasswordChar = false;
@@ -214,7 +212,6 @@
             MltDescripcion.ShortcutsEnabled = true;
             MltDescripcion.Size = new Size(397, 159);
             MltDescripcion.TabIndex = 9;
-            MltDescripcion.TabStop = false;
             MltDescripcion.TextAlign = HorizontalAlignment.Left;
             MltDescripcion.UseSystemPasswordChar = false;
             // 
@@ -241,8 +238,7 @@
             TxtPrecio.SelectionStart = 0;
             TxtPrecio.ShortcutsEnabled = true;
             TxtPrecio.Size = new Size(166, 48);
-            TxtPrecio.TabIndex = 10;
-            TxtPrecio.TabStop = false;
+            TxtPrecio.TabIndex = 11;
             TxtPrecio.TextAlign = HorizontalAlignment.Left;
             TxtPrecio.TrailingIcon = null;
             TxtPrecio.UseSystemPasswordChar = false;
@@ -256,7 +252,7 @@
             TxtExistenciasA.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtExistenciasA.HideSelection = true;
             TxtExistenciasA.LeadingIcon = null;
-            TxtExistenciasA.Location = new Point(15, 280);
+            TxtExistenciasA.Location = new Point(15, 386);
             TxtExistenciasA.Margin = new Padding(3, 2, 3, 2);
             TxtExistenciasA.MaxLength = 32767;
             TxtExistenciasA.MouseState = MaterialSkin.MouseState.OUT;
@@ -270,8 +266,7 @@
             TxtExistenciasA.SelectionStart = 0;
             TxtExistenciasA.ShortcutsEnabled = true;
             TxtExistenciasA.Size = new Size(169, 48);
-            TxtExistenciasA.TabIndex = 11;
-            TxtExistenciasA.TabStop = false;
+            TxtExistenciasA.TabIndex = 14;
             TxtExistenciasA.TextAlign = HorizontalAlignment.Left;
             TxtExistenciasA.TrailingIcon = null;
             TxtExistenciasA.UseSystemPasswordChar = false;
@@ -285,7 +280,7 @@
             TxtExistenciasMin.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtExistenciasMin.HideSelection = true;
             TxtExistenciasMin.LeadingIcon = null;
-            TxtExistenciasMin.Location = new Point(15, 374);
+            TxtExistenciasMin.Location = new Point(15, 299);
             TxtExistenciasMin.Margin = new Padding(3, 2, 3, 2);
             TxtExistenciasMin.MaxLength = 32767;
             TxtExistenciasMin.MouseState = MaterialSkin.MouseState.OUT;
@@ -300,7 +295,6 @@
             TxtExistenciasMin.ShortcutsEnabled = true;
             TxtExistenciasMin.Size = new Size(169, 48);
             TxtExistenciasMin.TabIndex = 12;
-            TxtExistenciasMin.TabStop = false;
             TxtExistenciasMin.TextAlign = HorizontalAlignment.Left;
             TxtExistenciasMin.TrailingIcon = null;
             TxtExistenciasMin.UseSystemPasswordChar = false;
@@ -326,7 +320,7 @@
             CbCategoria.Name = "CbCategoria";
             CbCategoria.Size = new Size(184, 49);
             CbCategoria.StartIndex = 0;
-            CbCategoria.TabIndex = 13;
+            CbCategoria.TabIndex = 10;
             // 
             // BtnCancelar
             // 
@@ -336,13 +330,13 @@
             BtnCancelar.Depth = 0;
             BtnCancelar.HighEmphasis = true;
             BtnCancelar.Icon = null;
-            BtnCancelar.Location = new Point(618, 386);
-            BtnCancelar.Margin = new Padding(4, 4, 4, 4);
+            BtnCancelar.Location = new Point(618, 398);
+            BtnCancelar.Margin = new Padding(4);
             BtnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelar.Name = "BtnCancelar";
             BtnCancelar.NoAccentTextColor = Color.Empty;
             BtnCancelar.Size = new Size(96, 36);
-            BtnCancelar.TabIndex = 14;
+            BtnCancelar.TabIndex = 16;
             BtnCancelar.Text = "Cancelar";
             BtnCancelar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnCancelar.UseAccentColor = false;
@@ -357,8 +351,8 @@
             BtnGuardar.Depth = 0;
             BtnGuardar.HighEmphasis = true;
             BtnGuardar.Icon = null;
-            BtnGuardar.Location = new Point(722, 386);
-            BtnGuardar.Margin = new Padding(4, 4, 4, 4);
+            BtnGuardar.Location = new Point(722, 398);
+            BtnGuardar.Margin = new Padding(4);
             BtnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnGuardar.Name = "BtnGuardar";
             BtnGuardar.NoAccentTextColor = Color.Empty;
@@ -372,7 +366,6 @@
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(255, 255, 255);
             panel1.Controls.Add(labelTitulo);
             panel1.Controls.Add(BtnCancelar);
@@ -394,55 +387,15 @@
             panel1.Controls.Add(LCategoria);
             panel1.Controls.Add(LCodigo);
             panel1.Depth = 0;
+            panel1.Dock = DockStyle.Fill;
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(5, 4);
+            panel1.Location = new Point(3, 0);
             panel1.Margin = new Padding(12, 10, 12, 10);
             panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12, 10, 12, 10);
-            panel1.Size = new Size(837, 530);
+            panel1.Size = new Size(841, 558);
             panel1.TabIndex = 16;
-            // 
-            // TxtExistenciasMax
-            // 
-            TxtExistenciasMax.AnimateReadOnly = false;
-            TxtExistenciasMax.BackgroundImageLayout = ImageLayout.None;
-            TxtExistenciasMax.CharacterCasing = CharacterCasing.Normal;
-            TxtExistenciasMax.Depth = 0;
-            TxtExistenciasMax.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            TxtExistenciasMax.HideSelection = true;
-            TxtExistenciasMax.LeadingIcon = null;
-            TxtExistenciasMax.Location = new Point(203, 374);
-            TxtExistenciasMax.Margin = new Padding(3, 2, 3, 2);
-            TxtExistenciasMax.MaxLength = 32767;
-            TxtExistenciasMax.MouseState = MaterialSkin.MouseState.OUT;
-            TxtExistenciasMax.Name = "TxtExistenciasMax";
-            TxtExistenciasMax.PasswordChar = '\0';
-            TxtExistenciasMax.PrefixSuffixText = null;
-            TxtExistenciasMax.ReadOnly = false;
-            TxtExistenciasMax.RightToLeft = RightToLeft.No;
-            TxtExistenciasMax.SelectedText = "";
-            TxtExistenciasMax.SelectionLength = 0;
-            TxtExistenciasMax.SelectionStart = 0;
-            TxtExistenciasMax.ShortcutsEnabled = true;
-            TxtExistenciasMax.Size = new Size(169, 48);
-            TxtExistenciasMax.TabIndex = 15;
-            TxtExistenciasMax.TabStop = false;
-            TxtExistenciasMax.TextAlign = HorizontalAlignment.Left;
-            TxtExistenciasMax.TrailingIcon = null;
-            TxtExistenciasMax.UseSystemPasswordChar = false;
-            // 
-            // LExistenciasMax
-            // 
-            LExistenciasMax.AutoSize = true;
-            LExistenciasMax.Depth = 0;
-            LExistenciasMax.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LExistenciasMax.Location = new Point(206, 353);
-            LExistenciasMax.MouseState = MaterialSkin.MouseState.HOVER;
-            LExistenciasMax.Name = "LExistenciasMax";
-            LExistenciasMax.Size = new Size(151, 19);
-            LExistenciasMax.TabIndex = 14;
-            LExistenciasMax.Text = "Existencias Maximas";
             // 
             // labelTitulo
             // 
@@ -457,7 +410,47 @@
             labelTitulo.TabIndex = 16;
             labelTitulo.Text = "Titulo";
             // 
-            // FormProductoAltaEdicion
+            // TxtExistenciasMax
+            // 
+            TxtExistenciasMax.AnimateReadOnly = false;
+            TxtExistenciasMax.BackgroundImageLayout = ImageLayout.None;
+            TxtExistenciasMax.CharacterCasing = CharacterCasing.Normal;
+            TxtExistenciasMax.Depth = 0;
+            TxtExistenciasMax.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            TxtExistenciasMax.HideSelection = true;
+            TxtExistenciasMax.LeadingIcon = null;
+            TxtExistenciasMax.Location = new Point(203, 299);
+            TxtExistenciasMax.Margin = new Padding(3, 2, 3, 2);
+            TxtExistenciasMax.MaxLength = 32767;
+            TxtExistenciasMax.MouseState = MaterialSkin.MouseState.OUT;
+            TxtExistenciasMax.Name = "TxtExistenciasMax";
+            TxtExistenciasMax.PasswordChar = '\0';
+            TxtExistenciasMax.PrefixSuffixText = null;
+            TxtExistenciasMax.ReadOnly = false;
+            TxtExistenciasMax.RightToLeft = RightToLeft.No;
+            TxtExistenciasMax.SelectedText = "";
+            TxtExistenciasMax.SelectionLength = 0;
+            TxtExistenciasMax.SelectionStart = 0;
+            TxtExistenciasMax.ShortcutsEnabled = true;
+            TxtExistenciasMax.Size = new Size(169, 48);
+            TxtExistenciasMax.TabIndex = 13;
+            TxtExistenciasMax.TextAlign = HorizontalAlignment.Left;
+            TxtExistenciasMax.TrailingIcon = null;
+            TxtExistenciasMax.UseSystemPasswordChar = false;
+            // 
+            // LExistenciasMax
+            // 
+            LExistenciasMax.AutoSize = true;
+            LExistenciasMax.Depth = 0;
+            LExistenciasMax.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            LExistenciasMax.Location = new Point(206, 278);
+            LExistenciasMax.MouseState = MaterialSkin.MouseState.HOVER;
+            LExistenciasMax.Name = "LExistenciasMax";
+            LExistenciasMax.Size = new Size(151, 19);
+            LExistenciasMax.TabIndex = 14;
+            LExistenciasMax.Text = "Existencias Maximas";
+            // 
+            // FormAltaEdicionProducto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -465,7 +458,7 @@
             Controls.Add(panel1);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Margin = new Padding(3, 2, 3, 2);
-            Name = "FormProductoAltaEdicion";
+            Name = "FormAltaEdicionProducto";
             Padding = new Padding(3, 0, 3, 2);
             Sizable = false;
             Text = "Registrar Nuevo Producto";

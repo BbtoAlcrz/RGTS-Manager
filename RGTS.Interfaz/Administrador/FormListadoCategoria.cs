@@ -111,7 +111,7 @@ namespace RGTS.Interfaz.Administrador
 
         private void BtnNuevo_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormAgregarCategoria());
+            MostrarSubVentana(new FormAltaEdicionCategoria());
         }
 
         private void BtnEditar_Click(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace RGTS.Interfaz.Administrador
             if (lstClientes.SelectedItems.Count == 0) return;
 
             var seleccionada = (Categoria)lstClientes.SelectedItems[0].Tag;
-            MostrarSubVentana(new FormAgregarCategoria(seleccionada));
+            MostrarSubVentana(new FormAltaEdicionCategoria(seleccionada));
         }
 
         // Alterna el estado activo/inactivo a través de CategoriaServicio

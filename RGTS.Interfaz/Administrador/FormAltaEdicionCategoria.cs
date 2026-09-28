@@ -6,12 +6,12 @@ using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
 {
-    public partial class FormAgregarCategoria : MaterialForm
+    public partial class FormAltaEdicionCategoria : MaterialForm
     {
         private readonly CategoriaServicio _categoriaServicio;
         private readonly Categoria? _categoriaEditar;
 
-        public FormAgregarCategoria(Categoria? categoriaEditar = null)
+        public FormAltaEdicionCategoria(Categoria? categoriaEditar = null)
         {
             InitializeComponent();
             Sizable = false;

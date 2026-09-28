@@ -65,7 +65,7 @@ namespace RGTS.Interfaz
                 CbCategoria.Items.Add(cat.NombreCategoria);
 
             if (CbCategoria.Items.Count > 0)
-                CbCategoria.SelectedIndex = 0;
+                CbCategoria.SelectedIndex = -1;
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)

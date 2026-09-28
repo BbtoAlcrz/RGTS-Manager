@@ -90,7 +90,7 @@
             TxtBuscarProveedor.Multiline = false;
             TxtBuscarProveedor.Name = "TxtBuscarProveedor";
             TxtBuscarProveedor.Size = new Size(256, 50);
-            TxtBuscarProveedor.TabIndex = 32;
+            TxtBuscarProveedor.TabIndex = 1;
             TxtBuscarProveedor.Text = "";
             TxtBuscarProveedor.TrailingIcon = null;
             TxtBuscarProveedor.TextChanged += TxtBuscarProveedor_TextChanged;
@@ -162,7 +162,7 @@
             TxtCantidad.Multiline = false;
             TxtCantidad.Name = "TxtCantidad";
             TxtCantidad.Size = new Size(104, 50);
-            TxtCantidad.TabIndex = 27;
+            TxtCantidad.TabIndex = 3;
             TxtCantidad.Text = "";
             TxtCantidad.TrailingIcon = null;
             // 
@@ -181,7 +181,7 @@
             TxtCostoUni.Multiline = false;
             TxtCostoUni.Name = "TxtCostoUni";
             TxtCostoUni.Size = new Size(147, 50);
-            TxtCostoUni.TabIndex = 26;
+            TxtCostoUni.TabIndex = 4;
             TxtCostoUni.Text = "";
             TxtCostoUni.TrailingIcon = null;
             // 
@@ -200,7 +200,7 @@
             TxtBuscarCoN.Multiline = false;
             TxtBuscarCoN.Name = "TxtBuscarCoN";
             TxtBuscarCoN.Size = new Size(257, 50);
-            TxtBuscarCoN.TabIndex = 25;
+            TxtBuscarCoN.TabIndex = 2;
             TxtBuscarCoN.Text = "";
             TxtBuscarCoN.TrailingIcon = null;
             TxtBuscarCoN.TextChanged += TxtBuscarCoN_TextChanged;
@@ -221,9 +221,9 @@
             BtnAñadirComp.Name = "BtnAñadirComp";
             BtnAñadirComp.NoAccentTextColor = Color.Empty;
             BtnAñadirComp.Size = new Size(257, 35);
-            BtnAñadirComp.TabIndex = 20;
+            BtnAñadirComp.TabIndex = 5;
             BtnAñadirComp.Text = "Añadir A la Orden de Compra";
-            BtnAñadirComp.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            BtnAñadirComp.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnAñadirComp.UseAccentColor = false;
             BtnAñadirComp.UseVisualStyleBackColor = true;
             BtnAñadirComp.Click += BtnRecibido_Click;
@@ -242,7 +242,7 @@
             BtnCancelarCompra.Name = "BtnCancelarCompra";
             BtnCancelarCompra.NoAccentTextColor = Color.Empty;
             BtnCancelarCompra.Size = new Size(96, 36);
-            BtnCancelarCompra.TabIndex = 18;
+            BtnCancelarCompra.TabIndex = 7;
             BtnCancelarCompra.Text = "Cancelar";
             BtnCancelarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnCancelarCompra.UseAccentColor = false;
@@ -263,7 +263,7 @@
             BtnRegistrarCompra.Name = "BtnRegistrarCompra";
             BtnRegistrarCompra.NoAccentTextColor = Color.Empty;
             BtnRegistrarCompra.Size = new Size(237, 36);
-            BtnRegistrarCompra.TabIndex = 19;
+            BtnRegistrarCompra.TabIndex = 6;
             BtnRegistrarCompra.Text = "Registrar Orden de Compra";
             BtnRegistrarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnRegistrarCompra.UseAccentColor = false;
@@ -288,6 +288,7 @@
             lstClientes.OwnerDraw = true;
             lstClientes.Size = new Size(521, 318);
             lstClientes.TabIndex = 17;
+            lstClientes.TabStop = false;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
             // 

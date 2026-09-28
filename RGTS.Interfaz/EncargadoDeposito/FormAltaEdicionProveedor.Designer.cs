@@ -53,6 +53,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             // 
             // panel1
             // 
+            panel1.BackColor = Color.FromArgb(255, 255, 255);
             panel1.Controls.Add(TextBoxEmailProveedor);
             panel1.Controls.Add(LabelProveedorEmail);
             panel1.Controls.Add(ComboBoxTipoProveedor);
@@ -71,9 +72,15 @@ namespace RGTS.Interfaz.EncargadoDeposito
             panel1.Controls.Add(LabelProveedorTipoProveedor);
             panel1.Controls.Add(LabelProveedorNombreComercial);
             panel1.Controls.Add(LabelProveedorRSocial);
-            panel1.Location = new Point(6, 12);
+            panel1.Depth = 0;
+            panel1.Dock = DockStyle.Fill;
+            panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            panel1.Location = new Point(3, 0);
+            panel1.Margin = new Padding(14);
+            panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
-            panel1.Size = new Size(567, 515);
+            panel1.Padding = new Padding(14);
+            panel1.Size = new Size(573, 553);
             panel1.TabIndex = 0;
             // 
             // TextBoxEmailProveedor
@@ -84,8 +91,9 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxEmailProveedor.Depth = 0;
             TextBoxEmailProveedor.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxEmailProveedor.HideSelection = true;
+            TextBoxEmailProveedor.Hint = "Opcional";
             TextBoxEmailProveedor.LeadingIcon = null;
-            TextBoxEmailProveedor.Location = new Point(10, 237);
+            TextBoxEmailProveedor.Location = new Point(307, 427);
             TextBoxEmailProveedor.MaxLength = 32767;
             TextBoxEmailProveedor.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxEmailProveedor.Name = "TextBoxEmailProveedor";
@@ -98,7 +106,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxEmailProveedor.SelectionStart = 0;
             TextBoxEmailProveedor.ShortcutsEnabled = true;
             TextBoxEmailProveedor.Size = new Size(250, 48);
-            TextBoxEmailProveedor.TabIndex = 5;
+            TextBoxEmailProveedor.TabIndex = 9;
             TextBoxEmailProveedor.TextAlign = HorizontalAlignment.Left;
             TextBoxEmailProveedor.TrailingIcon = null;
             TextBoxEmailProveedor.UseSystemPasswordChar = false;
@@ -108,11 +116,11 @@ namespace RGTS.Interfaz.EncargadoDeposito
             LabelProveedorEmail.AutoSize = true;
             LabelProveedorEmail.Depth = 0;
             LabelProveedorEmail.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelProveedorEmail.Location = new Point(10, 215);
+            LabelProveedorEmail.Location = new Point(309, 405);
             LabelProveedorEmail.MouseState = MaterialSkin.MouseState.HOVER;
             LabelProveedorEmail.Name = "LabelProveedorEmail";
             LabelProveedorEmail.Size = new Size(128, 19);
-            LabelProveedorEmail.TabIndex = 15;
+            LabelProveedorEmail.TabIndex = 9;
             LabelProveedorEmail.Text = "Email de contacto";
             // 
             // ComboBoxTipoProveedor
@@ -145,13 +153,13 @@ namespace RGTS.Interfaz.EncargadoDeposito
             BtnProveedorCancelar.Depth = 0;
             BtnProveedorCancelar.HighEmphasis = true;
             BtnProveedorCancelar.Icon = null;
-            BtnProveedorCancelar.Location = new Point(369, 467);
+            BtnProveedorCancelar.Location = new Point(371, 497);
             BtnProveedorCancelar.Margin = new Padding(4, 6, 4, 6);
             BtnProveedorCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             BtnProveedorCancelar.Name = "BtnProveedorCancelar";
             BtnProveedorCancelar.NoAccentTextColor = Color.Empty;
             BtnProveedorCancelar.Size = new Size(96, 36);
-            BtnProveedorCancelar.TabIndex = 10;
+            BtnProveedorCancelar.TabIndex = 11;
             BtnProveedorCancelar.Text = "Cancelar";
             BtnProveedorCancelar.Type = MaterialButton.MaterialButtonType.Outlined;
             BtnProveedorCancelar.UseAccentColor = false;
@@ -166,13 +174,13 @@ namespace RGTS.Interfaz.EncargadoDeposito
             BtnGuardarProveedor.Depth = 0;
             BtnGuardarProveedor.HighEmphasis = true;
             BtnGuardarProveedor.Icon = null;
-            BtnGuardarProveedor.Location = new Point(469, 467);
+            BtnGuardarProveedor.Location = new Point(475, 497);
             BtnGuardarProveedor.Margin = new Padding(4, 6, 4, 6);
             BtnGuardarProveedor.MouseState = MaterialSkin.MouseState.HOVER;
             BtnGuardarProveedor.Name = "BtnGuardarProveedor";
             BtnGuardarProveedor.NoAccentTextColor = Color.Empty;
             BtnGuardarProveedor.Size = new Size(88, 36);
-            BtnGuardarProveedor.TabIndex = 9;
+            BtnGuardarProveedor.TabIndex = 10;
             BtnGuardarProveedor.Text = "Guardar";
             BtnGuardarProveedor.Type = MaterialButton.MaterialButtonType.Contained;
             BtnGuardarProveedor.UseAccentColor = false;
@@ -186,7 +194,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorDireccion.CharacterCasing = CharacterCasing.Normal;
             TextBoxProveedorDireccion.Depth = 0;
             TextBoxProveedorDireccion.HideSelection = true;
-            TextBoxProveedorDireccion.Location = new Point(10, 333);
+            TextBoxProveedorDireccion.Location = new Point(10, 237);
             TextBoxProveedorDireccion.MaxLength = 32767;
             TextBoxProveedorDireccion.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxProveedorDireccion.Name = "TextBoxProveedorDireccion";
@@ -198,7 +206,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorDireccion.SelectionStart = 0;
             TextBoxProveedorDireccion.ShortcutsEnabled = true;
             TextBoxProveedorDireccion.Size = new Size(250, 170);
-            TextBoxProveedorDireccion.TabIndex = 8;
+            TextBoxProveedorDireccion.TabIndex = 5;
             TextBoxProveedorDireccion.TextAlign = HorizontalAlignment.Left;
             TextBoxProveedorDireccion.UseSystemPasswordChar = false;
             // 
@@ -210,6 +218,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorApellido.Depth = 0;
             TextBoxProveedorApellido.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxProveedorApellido.HideSelection = true;
+            TextBoxProveedorApellido.Hint = "Opcional";
             TextBoxProveedorApellido.LeadingIcon = null;
             TextBoxProveedorApellido.Location = new Point(307, 333);
             TextBoxProveedorApellido.MaxLength = 32767;
@@ -224,7 +233,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorApellido.SelectionStart = 0;
             TextBoxProveedorApellido.ShortcutsEnabled = true;
             TextBoxProveedorApellido.Size = new Size(250, 48);
-            TextBoxProveedorApellido.TabIndex = 7;
+            TextBoxProveedorApellido.TabIndex = 8;
             TextBoxProveedorApellido.TextAlign = HorizontalAlignment.Left;
             TextBoxProveedorApellido.TrailingIcon = null;
             TextBoxProveedorApellido.UseSystemPasswordChar = false;
@@ -237,6 +246,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorNombre.Depth = 0;
             TextBoxProveedorNombre.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxProveedorNombre.HideSelection = true;
+            TextBoxProveedorNombre.Hint = "Opcional";
             TextBoxProveedorNombre.LeadingIcon = null;
             TextBoxProveedorNombre.Location = new Point(307, 237);
             TextBoxProveedorNombre.MaxLength = 32767;
@@ -251,7 +261,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             TextBoxProveedorNombre.SelectionStart = 0;
             TextBoxProveedorNombre.ShortcutsEnabled = true;
             TextBoxProveedorNombre.Size = new Size(250, 48);
-            TextBoxProveedorNombre.TabIndex = 6;
+            TextBoxProveedorNombre.TabIndex = 7;
             TextBoxProveedorNombre.TextAlign = HorizontalAlignment.Left;
             TextBoxProveedorNombre.TrailingIcon = null;
             TextBoxProveedorNombre.UseSystemPasswordChar = false;
@@ -342,7 +352,7 @@ namespace RGTS.Interfaz.EncargadoDeposito
             LabelProveedorDireccion.AutoSize = true;
             LabelProveedorDireccion.Depth = 0;
             LabelProveedorDireccion.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelProveedorDireccion.Location = new Point(10, 311);
+            LabelProveedorDireccion.Location = new Point(10, 215);
             LabelProveedorDireccion.MouseState = MaterialSkin.MouseState.HOVER;
             LabelProveedorDireccion.Name = "LabelProveedorDireccion";
             LabelProveedorDireccion.Size = new Size(71, 19);
@@ -421,14 +431,14 @@ namespace RGTS.Interfaz.EncargadoDeposito
             LabelProveedorRSocial.TabIndex = 11;
             LabelProveedorRSocial.Text = "Razón social";
             // 
-            // FormAgregarProveedor
+            // FormAltaEdicionProveedor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(579, 536);
+            ClientSize = new Size(579, 556);
             Controls.Add(panel1);
             FormStyle = FormStyles.StatusAndActionBar_None;
-            Name = "FormAgregarProveedor";
+            Name = "FormAltaEdicionProveedor";
             Padding = new Padding(3, 0, 3, 3);
             Sizable = false;
             panel1.ResumeLayout(false);

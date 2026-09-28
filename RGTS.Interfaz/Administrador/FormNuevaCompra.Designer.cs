@@ -51,7 +51,6 @@
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.FromArgb(255, 255, 255);
             panel2.Controls.Add(TxtBuscarProveedor);
             panel2.Controls.Add(labelTitulo);
@@ -66,13 +65,14 @@
             panel2.Controls.Add(BtnRegistrarCompra);
             panel2.Controls.Add(lstClientes);
             panel2.Depth = 0;
+            panel2.Dock = DockStyle.Fill;
             panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel2.Location = new Point(4, 5);
+            panel2.Location = new Point(3, 0);
             panel2.Margin = new Padding(12, 10, 12, 10);
             panel2.MouseState = MaterialSkin.MouseState.HOVER;
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12, 10, 12, 10);
-            panel2.Size = new Size(848, 520);
+            panel2.Size = new Size(850, 528);
             panel2.TabIndex = 4;
             // 
             // TxtBuscarProveedor
@@ -115,7 +115,7 @@
             LTotal.Depth = 0;
             LTotal.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
             LTotal.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            LTotal.Location = new Point(596, 432);
+            LTotal.Location = new Point(598, 440);
             LTotal.MouseState = MaterialSkin.MouseState.HOVER;
             LTotal.Name = "LTotal";
             LTotal.Size = new Size(102, 24);
@@ -236,7 +236,7 @@
             BtnCancelarCompra.Depth = 0;
             BtnCancelarCompra.HighEmphasis = true;
             BtnCancelarCompra.Icon = null;
-            BtnCancelarCompra.Location = new Point(493, 470);
+            BtnCancelarCompra.Location = new Point(495, 478);
             BtnCancelarCompra.Margin = new Padding(4);
             BtnCancelarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelarCompra.Name = "BtnCancelarCompra";
@@ -257,7 +257,7 @@
             BtnRegistrarCompra.Depth = 0;
             BtnRegistrarCompra.HighEmphasis = true;
             BtnRegistrarCompra.Icon = null;
-            BtnRegistrarCompra.Location = new Point(596, 470);
+            BtnRegistrarCompra.Location = new Point(598, 478);
             BtnRegistrarCompra.Margin = new Padding(4);
             BtnRegistrarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             BtnRegistrarCompra.Name = "BtnRegistrarCompra";
@@ -286,7 +286,7 @@
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(519, 310);
+            lstClientes.Size = new Size(521, 318);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;

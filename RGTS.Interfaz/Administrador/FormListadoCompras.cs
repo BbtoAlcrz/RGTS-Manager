@@ -11,27 +11,21 @@ namespace RGTS.Interfaz.Administrador
     public partial class FormListadoCompras : MaterialForm
     {
         private readonly CompraServicio _compraServicio;
+        private readonly ProveedorServicio _proveedorServicio;
         private readonly BuscadorSugerencias _buscadorProveedor;
         private Proveedor? _proveedorFiltroSeleccionado;
         private readonly Panel pnlEdicionContenedor = new();
-
-        // Proveedores de prueba en memoria para el buscador de sugerencias
-        private readonly List<Proveedor> _proveedores = new()
-        {
-            new Proveedor { IdProveedor = 1, NombreComercial = "TechImport SA" },
-            new Proveedor { IdProveedor = 2, NombreComercial = "Gamer Distribuidora" },
-            new Proveedor { IdProveedor = 3, NombreComercial = "ElectroSur" }
-        };
 
         public FormListadoCompras()
         {
             InitializeComponent();
 
             _compraServicio = new CompraServicio();
+            _proveedorServicio = new ProveedorServicio();
 
-            // Configurar panel superpuesto para subformularios integrados
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
+
             Controls.Add(pnlEdicionContenedor);
             pnlEdicionContenedor.BringToFront();
 
@@ -58,6 +52,7 @@ namespace RGTS.Interfaz.Administrador
             lstClientes.FullRowSelect = true;
             lstClientes.MultiSelect = false;
             lstClientes.GridLines = true;
+            lstClientes.HideSelection = false;
         }
 
         
@@ -100,7 +95,7 @@ namespace RGTS.Interfaz.Administrador
             {
                 var compraSeleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
 
-                // Ver detalle siempre habilitado si hay selección
+                // Ver detalle siempre disponible al haber selección
                 BtnDetalleComp.Enabled = true;
 
                 // Solo se pueden recibir o cancelar compras en estado Pendiente
@@ -116,7 +111,7 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
-    
+        
 
         private void TxtFiltroProveedor_TextChanged(object? sender, EventArgs e)
         {
@@ -130,10 +125,8 @@ namespace RGTS.Interfaz.Administrador
                 return;
             }
 
-            var coincidencias = _proveedores
-                .Where(p => p.NombreComercial.Contains(texto, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
+            // Consulta directamente al catálogo en memoria de ProveedorServicio
+            var coincidencias = _proveedorServicio.ObtenerTodos(texto);
             var textos = coincidencias.Select(p => p.NombreComercial).ToList();
 
             _buscadorProveedor.Mostrar(TxtFiltroProveedor, textos, indice =>
@@ -153,10 +146,11 @@ namespace RGTS.Interfaz.Administrador
             RefrescarGrilla();
         }
 
+        
 
         private void BtnNuevaCompra_Click(object sender, EventArgs e)
         {
-            MostrarSubVentana(new FormNuevaCompra());
+            FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormNuevaCompra());
         }
 
         private void BtnDetalleComp_Click(object sender, EventArgs e)
@@ -166,7 +160,7 @@ namespace RGTS.Interfaz.Administrador
             var seleccionada = (Compra)lstClientes.SelectedItems[0].Tag;
             List<DetalleCompra> detalles = _compraServicio.ObtenerDetallesPorCompra(seleccionada.IdCompra);
 
-            MostrarSubVentana(new FormDetalleCompra(seleccionada, detalles));
+            FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormDetalleCompra(seleccionada, detalles));
         }
 
         private void BtnRecibido_Click(object sender, EventArgs e)
@@ -225,25 +219,6 @@ namespace RGTS.Interfaz.Administrador
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-
-        private void MostrarSubVentana(Form subFormulario)
-        {
-            pnlEdicionContenedor.Controls.Clear();
-            subFormulario.TopLevel = false;
-            subFormulario.FormBorderStyle = FormBorderStyle.None;
-            subFormulario.Dock = DockStyle.Fill;
-            subFormulario.FormClosed += (s, args) =>
-            {
-                pnlEdicionContenedor.Visible = false;
-                pnlEdicionContenedor.Controls.Clear();
-                RefrescarGrilla();
-            };
-            pnlEdicionContenedor.Controls.Add(subFormulario);
-            pnlEdicionContenedor.Visible = true;
-            pnlEdicionContenedor.BringToFront();
-            subFormulario.Show();
         }
     }
 }

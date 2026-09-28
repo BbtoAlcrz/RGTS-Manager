@@ -1,81 +1,56 @@
-﻿using MaterialSkin.Controls;
-using RGTS.Entidades;
-using RGTS.LogicaNegocio;
-using RGTS.LogicaNegocio.Servicios;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
+using RGTS.Entidades;
+using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.EncargadoDeposito
 {
     public partial class FormListadoProveedores : MaterialForm
     {
+        private readonly ProveedorServicio _proveedorServicio;
         private readonly Panel pnlEdicionContenedor = new();
-
-        // Lista de proveedores fijo
-        private readonly List<Proveedor> _proveedores = new List<Proveedor>
-        {
-            new Proveedor
-            {
-                IdProveedor = 1,
-                RazonSocial = "TechImport S.A.",
-                NombreComercial = "TechImport SA",
-                TipoProveedor = "Consolas de Mesa",
-                Telefono = "11-4567-8901",
-                Email = "contacto@techimport.com",
-                NombreContacto = "Martín",
-                ApellidoContacto = "Pérez",
-                Direccion = "Av. Corrientes 1234, CABA",
-                Activo = true
-            },
-            new Proveedor
-            {
-                IdProveedor = 2,
-                RazonSocial = "Distribuidora Gamer S.R.L.",
-                NombreComercial = "Gamer Distribuidora",
-                TipoProveedor = "Mandos",
-                Telefono = "11-9876-5432",
-                Email = "ventas@gamerdist.com",
-                NombreContacto = "Gonzalo",
-                ApellidoContacto = "Rodríguez",
-                Direccion = "Belgrano 456, Rosario",
-                Activo = true
-            },
-            new Proveedor
-            {
-                IdProveedor = 3,
-                RazonSocial = "ElectroSur Argentina S.A.",
-                NombreComercial = "ElectroSur",
-                TipoProveedor = "Accesorios",
-                Telefono = "379-412-3456",
-                Email = "info@electrosur.com",
-                NombreContacto = "Claudia",
-                ApellidoContacto = "Fernández",
-                Direccion = "Junín 789, Corrientes",
-                Activo = true
-            }
-        };
 
         public FormListadoProveedores()
         {
             InitializeComponent();
+
+            _proveedorServicio = new ProveedorServicio();
+
+            // Configurar contenedor de subformularios
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
             Controls.Add(pnlEdicionContenedor);
             pnlEdicionContenedor.BringToFront();
 
-            // Estado inicial de botones que dependen de selección
+            ConfigurarControles();
+            ConfigurarPermisosPorRol();
+            CargarProveedores();
+        }
+
+        private void ConfigurarControles()
+        {
+            materialListView1.View = View.Details;
+            materialListView1.FullRowSelect = true;
+            materialListView1.MultiSelect = false;
+            materialListView1.GridLines = true;
+            materialListView1.HideSelection = false;
+
             BtnEditarProveedor.Enabled = false;
             BtnVerDetalleProveedor.Enabled = false;
+            BtnCambiarEstado.Enabled = false;
+            BtnCambiarEstado.Text = "Deshabilitar";
+        }
 
-            // Eventos
-            TextBoxBuscarProveedor.TextChanged += TextBoxBuscarProveedor_TextChanged;
-            materialListView1.SelectedIndexChanged += MaterialListView1_SelectedIndexChanged;
-            BtnVerDetalleProveedor.Click += BtnVerDetalleProveedor_Click;
+        private void ConfigurarPermisosPorRol()
+        {
+            bool puedeGestionar = FormPrincipal.RolSesion == "Administrador"
+                               || FormPrincipal.RolSesion == "Encargado de Deposito";
 
-            CargarProveedores();
-            ConfigurarPermisosPorRol();
+            BtnAgregarProveedor.Visible = puedeGestionar;
+            BtnEditarProveedor.Visible = puedeGestionar;
+            BtnCambiarEstado.Visible = puedeGestionar;
         }
 
         private void CargarProveedores(string? criterioBusqueda = null)
@@ -83,22 +58,14 @@ namespace RGTS.Interfaz.EncargadoDeposito
             materialListView1.BeginUpdate();
             materialListView1.Items.Clear();
 
-            // Deshabilitar botones de acción al recargar/filtrar
             BtnEditarProveedor.Enabled = false;
             BtnVerDetalleProveedor.Enabled = false;
+            BtnCambiarEstado.Enabled = false;
+            BtnCambiarEstado.Text = "Deshabilitar";
 
-            IEnumerable<Proveedor> listaFiltrada = _proveedores;
+            List<Proveedor> listaProveedores = _proveedorServicio.ObtenerTodos(criterioBusqueda);
 
-            if (!string.IsNullOrWhiteSpace(criterioBusqueda))
-            {
-                string filtro = criterioBusqueda.Trim().ToLower();
-                listaFiltrada = _proveedores.Where(p =>
-                    (!string.IsNullOrEmpty(p.RazonSocial) && p.RazonSocial.ToLower().Contains(filtro)) ||
-                    (!string.IsNullOrEmpty(p.NombreComercial) && p.NombreComercial.ToLower().Contains(filtro))
-                );
-            }
-
-            foreach (var prov in listaFiltrada)
+            foreach (var prov in listaProveedores)
             {
                 var item = new ListViewItem(prov.IdProveedor.ToString());
                 item.SubItems.Add(prov.RazonSocial);
@@ -114,15 +81,6 @@ namespace RGTS.Interfaz.EncargadoDeposito
             materialListView1.EndUpdate();
         }
 
-        private void ConfigurarPermisosPorRol()
-        {
-            bool puedeGestionar = FormPrincipal.RolSesion == "Administrador";
-
-            BtnAgregarProveedor.Visible = puedeGestionar;
-            BtnEditarProveedor.Visible = puedeGestionar;
-            BtnCambiarEstado.Visible = puedeGestionar;
-        }
-
         private void TextBoxBuscarProveedor_TextChanged(object? sender, EventArgs e)
         {
             CargarProveedores(TextBoxBuscarProveedor.Text);
@@ -133,16 +91,17 @@ namespace RGTS.Interfaz.EncargadoDeposito
             bool haySeleccion = materialListView1.SelectedItems.Count > 0;
             BtnEditarProveedor.Enabled = haySeleccion;
             BtnVerDetalleProveedor.Enabled = haySeleccion;
+            BtnCambiarEstado.Enabled = haySeleccion;
+
             if (!haySeleccion)
             {
-                BtnCambiarEstado.Text = "Estado";
+                BtnCambiarEstado.Text = "Deshabilitar";
                 return;
             }
 
             var proveedor = (Proveedor)materialListView1.SelectedItems[0].Tag;
             BtnCambiarEstado.Text = proveedor.Activo ? "Deshabilitar" : "Habilitar";
         }
-        
 
         private void MostrarSubVentana(Form subFormulario)
         {
@@ -150,56 +109,54 @@ namespace RGTS.Interfaz.EncargadoDeposito
             subFormulario.TopLevel = false;
             subFormulario.FormBorderStyle = FormBorderStyle.None;
             subFormulario.Dock = DockStyle.Fill;
+
             subFormulario.FormClosed += (s, args) =>
             {
                 pnlEdicionContenedor.Visible = false;
                 pnlEdicionContenedor.Controls.Clear();
                 CargarProveedores(TextBoxBuscarProveedor.Text);
             };
+
             pnlEdicionContenedor.Controls.Add(subFormulario);
             pnlEdicionContenedor.Visible = true;
             pnlEdicionContenedor.BringToFront();
             subFormulario.Show();
         }
 
-        private void BtnAgregarProveedor_Click(object sender, EventArgs e)
+        private void BtnAgregarProveedor_Click(object? sender, EventArgs e)
         {
             MostrarSubVentana(new FormAltaEdicionProveedor());
         }
 
-        private void BtnEditarProveedor_Click(object sender, EventArgs e)
+        private void BtnEditarProveedor_Click(object? sender, EventArgs e)
         {
-            if (materialListView1.SelectedItems.Count > 0)
-            {
-                var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
-                MostrarSubVentana(new FormAltaEdicionProveedor(provSeleccionado));
-            }
+            if (materialListView1.SelectedItems.Count == 0) return;
+
+            var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
+            MostrarSubVentana(new FormAltaEdicionProveedor(provSeleccionado));
         }
 
         private void BtnVerDetalleProveedor_Click(object? sender, EventArgs e)
         {
-            if (materialListView1.SelectedItems.Count > 0)
-            {
-                var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
-                MostrarSubVentana(new FormDetalleProveedor(provSeleccionado));
-            }
+            if (materialListView1.SelectedItems.Count == 0) return;
+
+            var provSeleccionado = (Proveedor)materialListView1.SelectedItems[0].Tag;
+            MostrarSubVentana(new FormDetalleProveedor(provSeleccionado));
         }
 
-        private void btnCambiarEstado_Click(object sender, EventArgs e)
+        private void btnCambiarEstado_Click(object? sender, EventArgs e)
         {
             if (materialListView1.SelectedItems.Count == 0) return;
 
             var proveedor = (Proveedor)materialListView1.SelectedItems[0].Tag;
-
             bool nuevoEstado = !proveedor.Activo;
             string accion = nuevoEstado ? "Habilita" : "Deshabilita";
 
-            // Confirmación con foco predeterminado en 'No'
             DialogResult confirmacion = MessageBox.Show(
-                $"¿Está seguro de que desea {accion.ToLower()}r el siguiente proveedor?\n\n" +
-                $" Razón Social: {proveedor.RazonSocial}\n" +
-                $" Nombre Comercial: {proveedor.NombreComercial}\n",
-                $"Confirmar {accion}do",
+                $"¿Está seguro de que desea {accion.ToLower()}r al siguiente proveedor?\n\n" +
+                $"- Razón Social: {proveedor.RazonSocial}\n" +
+                $"- Nombre Comercial: {proveedor.NombreComercial}\n",
+                $"Confirmar {accion}",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2
@@ -209,15 +166,12 @@ namespace RGTS.Interfaz.EncargadoDeposito
             {
                 try
                 {
-                    // No hay servicio/repositorio en este formulario: se modifica directo
-                    // el objeto en memoria dentro de _proveedores (misma lista que alimenta la grilla)
-                    proveedor.Activo = nuevoEstado;
-
+                    _proveedorServicio.CambiarEstadoProveedor(proveedor.IdProveedor, nuevoEstado);
                     MessageBox.Show($"Proveedor {accion.ToLower()}do correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al modificar estado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al modificar estado: {ex.Message}r", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {

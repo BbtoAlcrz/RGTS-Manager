@@ -1,11 +1,6 @@
-﻿using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
 
@@ -15,16 +10,15 @@ namespace RGTS.Interfaz.EncargadoDeposito
     {
         private readonly ProveedorServicio _proveedorServicio;
         private readonly Proveedor? _proveedorEditar;
-        
         private readonly bool _esEdicion;
 
         public FormAltaEdicionProveedor()
         {
             InitializeComponent();
-            Sizable = false;
-            FormStyle = FormStyles.StatusAndActionBar_None;
+
             _proveedorServicio = new ProveedorServicio();
             _esEdicion = false;
+
             CargarComboTipoProveedor();
             ConfigurarModo();
         }
@@ -33,20 +27,20 @@ namespace RGTS.Interfaz.EncargadoDeposito
         {
             _proveedorEditar = proveedor;
             _esEdicion = true;
+
             ConfigurarModo();
             CargarDatos();
         }
-
 
         private void CargarComboTipoProveedor()
         {
             var tiposProveedor = new[]
             {
-                new {Nombre = "Consolas de Mesa"},
-                new {Nombre = "Consolas Portátiles"},
-                new {Nombre = "Mandos"},
-                new {Nombre = "Accesorios"},
-                new {Nombre = "Otros"},
+                new { Nombre = "Consolas de Mesa" },
+                new { Nombre = "Consolas Portátiles" },
+                new { Nombre = "Mandos" },
+                new { Nombre = "Accesorios" },
+                new { Nombre = "Otros" }
             };
 
             ComboBoxTipoProveedor.DataSource = tiposProveedor;
@@ -59,13 +53,13 @@ namespace RGTS.Interfaz.EncargadoDeposito
         {
             if (_esEdicion)
             {
-                this.Text = "Editar Proveedor";
+                Text = "Editar Proveedor";
                 BtnGuardarProveedor.Text = "Guardar";
             }
             else
             {
-            this.Text = "Agregar Proveedor";
-            BtnGuardarProveedor.Text = "Agregar";
+                Text = "Agregar Proveedor";
+                BtnGuardarProveedor.Text = "Agregar";
             }
         }
 
@@ -88,30 +82,36 @@ namespace RGTS.Interfaz.EncargadoDeposito
         {
             try
             {
-                // lógica para guardar o actualizar datos de proveedor
-                string? tipoProveedorSeleccionado = ComboBoxTipoProveedor.SelectedValue?.ToString();
+                string tipoProveedor = ComboBoxTipoProveedor.SelectedValue?.ToString()
+                                       ?? ComboBoxTipoProveedor.Text.Trim();
 
-                if (_esEdicion)
+                if (string.IsNullOrWhiteSpace(tipoProveedor))
                 {
-                    //logica de edicion
+                    throw new ArgumentException("Debe seleccionar un rubro o tipo de proveedor.");
+                }
+
+                if (_esEdicion && _proveedorEditar != null)
+                {
                     _proveedorServicio.ModificarProveedor(
+                        _proveedorEditar.IdProveedor,
                         TextBoxProveedorRazonSocial.Text,
                         TextBoxProveedorNombreComercial.Text,
-                        ComboBoxTipoProveedor.Text,
+                        tipoProveedor,
                         TextBoxProveedorTelefono.Text,
                         TextBoxEmailProveedor.Text,
                         TextBoxProveedorNombre.Text,
                         TextBoxProveedorApellido.Text,
                         TextBoxProveedorDireccion.Text
                     );
-                    MessageBox.Show("El Proveedor ha sido actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MessageBox.Show("El proveedor ha sido actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     _proveedorServicio.RegistrarProveedor(
                         TextBoxProveedorRazonSocial.Text,
                         TextBoxProveedorNombreComercial.Text,
-                        ComboBoxTipoProveedor.Text,
+                        tipoProveedor,
                         TextBoxProveedorTelefono.Text,
                         TextBoxEmailProveedor.Text,
                         TextBoxProveedorNombre.Text,
@@ -119,18 +119,23 @@ namespace RGTS.Interfaz.EncargadoDeposito
                         TextBoxProveedorDireccion.Text
                     );
 
-                    MessageBox.Show("El Proveedor se registró correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("El proveedor se registró correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
+                // Cierra la subventana, refresca la grilla
                 this.Close();
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message, "Datos inválidos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Datos Inválidos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error inesperado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

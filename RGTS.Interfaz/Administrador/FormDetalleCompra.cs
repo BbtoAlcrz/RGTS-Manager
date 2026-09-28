@@ -72,7 +72,7 @@ namespace RGTS.Interfaz.Administrador
 
         private void BtnVolver_Click(object sender, EventArgs e)
         {
-            this.Close(); // Dispara FormClosed en FormListadoCompras y vuelve a mostrar la grilla
+            FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoCompras());
         }
     }
 }

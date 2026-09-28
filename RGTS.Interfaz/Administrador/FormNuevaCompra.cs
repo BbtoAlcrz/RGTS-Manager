@@ -12,6 +12,7 @@ namespace RGTS.Interfaz.Administrador
     {
         private readonly CompraServicio _compraServicio;
         private readonly ProductoServicio _productoServicio;
+        private readonly ProveedorServicio _proveedorServicio;
         private readonly BuscadorSugerencias _buscadorProveedor;
         private readonly BuscadorSugerencias _buscadorProducto;
 
@@ -19,26 +20,19 @@ namespace RGTS.Interfaz.Administrador
         private readonly List<DetalleCompra> _detalle = new();
         private int _correlativoDetalle = 1;
 
-        // Lista de proveedores en memoria sincronizada para la búsqueda
-        private readonly List<Proveedor> _proveedores = new()
-        {
-            new Proveedor { IdProveedor = 1, RazonSocial = "TechImport S.A.", NombreComercial = "TechImport SA", Activo = true },
-            new Proveedor { IdProveedor = 2, RazonSocial = "Distribuidora Gamer S.R.L.", NombreComercial = "Gamer Distribuidora", Activo = true },
-            new Proveedor { IdProveedor = 3, RazonSocial = "ElectroSur Argentina S.A.", NombreComercial = "ElectroSur", Activo = true }
-        };
-
         public FormNuevaCompra()
         {
             InitializeComponent();
 
-            Sizable = false;
-            FormStyle = FormStyles.StatusAndActionBar_None;
-
             _compraServicio = new CompraServicio();
             _productoServicio = new ProductoServicio();
+            _proveedorServicio = new ProveedorServicio();
 
             _buscadorProveedor = new BuscadorSugerencias(this);
             _buscadorProducto = new BuscadorSugerencias(this);
+
+            TxtBuscarProveedor.TextChanged += TxtBuscarProveedor_TextChanged;
+            TxtBuscarCoN.TextChanged += TxtBuscarCoN_TextChanged;
         }
 
         private void FormNuevaCompra_Load(object sender, EventArgs e)
@@ -51,7 +45,6 @@ namespace RGTS.Interfaz.Administrador
             ActualizarGrillaDetalle();
         }
 
-
         private void TxtBuscarProveedor_TextChanged(object? sender, EventArgs e)
         {
             string texto = TxtBuscarProveedor.Text.Trim();
@@ -62,8 +55,8 @@ namespace RGTS.Interfaz.Administrador
                 return;
             }
 
-            var coincidencias = _proveedores
-                .Where(p => p.Activo && p.NombreComercial.Contains(texto, StringComparison.OrdinalIgnoreCase))
+            var coincidencias = _proveedorServicio.ObtenerTodos(texto)
+                .Where(p => p.Activo)
                 .ToList();
 
             var textos = coincidencias.Select(p => p.NombreComercial).ToList();
@@ -75,8 +68,6 @@ namespace RGTS.Interfaz.Administrador
             });
         }
 
-        
-
         private void TxtBuscarCoN_TextChanged(object? sender, EventArgs e)
         {
             string texto = TxtBuscarCoN.Text.Trim();
@@ -86,9 +77,7 @@ namespace RGTS.Interfaz.Administrador
                 return;
             }
 
-            // Consulta directamente a los productos del servicio
             var coincidencias = _productoServicio.ObtenerTodos(texto);
-
             var textos = coincidencias.Select(p => $"{p.Nombre} ({p.Codigo})").ToList();
 
             _buscadorProducto.Mostrar(TxtBuscarCoN, textos, indice =>
@@ -96,7 +85,6 @@ namespace RGTS.Interfaz.Administrador
                 TxtBuscarCoN.Text = coincidencias[indice].Codigo;
             });
         }
-
 
         private void BtnRecibido_Click(object sender, EventArgs e)
         {
@@ -112,7 +100,6 @@ namespace RGTS.Interfaz.Administrador
                 if (!int.TryParse(TxtCantidad.Text.Trim(), out int cantidad))
                     throw new ArgumentException("Ingrese una cantidad numérica válida.");
 
-                // Obtener el producto desde el catálogo central
                 Producto? producto = _productoServicio.ObtenerTodos(busqueda)
                     .FirstOrDefault(p => p.Codigo.Equals(busqueda, StringComparison.OrdinalIgnoreCase) ||
                                          p.Nombre.Contains(busqueda, StringComparison.OrdinalIgnoreCase));
@@ -120,7 +107,6 @@ namespace RGTS.Interfaz.Administrador
                 if (producto == null)
                     throw new ArgumentException("No se encontró ningún producto con ese código o nombre.");
 
-                // Validar y construir detalle a través de CompraServicio
                 var nuevoItem = _compraServicio.ValidarYArmarItem(
                     _proveedorSeleccionado.IdProveedor, producto, busqueda, costoUnitario, cantidad, _correlativoDetalle);
 
@@ -128,7 +114,7 @@ namespace RGTS.Interfaz.Administrador
                 if (existente != null)
                 {
                     existente.Cantidad += cantidad;
-                    existente.CostoUnitario = costoUnitario; // actualiza costo si se ajustó
+                    existente.CostoUnitario = costoUnitario;
                 }
                 else
                 {
@@ -179,7 +165,6 @@ namespace RGTS.Interfaz.Administrador
             TxtCantidad.Clear();
         }
 
-
         private void BtnRegistrarCompra_Click(object sender, EventArgs e)
         {
             try
@@ -187,16 +172,13 @@ namespace RGTS.Interfaz.Administrador
                 if (_proveedorSeleccionado == null)
                     throw new ArgumentException("Debe seleccionar un proveedor.");
 
-                // Obtener el identificador del usuario en sesión o el asignado por defecto
                 string usuario = FormPrincipal.UsuarioSesion?.NombreCompleto ?? "Encargado Depósito";
-
-                // Persistir la compra en la lista compartida de CompraServicio
                 _compraServicio.RegistrarCompra(usuario, _proveedorSeleccionado, _detalle);
 
                 MessageBox.Show("Orden de compra registrada correctamente en estado Pendiente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                this.Close(); // Cierra el formulario y notifica al panel contenedor
+                FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoCompras());
             }
             catch (ArgumentException ex)
             {
@@ -223,7 +205,7 @@ namespace RGTS.Interfaz.Administrador
                 if (rta != DialogResult.Yes) return;
             }
 
-            this.Close();
+            FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoCompras());
         }
     }
 }

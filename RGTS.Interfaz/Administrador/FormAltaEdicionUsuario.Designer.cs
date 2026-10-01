@@ -108,19 +108,18 @@ namespace RGTS.Interfaz.Administrador
             // 
             // BtnCancelarUsuario
             // 
-            BtnCancelarUsuario.AutoSize = false;
             BtnCancelarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnCancelarUsuario.Cursor = Cursors.Hand;
             BtnCancelarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnCancelarUsuario.Depth = 0;
             BtnCancelarUsuario.HighEmphasis = true;
             BtnCancelarUsuario.Icon = null;
-            BtnCancelarUsuario.Location = new Point(464, 389);
+            BtnCancelarUsuario.Location = new Point(531, 377);
             BtnCancelarUsuario.Margin = new Padding(4, 6, 4, 6);
             BtnCancelarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCancelarUsuario.Name = "BtnCancelarUsuario";
             BtnCancelarUsuario.NoAccentTextColor = Color.Empty;
-            BtnCancelarUsuario.Size = new Size(121, 36);
+            BtnCancelarUsuario.Size = new Size(96, 36);
             BtnCancelarUsuario.TabIndex = 14;
             BtnCancelarUsuario.Text = "Cancelar";
             BtnCancelarUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
@@ -130,19 +129,18 @@ namespace RGTS.Interfaz.Administrador
             // 
             // BtnAgregarUsuarioNuevo
             // 
-            BtnAgregarUsuarioNuevo.AutoSize = false;
             BtnAgregarUsuarioNuevo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnAgregarUsuarioNuevo.Cursor = Cursors.Hand;
             BtnAgregarUsuarioNuevo.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnAgregarUsuarioNuevo.Depth = 0;
             BtnAgregarUsuarioNuevo.HighEmphasis = true;
             BtnAgregarUsuarioNuevo.Icon = null;
-            BtnAgregarUsuarioNuevo.Location = new Point(602, 389);
+            BtnAgregarUsuarioNuevo.Location = new Point(635, 377);
             BtnAgregarUsuarioNuevo.Margin = new Padding(4, 6, 4, 6);
             BtnAgregarUsuarioNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAgregarUsuarioNuevo.Name = "BtnAgregarUsuarioNuevo";
             BtnAgregarUsuarioNuevo.NoAccentTextColor = Color.Empty;
-            BtnAgregarUsuarioNuevo.Size = new Size(121, 36);
+            BtnAgregarUsuarioNuevo.Size = new Size(88, 36);
             BtnAgregarUsuarioNuevo.TabIndex = 13;
             BtnAgregarUsuarioNuevo.Text = "Agregar";
             BtnAgregarUsuarioNuevo.Type = MaterialButton.MaterialButtonType.Contained;
@@ -159,7 +157,7 @@ namespace RGTS.Interfaz.Administrador
             TextBoxUsuarioContrasenia.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxUsuarioContrasenia.HideSelection = false;
             TextBoxUsuarioContrasenia.LeadingIcon = null;
-            TextBoxUsuarioContrasenia.Location = new Point(403, 288);
+            TextBoxUsuarioContrasenia.Location = new Point(403, 274);
             TextBoxUsuarioContrasenia.MaxLength = 32767;
             TextBoxUsuarioContrasenia.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxUsuarioContrasenia.Name = "TextBoxUsuarioContrasenia";
@@ -193,7 +191,7 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxUsuarioRol.FormattingEnabled = true;
             ComboBoxUsuarioRol.IntegralHeight = false;
             ComboBoxUsuarioRol.ItemHeight = 43;
-            ComboBoxUsuarioRol.Location = new Point(34, 287);
+            ComboBoxUsuarioRol.Location = new Point(34, 273);
             ComboBoxUsuarioRol.MaxDropDownItems = 4;
             ComboBoxUsuarioRol.MouseState = MaterialSkin.MouseState.OUT;
             ComboBoxUsuarioRol.Name = "ComboBoxUsuarioRol";
@@ -210,7 +208,7 @@ namespace RGTS.Interfaz.Administrador
             TextBoxUsuarioEmail.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxUsuarioEmail.HideSelection = true;
             TextBoxUsuarioEmail.LeadingIcon = null;
-            TextBoxUsuarioEmail.Location = new Point(403, 190);
+            TextBoxUsuarioEmail.Location = new Point(403, 185);
             TextBoxUsuarioEmail.MaxLength = 32767;
             TextBoxUsuarioEmail.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxUsuarioEmail.Name = "TextBoxUsuarioEmail";
@@ -238,7 +236,7 @@ namespace RGTS.Interfaz.Administrador
             TextBoxUsuarioDni.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TextBoxUsuarioDni.HideSelection = true;
             TextBoxUsuarioDni.LeadingIcon = null;
-            TextBoxUsuarioDni.Location = new Point(34, 190);
+            TextBoxUsuarioDni.Location = new Point(34, 185);
             TextBoxUsuarioDni.MaxLength = 32767;
             TextBoxUsuarioDni.MouseState = MaterialSkin.MouseState.OUT;
             TextBoxUsuarioDni.Name = "TextBoxUsuarioDni";
@@ -318,7 +316,7 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioContrasenia.AutoSize = true;
             LabelUsuarioContrasenia.Depth = 0;
             LabelUsuarioContrasenia.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelUsuarioContrasenia.Location = new Point(403, 266);
+            LabelUsuarioContrasenia.Location = new Point(403, 251);
             LabelUsuarioContrasenia.MouseState = MaterialSkin.MouseState.HOVER;
             LabelUsuarioContrasenia.Name = "LabelUsuarioContrasenia";
             LabelUsuarioContrasenia.Size = new Size(128, 19);
@@ -330,7 +328,7 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioRol.AutoSize = true;
             LabelUsuarioRol.Depth = 0;
             LabelUsuarioRol.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelUsuarioRol.Location = new Point(34, 265);
+            LabelUsuarioRol.Location = new Point(34, 251);
             LabelUsuarioRol.MouseState = MaterialSkin.MouseState.HOVER;
             LabelUsuarioRol.Name = "LabelUsuarioRol";
             LabelUsuarioRol.Size = new Size(24, 19);
@@ -342,7 +340,7 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioEmail.AutoSize = true;
             LabelUsuarioEmail.Depth = 0;
             LabelUsuarioEmail.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelUsuarioEmail.Location = new Point(403, 168);
+            LabelUsuarioEmail.Location = new Point(403, 163);
             LabelUsuarioEmail.MouseState = MaterialSkin.MouseState.HOVER;
             LabelUsuarioEmail.Name = "LabelUsuarioEmail";
             LabelUsuarioEmail.Size = new Size(41, 19);
@@ -378,7 +376,7 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioDni.AutoSize = true;
             LabelUsuarioDni.Depth = 0;
             LabelUsuarioDni.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LabelUsuarioDni.Location = new Point(34, 168);
+            LabelUsuarioDni.Location = new Point(34, 163);
             LabelUsuarioDni.MouseState = MaterialSkin.MouseState.HOVER;
             LabelUsuarioDni.Name = "LabelUsuarioDni";
             LabelUsuarioDni.Size = new Size(27, 19);

@@ -53,12 +53,12 @@ namespace RGTS.Interfaz.EncargadoDeposito
         {
             if (_esEdicion)
             {
-                Text = "Editar Proveedor";
+                labelTitulo.Text = "Editar Proveedor";
                 BtnGuardarProveedor.Text = "Guardar";
             }
             else
             {
-                Text = "Agregar Proveedor";
+                labelTitulo.Text = "Agregar Proveedor";
                 BtnGuardarProveedor.Text = "Agregar";
             }
         }

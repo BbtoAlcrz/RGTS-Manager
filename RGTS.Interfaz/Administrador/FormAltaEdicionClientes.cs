@@ -26,6 +26,10 @@ namespace RGTS.Interfaz.Administrador
         private void ConfigurarModo()
         {
             labelTitulo.Text = _clienteEditar == null ? "Agregar Nuevo Cliente" : "Editar Cliente";
+            if(_clienteEditar != null)
+            {
+                pictureBox1.Image = Properties.Resources.editar_usuario;
+            }
         }
 
         private void FormClientesListado_Load(object sender, EventArgs e)

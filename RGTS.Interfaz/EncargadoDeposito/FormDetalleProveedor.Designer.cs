@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             cardDetalle = new MaterialSkin.Controls.MaterialCard();
+            btnVolver = new MaterialSkin.Controls.MaterialButton();
             labelDireccionValor = new MaterialSkin.Controls.MaterialLabel();
             labelDireccionTitulo = new MaterialSkin.Controls.MaterialLabel();
             labelEmailValor = new MaterialSkin.Controls.MaterialLabel();
@@ -48,13 +49,11 @@
             labelIdValor = new MaterialSkin.Controls.MaterialLabel();
             labelIdTitulo = new MaterialSkin.Controls.MaterialLabel();
             labelTitulo = new MaterialSkin.Controls.MaterialLabel();
-            btnVolver = new MaterialSkin.Controls.MaterialButton();
             cardDetalle.SuspendLayout();
             SuspendLayout();
             // 
             // cardDetalle
             // 
-            cardDetalle.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             cardDetalle.BackColor = Color.FromArgb(255, 255, 255);
             cardDetalle.Controls.Add(btnVolver);
             cardDetalle.Controls.Add(labelDireccionValor);
@@ -77,262 +76,27 @@
             cardDetalle.Controls.Add(labelIdTitulo);
             cardDetalle.Controls.Add(labelTitulo);
             cardDetalle.Depth = 0;
+            cardDetalle.Dock = DockStyle.Fill;
             cardDetalle.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            cardDetalle.Location = new Point(2, 2);
+            cardDetalle.Location = new Point(0, 0);
             cardDetalle.Margin = new Padding(14);
             cardDetalle.MouseState = MaterialSkin.MouseState.HOVER;
             cardDetalle.Name = "cardDetalle";
             cardDetalle.Padding = new Padding(14);
-            cardDetalle.Size = new Size(796, 528);
+            cardDetalle.Size = new Size(800, 532);
             cardDetalle.TabIndex = 0;
-            // 
-            // labelDireccionValor
-            // 
-            labelDireccionValor.AutoSize = true;
-            labelDireccionValor.Depth = 0;
-            labelDireccionValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelDireccionValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelDireccionValor.Location = new Point(17, 317);
-            labelDireccionValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelDireccionValor.Name = "labelDireccionValor";
-            labelDireccionValor.Size = new Size(5, 17);
-            labelDireccionValor.TabIndex = 18;
-            labelDireccionValor.Text = "-";
-            // 
-            // labelDireccionTitulo
-            // 
-            labelDireccionTitulo.AutoSize = true;
-            labelDireccionTitulo.Depth = 0;
-            labelDireccionTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelDireccionTitulo.Location = new Point(17, 298);
-            labelDireccionTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelDireccionTitulo.Name = "labelDireccionTitulo";
-            labelDireccionTitulo.Size = new Size(67, 19);
-            labelDireccionTitulo.TabIndex = 17;
-            labelDireccionTitulo.Text = "Dirección";
-            // 
-            // labelEmailValor
-            // 
-            labelEmailValor.AutoSize = true;
-            labelEmailValor.Depth = 0;
-            labelEmailValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelEmailValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelEmailValor.Location = new Point(377, 261);
-            labelEmailValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelEmailValor.Name = "labelEmailValor";
-            labelEmailValor.Size = new Size(5, 17);
-            labelEmailValor.TabIndex = 16;
-            labelEmailValor.Text = "-";
-            // 
-            // labelEmailTitulo
-            // 
-            labelEmailTitulo.AutoSize = true;
-            labelEmailTitulo.Depth = 0;
-            labelEmailTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelEmailTitulo.Location = new Point(377, 242);
-            labelEmailTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelEmailTitulo.Name = "labelEmailTitulo";
-            labelEmailTitulo.Size = new Size(41, 19);
-            labelEmailTitulo.TabIndex = 15;
-            labelEmailTitulo.Text = "Email";
-            // 
-            // labelTelefonoValor
-            // 
-            labelTelefonoValor.AutoSize = true;
-            labelTelefonoValor.Depth = 0;
-            labelTelefonoValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelTelefonoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelTelefonoValor.Location = new Point(377, 199);
-            labelTelefonoValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTelefonoValor.Name = "labelTelefonoValor";
-            labelTelefonoValor.Size = new Size(5, 17);
-            labelTelefonoValor.TabIndex = 14;
-            labelTelefonoValor.Text = "-";
-            // 
-            // labelTelefonoTitulo
-            // 
-            labelTelefonoTitulo.AutoSize = true;
-            labelTelefonoTitulo.Depth = 0;
-            labelTelefonoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelTelefonoTitulo.Location = new Point(377, 180);
-            labelTelefonoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTelefonoTitulo.Name = "labelTelefonoTitulo";
-            labelTelefonoTitulo.Size = new Size(153, 19);
-            labelTelefonoTitulo.TabIndex = 13;
-            labelTelefonoTitulo.Text = "Teléfono de Contacto";
-            // 
-            // labelContactoValor
-            // 
-            labelContactoValor.AutoSize = true;
-            labelContactoValor.Depth = 0;
-            labelContactoValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelContactoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelContactoValor.Location = new Point(377, 146);
-            labelContactoValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelContactoValor.Name = "labelContactoValor";
-            labelContactoValor.Size = new Size(5, 17);
-            labelContactoValor.TabIndex = 12;
-            labelContactoValor.Text = "-";
-            // 
-            // labelContactoTitulo
-            // 
-            labelContactoTitulo.AutoSize = true;
-            labelContactoTitulo.Depth = 0;
-            labelContactoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelContactoTitulo.Location = new Point(377, 127);
-            labelContactoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelContactoTitulo.Name = "labelContactoTitulo";
-            labelContactoTitulo.Size = new Size(146, 19);
-            labelContactoTitulo.TabIndex = 11;
-            labelContactoTitulo.Text = "Nombre de Contacto";
-            // 
-            // labelTipoProveedorValor
-            // 
-            labelTipoProveedorValor.AutoSize = true;
-            labelTipoProveedorValor.Depth = 0;
-            labelTipoProveedorValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelTipoProveedorValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelTipoProveedorValor.Location = new Point(377, 95);
-            labelTipoProveedorValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTipoProveedorValor.Name = "labelTipoProveedorValor";
-            labelTipoProveedorValor.Size = new Size(5, 17);
-            labelTipoProveedorValor.TabIndex = 10;
-            labelTipoProveedorValor.Text = "-";
-            // 
-            // labelTipoProveedorTitulo
-            // 
-            labelTipoProveedorTitulo.AutoSize = true;
-            labelTipoProveedorTitulo.Depth = 0;
-            labelTipoProveedorTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelTipoProveedorTitulo.Location = new Point(377, 76);
-            labelTipoProveedorTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTipoProveedorTitulo.Name = "labelTipoProveedorTitulo";
-            labelTipoProveedorTitulo.Size = new Size(108, 19);
-            labelTipoProveedorTitulo.TabIndex = 9;
-            labelTipoProveedorTitulo.Text = "Tipo Proveedor";
-            // 
-            // labelNombreComercialValor
-            // 
-            labelNombreComercialValor.AutoSize = true;
-            labelNombreComercialValor.Depth = 0;
-            labelNombreComercialValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreComercialValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelNombreComercialValor.Location = new Point(17, 261);
-            labelNombreComercialValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelNombreComercialValor.Name = "labelNombreComercialValor";
-            labelNombreComercialValor.Size = new Size(5, 17);
-            labelNombreComercialValor.TabIndex = 8;
-            labelNombreComercialValor.Text = "-";
-            // 
-            // labelNombreComercialTitulo
-            // 
-            labelNombreComercialTitulo.AutoSize = true;
-            labelNombreComercialTitulo.Depth = 0;
-            labelNombreComercialTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreComercialTitulo.Location = new Point(17, 242);
-            labelNombreComercialTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelNombreComercialTitulo.Name = "labelNombreComercialTitulo";
-            labelNombreComercialTitulo.Size = new Size(132, 19);
-            labelNombreComercialTitulo.TabIndex = 7;
-            labelNombreComercialTitulo.Text = "Nombre Comercial";
-            // 
-            // labelRazonSocialValor
-            // 
-            labelRazonSocialValor.AutoSize = true;
-            labelRazonSocialValor.Depth = 0;
-            labelRazonSocialValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelRazonSocialValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelRazonSocialValor.Location = new Point(17, 199);
-            labelRazonSocialValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelRazonSocialValor.Name = "labelRazonSocialValor";
-            labelRazonSocialValor.Size = new Size(5, 17);
-            labelRazonSocialValor.TabIndex = 6;
-            labelRazonSocialValor.Text = "-";
-            // 
-            // labelRazonSocialTitulo
-            // 
-            labelRazonSocialTitulo.AutoSize = true;
-            labelRazonSocialTitulo.Depth = 0;
-            labelRazonSocialTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelRazonSocialTitulo.Location = new Point(17, 180);
-            labelRazonSocialTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelRazonSocialTitulo.Name = "labelRazonSocialTitulo";
-            labelRazonSocialTitulo.Size = new Size(94, 19);
-            labelRazonSocialTitulo.TabIndex = 5;
-            labelRazonSocialTitulo.Text = "Razón Social";
-            // 
-            // labelEstadoValor
-            // 
-            labelEstadoValor.AutoSize = true;
-            labelEstadoValor.Depth = 0;
-            labelEstadoValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelEstadoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelEstadoValor.Location = new Point(17, 146);
-            labelEstadoValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelEstadoValor.Name = "labelEstadoValor";
-            labelEstadoValor.Size = new Size(5, 17);
-            labelEstadoValor.TabIndex = 4;
-            labelEstadoValor.Text = "-";
-            // 
-            // labelEstadoTitulo
-            // 
-            labelEstadoTitulo.AutoSize = true;
-            labelEstadoTitulo.Depth = 0;
-            labelEstadoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelEstadoTitulo.Location = new Point(17, 127);
-            labelEstadoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelEstadoTitulo.Name = "labelEstadoTitulo";
-            labelEstadoTitulo.Size = new Size(50, 19);
-            labelEstadoTitulo.TabIndex = 3;
-            labelEstadoTitulo.Text = "Estado";
-            // 
-            // labelIdValor
-            // 
-            labelIdValor.AutoSize = true;
-            labelIdValor.Depth = 0;
-            labelIdValor.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelIdValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Body2;
-            labelIdValor.Location = new Point(17, 95);
-            labelIdValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelIdValor.Name = "labelIdValor";
-            labelIdValor.Size = new Size(5, 17);
-            labelIdValor.TabIndex = 2;
-            labelIdValor.Text = "-";
-            // 
-            // labelIdTitulo
-            // 
-            labelIdTitulo.AutoSize = true;
-            labelIdTitulo.Depth = 0;
-            labelIdTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelIdTitulo.Location = new Point(17, 76);
-            labelIdTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelIdTitulo.Name = "labelIdTitulo";
-            labelIdTitulo.Size = new Size(91, 19);
-            labelIdTitulo.TabIndex = 1;
-            labelIdTitulo.Text = "ID Proveedor";
-            // 
-            // labelTitulo
-            // 
-            labelTitulo.AutoSize = true;
-            labelTitulo.Depth = 0;
-            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(17, 14);
-            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
-            labelTitulo.Name = "labelTitulo";
-            labelTitulo.Size = new Size(224, 29);
-            labelTitulo.TabIndex = 0;
-            labelTitulo.Text = "Detalle de proveedor";
             // 
             // btnVolver
             // 
+            btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnVolver.AutoSize = false;
             btnVolver.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnVolver.Cursor = Cursors.Hand;
             btnVolver.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnVolver.Depth = 0;
             btnVolver.HighEmphasis = true;
             btnVolver.Icon = null;
-            btnVolver.Location = new Point(405, 374);
+            btnVolver.Location = new Point(18, 481);
             btnVolver.Margin = new Padding(4, 6, 4, 6);
             btnVolver.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolver.Name = "btnVolver";
@@ -345,6 +109,244 @@
             btnVolver.UseVisualStyleBackColor = true;
             btnVolver.Click += BtnVolver_Click;
             // 
+            // labelDireccionValor
+            // 
+            labelDireccionValor.AutoSize = true;
+            labelDireccionValor.Depth = 0;
+            labelDireccionValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelDireccionValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelDireccionValor.Location = new Point(12, 297);
+            labelDireccionValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelDireccionValor.Name = "labelDireccionValor";
+            labelDireccionValor.Size = new Size(6, 17);
+            labelDireccionValor.TabIndex = 18;
+            labelDireccionValor.Text = "-";
+            // 
+            // labelDireccionTitulo
+            // 
+            labelDireccionTitulo.AutoSize = true;
+            labelDireccionTitulo.Depth = 0;
+            labelDireccionTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelDireccionTitulo.Location = new Point(12, 278);
+            labelDireccionTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelDireccionTitulo.Name = "labelDireccionTitulo";
+            labelDireccionTitulo.Size = new Size(67, 19);
+            labelDireccionTitulo.TabIndex = 17;
+            labelDireccionTitulo.Text = "Dirección";
+            // 
+            // labelEmailValor
+            // 
+            labelEmailValor.AutoSize = true;
+            labelEmailValor.Depth = 0;
+            labelEmailValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelEmailValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelEmailValor.Location = new Point(365, 241);
+            labelEmailValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelEmailValor.Name = "labelEmailValor";
+            labelEmailValor.Size = new Size(6, 17);
+            labelEmailValor.TabIndex = 16;
+            labelEmailValor.Text = "-";
+            // 
+            // labelEmailTitulo
+            // 
+            labelEmailTitulo.AutoSize = true;
+            labelEmailTitulo.Depth = 0;
+            labelEmailTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelEmailTitulo.Location = new Point(365, 222);
+            labelEmailTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelEmailTitulo.Name = "labelEmailTitulo";
+            labelEmailTitulo.Size = new Size(41, 19);
+            labelEmailTitulo.TabIndex = 15;
+            labelEmailTitulo.Text = "Email";
+            // 
+            // labelTelefonoValor
+            // 
+            labelTelefonoValor.AutoSize = true;
+            labelTelefonoValor.Depth = 0;
+            labelTelefonoValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTelefonoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelTelefonoValor.Location = new Point(365, 185);
+            labelTelefonoValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTelefonoValor.Name = "labelTelefonoValor";
+            labelTelefonoValor.Size = new Size(6, 17);
+            labelTelefonoValor.TabIndex = 14;
+            labelTelefonoValor.Text = "-";
+            // 
+            // labelTelefonoTitulo
+            // 
+            labelTelefonoTitulo.AutoSize = true;
+            labelTelefonoTitulo.Depth = 0;
+            labelTelefonoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelTelefonoTitulo.Location = new Point(365, 166);
+            labelTelefonoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTelefonoTitulo.Name = "labelTelefonoTitulo";
+            labelTelefonoTitulo.Size = new Size(153, 19);
+            labelTelefonoTitulo.TabIndex = 13;
+            labelTelefonoTitulo.Text = "Teléfono de Contacto";
+            // 
+            // labelContactoValor
+            // 
+            labelContactoValor.AutoSize = true;
+            labelContactoValor.Depth = 0;
+            labelContactoValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelContactoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelContactoValor.Location = new Point(365, 132);
+            labelContactoValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelContactoValor.Name = "labelContactoValor";
+            labelContactoValor.Size = new Size(6, 17);
+            labelContactoValor.TabIndex = 12;
+            labelContactoValor.Text = "-";
+            // 
+            // labelContactoTitulo
+            // 
+            labelContactoTitulo.AutoSize = true;
+            labelContactoTitulo.Depth = 0;
+            labelContactoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelContactoTitulo.Location = new Point(365, 113);
+            labelContactoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelContactoTitulo.Name = "labelContactoTitulo";
+            labelContactoTitulo.Size = new Size(146, 19);
+            labelContactoTitulo.TabIndex = 11;
+            labelContactoTitulo.Text = "Nombre de Contacto";
+            // 
+            // labelTipoProveedorValor
+            // 
+            labelTipoProveedorValor.AutoSize = true;
+            labelTipoProveedorValor.Depth = 0;
+            labelTipoProveedorValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTipoProveedorValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelTipoProveedorValor.Location = new Point(365, 79);
+            labelTipoProveedorValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTipoProveedorValor.Name = "labelTipoProveedorValor";
+            labelTipoProveedorValor.Size = new Size(6, 17);
+            labelTipoProveedorValor.TabIndex = 10;
+            labelTipoProveedorValor.Text = "-";
+            // 
+            // labelTipoProveedorTitulo
+            // 
+            labelTipoProveedorTitulo.AutoSize = true;
+            labelTipoProveedorTitulo.Depth = 0;
+            labelTipoProveedorTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelTipoProveedorTitulo.Location = new Point(365, 60);
+            labelTipoProveedorTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTipoProveedorTitulo.Name = "labelTipoProveedorTitulo";
+            labelTipoProveedorTitulo.Size = new Size(108, 19);
+            labelTipoProveedorTitulo.TabIndex = 9;
+            labelTipoProveedorTitulo.Text = "Tipo Proveedor";
+            // 
+            // labelNombreComercialValor
+            // 
+            labelNombreComercialValor.AutoSize = true;
+            labelNombreComercialValor.Depth = 0;
+            labelNombreComercialValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelNombreComercialValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelNombreComercialValor.Location = new Point(12, 241);
+            labelNombreComercialValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelNombreComercialValor.Name = "labelNombreComercialValor";
+            labelNombreComercialValor.Size = new Size(6, 17);
+            labelNombreComercialValor.TabIndex = 8;
+            labelNombreComercialValor.Text = "-";
+            // 
+            // labelNombreComercialTitulo
+            // 
+            labelNombreComercialTitulo.AutoSize = true;
+            labelNombreComercialTitulo.Depth = 0;
+            labelNombreComercialTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelNombreComercialTitulo.Location = new Point(12, 222);
+            labelNombreComercialTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelNombreComercialTitulo.Name = "labelNombreComercialTitulo";
+            labelNombreComercialTitulo.Size = new Size(132, 19);
+            labelNombreComercialTitulo.TabIndex = 7;
+            labelNombreComercialTitulo.Text = "Nombre Comercial";
+            // 
+            // labelRazonSocialValor
+            // 
+            labelRazonSocialValor.AutoSize = true;
+            labelRazonSocialValor.Depth = 0;
+            labelRazonSocialValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelRazonSocialValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelRazonSocialValor.Location = new Point(12, 185);
+            labelRazonSocialValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelRazonSocialValor.Name = "labelRazonSocialValor";
+            labelRazonSocialValor.Size = new Size(6, 17);
+            labelRazonSocialValor.TabIndex = 6;
+            labelRazonSocialValor.Text = "-";
+            // 
+            // labelRazonSocialTitulo
+            // 
+            labelRazonSocialTitulo.AutoSize = true;
+            labelRazonSocialTitulo.Depth = 0;
+            labelRazonSocialTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelRazonSocialTitulo.Location = new Point(12, 166);
+            labelRazonSocialTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelRazonSocialTitulo.Name = "labelRazonSocialTitulo";
+            labelRazonSocialTitulo.Size = new Size(94, 19);
+            labelRazonSocialTitulo.TabIndex = 5;
+            labelRazonSocialTitulo.Text = "Razón Social";
+            // 
+            // labelEstadoValor
+            // 
+            labelEstadoValor.AutoSize = true;
+            labelEstadoValor.Depth = 0;
+            labelEstadoValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelEstadoValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelEstadoValor.Location = new Point(12, 132);
+            labelEstadoValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelEstadoValor.Name = "labelEstadoValor";
+            labelEstadoValor.Size = new Size(6, 17);
+            labelEstadoValor.TabIndex = 4;
+            labelEstadoValor.Text = "-";
+            // 
+            // labelEstadoTitulo
+            // 
+            labelEstadoTitulo.AutoSize = true;
+            labelEstadoTitulo.Depth = 0;
+            labelEstadoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelEstadoTitulo.Location = new Point(12, 113);
+            labelEstadoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelEstadoTitulo.Name = "labelEstadoTitulo";
+            labelEstadoTitulo.Size = new Size(50, 19);
+            labelEstadoTitulo.TabIndex = 3;
+            labelEstadoTitulo.Text = "Estado";
+            // 
+            // labelIdValor
+            // 
+            labelIdValor.AutoSize = true;
+            labelIdValor.Depth = 0;
+            labelIdValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelIdValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
+            labelIdValor.Location = new Point(12, 79);
+            labelIdValor.MouseState = MaterialSkin.MouseState.HOVER;
+            labelIdValor.Name = "labelIdValor";
+            labelIdValor.Size = new Size(6, 17);
+            labelIdValor.TabIndex = 2;
+            labelIdValor.Text = "-";
+            // 
+            // labelIdTitulo
+            // 
+            labelIdTitulo.AutoSize = true;
+            labelIdTitulo.Depth = 0;
+            labelIdTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            labelIdTitulo.Location = new Point(12, 60);
+            labelIdTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelIdTitulo.Name = "labelIdTitulo";
+            labelIdTitulo.Size = new Size(91, 19);
+            labelIdTitulo.TabIndex = 1;
+            labelIdTitulo.Text = "ID Proveedor";
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.AutoSize = true;
+            labelTitulo.Depth = 0;
+            labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
+            labelTitulo.Location = new Point(12, 15);
+            labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(226, 29);
+            labelTitulo.TabIndex = 0;
+            labelTitulo.Text = "Detalle de Proveedor";
+            // 
             // FormDetalleProveedor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -353,7 +355,7 @@
             Controls.Add(cardDetalle);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Name = "FormDetalleProveedor";
-            Padding = new Padding(3, 0, 3, 3);
+            Padding = new Padding(0);
             Sizable = false;
             Text = "FormDetalleProveedor";
             cardDetalle.ResumeLayout(false);

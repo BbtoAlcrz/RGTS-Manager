@@ -35,8 +35,8 @@
             lstClientes = new MaterialSkin.Controls.MaterialListView();
             ID = new ColumnHeader();
             DNI = new ColumnHeader();
-            Apellido = new ColumnHeader();
             Nombre = new ColumnHeader();
+            Apellido = new ColumnHeader();
             Teléfono = new ColumnHeader();
             Email = new ColumnHeader();
             Estado = new ColumnHeader();
@@ -57,28 +57,29 @@
             panel2.Depth = 0;
             panel2.Dock = DockStyle.Fill;
             panel2.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel2.Location = new Point(3, 0);
+            panel2.Location = new Point(0, 0);
             panel2.Margin = new Padding(12, 10, 12, 10);
             panel2.MouseState = MaterialSkin.MouseState.HOVER;
             panel2.Name = "panel2";
             panel2.Padding = new Padding(12, 10, 12, 10);
-            panel2.Size = new Size(835, 422);
+            panel2.Size = new Size(841, 424);
             panel2.TabIndex = 1;
             // 
             // BtnNuevo
             // 
             BtnNuevo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnNuevo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnNuevo.Cursor = Cursors.Hand;
             BtnNuevo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnNuevo.Depth = 0;
             BtnNuevo.HighEmphasis = true;
-            BtnNuevo.Icon = null;
-            BtnNuevo.Location = new Point(16, 372);
+            BtnNuevo.Icon = Properties.Resources.nuevo;
+            BtnNuevo.Location = new Point(16, 374);
             BtnNuevo.Margin = new Padding(4);
             BtnNuevo.MouseState = MaterialSkin.MouseState.HOVER;
             BtnNuevo.Name = "BtnNuevo";
             BtnNuevo.NoAccentTextColor = Color.Empty;
-            BtnNuevo.Size = new Size(131, 36);
+            BtnNuevo.Size = new Size(159, 36);
             BtnNuevo.TabIndex = 19;
             BtnNuevo.Text = "Nuevo Cliente";
             BtnNuevo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -90,16 +91,17 @@
             // 
             btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEditar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnEditar.Cursor = Cursors.Hand;
             btnEditar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnEditar.Depth = 0;
             btnEditar.HighEmphasis = true;
-            btnEditar.Icon = null;
-            btnEditar.Location = new Point(155, 372);
+            btnEditar.Icon = Properties.Resources.editar;
+            btnEditar.Location = new Point(183, 375);
             btnEditar.Margin = new Padding(4);
             btnEditar.MouseState = MaterialSkin.MouseState.HOVER;
             btnEditar.Name = "btnEditar";
             btnEditar.NoAccentTextColor = Color.Empty;
-            btnEditar.Size = new Size(133, 36);
+            btnEditar.Size = new Size(161, 36);
             btnEditar.TabIndex = 18;
             btnEditar.Text = "Editar Cliente";
             btnEditar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -109,23 +111,25 @@
             // 
             // btnCambiarEstado
             // 
-            btnCambiarEstado.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnCambiarEstado.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCambiarEstado.AutoSize = false;
             btnCambiarEstado.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnCambiarEstado.BackColor = Color.IndianRed;
+            btnCambiarEstado.Cursor = Cursors.Hand;
             btnCambiarEstado.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnCambiarEstado.Depth = 0;
             btnCambiarEstado.ForeColor = Color.Firebrick;
             btnCambiarEstado.HighEmphasis = true;
-            btnCambiarEstado.Icon = null;
-            btnCambiarEstado.Location = new Point(707, 55);
+            btnCambiarEstado.Icon = Properties.Resources.click;
+            btnCambiarEstado.Location = new Point(681, 374);
             btnCambiarEstado.Margin = new Padding(4);
             btnCambiarEstado.MouseState = MaterialSkin.MouseState.HOVER;
             btnCambiarEstado.Name = "btnCambiarEstado";
             btnCambiarEstado.NoAccentTextColor = Color.Empty;
-            btnCambiarEstado.Size = new Size(112, 48);
+            btnCambiarEstado.Size = new Size(140, 36);
             btnCambiarEstado.TabIndex = 14;
-            btnCambiarEstado.Text = "Estado";
+            btnCambiarEstado.Text = "Deshabilitar";
+            btnCambiarEstado.TextAlign = ContentAlignment.MiddleRight;
             btnCambiarEstado.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnCambiarEstado.UseAccentColor = false;
             btnCambiarEstado.UseVisualStyleBackColor = true;
@@ -140,14 +144,14 @@
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, DNI, Nombre, Apellido, Teléfono, Email, Estado });
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
-            lstClientes.Location = new Point(16, 109);
+            lstClientes.Location = new Point(12, 114);
             lstClientes.Margin = new Padding(3, 2, 3, 2);
             lstClientes.MinimumSize = new Size(175, 75);
             lstClientes.MouseLocation = new Point(-1, -1);
             lstClientes.MouseState = MaterialSkin.MouseState.OUT;
             lstClientes.Name = "lstClientes";
             lstClientes.OwnerDraw = true;
-            lstClientes.Size = new Size(803, 156);
+            lstClientes.Size = new Size(809, 185);
             lstClientes.TabIndex = 17;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
@@ -163,15 +167,15 @@
             DNI.Text = "DNI";
             DNI.Width = 100;
             // 
-            // Apellido
-            // 
-            Apellido.Text = "Apellido";
-            Apellido.Width = 100;
-            // 
             // Nombre
             // 
             Nombre.Text = "Nombre";
             Nombre.Width = 100;
+            // 
+            // Apellido
+            // 
+            Apellido.Text = "Apellido";
+            Apellido.Width = 100;
             // 
             // Teléfono
             // 
@@ -190,20 +194,19 @@
             // 
             // TxtBuscar
             // 
-            TxtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             TxtBuscar.AnimateReadOnly = false;
             TxtBuscar.BorderStyle = BorderStyle.None;
             TxtBuscar.Depth = 0;
             TxtBuscar.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtBuscar.Hint = "Buscar por DNI, Nombre o Apellido";
-            TxtBuscar.LeadingIcon = null;
-            TxtBuscar.Location = new Point(16, 55);
+            TxtBuscar.LeadingIcon = Properties.Resources.busqueda;
+            TxtBuscar.Location = new Point(12, 60);
             TxtBuscar.Margin = new Padding(3, 2, 3, 2);
             TxtBuscar.MaxLength = 50;
             TxtBuscar.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscar.Multiline = false;
             TxtBuscar.Name = "TxtBuscar";
-            TxtBuscar.Size = new Size(684, 50);
+            TxtBuscar.Size = new Size(550, 50);
             TxtBuscar.TabIndex = 13;
             TxtBuscar.Text = "";
             TxtBuscar.TrailingIcon = null;
@@ -215,7 +218,7 @@
             LListado.Depth = 0;
             LListado.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             LListado.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            LListado.Location = new Point(15, 13);
+            LListado.Location = new Point(12, 15);
             LListado.MouseState = MaterialSkin.MouseState.HOVER;
             LListado.Name = "LListado";
             LListado.Size = new Size(213, 29);
@@ -231,7 +234,7 @@
             FormStyle = FormStyles.StatusAndActionBar_None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormListadoClientes";
-            Padding = new Padding(3, 0, 3, 2);
+            Padding = new Padding(0);
             Sizable = false;
             Text = "Gestion de Cliente";
             Load += FormListadoClientes_Load;

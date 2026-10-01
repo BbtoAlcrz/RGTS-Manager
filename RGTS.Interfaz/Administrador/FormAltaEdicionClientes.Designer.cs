@@ -42,12 +42,15 @@
             txtDni = new MaterialSkin.Controls.MaterialTextBox();
             txtApellido = new MaterialSkin.Controls.MaterialTextBox();
             txtNombre = new MaterialSkin.Controls.MaterialTextBox();
+            pictureBox1 = new PictureBox();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 255);
+            panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(labelTitulo);
             panel1.Controls.Add(btnCancelar);
             panel1.Controls.Add(btnGuardar);
@@ -64,12 +67,12 @@
             panel1.Depth = 0;
             panel1.Dock = DockStyle.Fill;
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(3, 0);
+            panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(12, 10, 12, 10);
             panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
             panel1.Padding = new Padding(12, 10, 12, 10);
-            panel1.Size = new Size(956, 535);
+            panel1.Size = new Size(962, 537);
             panel1.TabIndex = 1;
             // 
             // labelTitulo
@@ -78,7 +81,7 @@
             labelTitulo.Depth = 0;
             labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(15, 21);
+            labelTitulo.Location = new Point(12, 15);
             labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelTitulo.Name = "labelTitulo";
             labelTitulo.Size = new Size(62, 29);
@@ -87,19 +90,18 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Anchor = AnchorStyles.Bottom;
-            btnCancelar.AutoSize = false;
             btnCancelar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancelar.Cursor = Cursors.Hand;
             btnCancelar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnCancelar.Depth = 0;
             btnCancelar.HighEmphasis = true;
             btnCancelar.Icon = null;
-            btnCancelar.Location = new Point(718, 473);
+            btnCancelar.Location = new Point(531, 286);
             btnCancelar.Margin = new Padding(4);
             btnCancelar.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancelar.Name = "btnCancelar";
             btnCancelar.NoAccentTextColor = Color.Empty;
-            btnCancelar.Size = new Size(100, 48);
+            btnCancelar.Size = new Size(96, 36);
             btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cancelar";
             btnCancelar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
@@ -109,19 +111,18 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Anchor = AnchorStyles.Bottom;
-            btnGuardar.AutoSize = false;
             btnGuardar.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnGuardar.Cursor = Cursors.Hand;
             btnGuardar.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGuardar.Depth = 0;
             btnGuardar.HighEmphasis = true;
             btnGuardar.Icon = null;
-            btnGuardar.Location = new Point(826, 473);
+            btnGuardar.Location = new Point(635, 286);
             btnGuardar.Margin = new Padding(4);
             btnGuardar.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardar.Name = "btnGuardar";
             btnGuardar.NoAccentTextColor = Color.Empty;
-            btnGuardar.Size = new Size(100, 48);
+            btnGuardar.Size = new Size(88, 36);
             btnGuardar.TabIndex = 6;
             btnGuardar.Text = "GUARDAR";
             btnGuardar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -134,60 +135,60 @@
             LNombre.AutoSize = true;
             LNombre.Depth = 0;
             LNombre.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LNombre.Location = new Point(41, 104);
+            LNombre.Location = new Point(34, 75);
             LNombre.MouseState = MaterialSkin.MouseState.HOVER;
             LNombre.Name = "LNombre";
-            LNombre.Size = new Size(61, 19);
+            LNombre.Size = new Size(57, 19);
             LNombre.TabIndex = 16;
-            LNombre.Text = "Nombre:";
+            LNombre.Text = "Nombre";
             // 
             // materialLabel4
             // 
             materialLabel4.AutoSize = true;
             materialLabel4.Depth = 0;
             materialLabel4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel4.Location = new Point(522, 166);
+            materialLabel4.Location = new Point(403, 166);
             materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel4.Name = "materialLabel4";
-            materialLabel4.Size = new Size(51, 19);
+            materialLabel4.Size = new Size(47, 19);
             materialLabel4.TabIndex = 14;
-            materialLabel4.Text = "Correo:";
+            materialLabel4.Text = "Correo";
             // 
             // materialLabel3
             // 
             materialLabel3.AutoSize = true;
             materialLabel3.Depth = 0;
             materialLabel3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel3.Location = new Point(41, 166);
+            materialLabel3.Location = new Point(34, 163);
             materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel3.Name = "materialLabel3";
-            materialLabel3.Size = new Size(62, 19);
+            materialLabel3.Size = new Size(58, 19);
             materialLabel3.TabIndex = 13;
-            materialLabel3.Text = "Apellido:";
+            materialLabel3.Text = "Apellido";
             // 
             // materialLabel2
             // 
             materialLabel2.AutoSize = true;
             materialLabel2.Depth = 0;
             materialLabel2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialLabel2.Location = new Point(522, 104);
+            materialLabel2.Location = new Point(403, 75);
             materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel2.Name = "materialLabel2";
-            materialLabel2.Size = new Size(68, 19);
+            materialLabel2.Size = new Size(64, 19);
             materialLabel2.TabIndex = 12;
-            materialLabel2.Text = "Telefono:";
+            materialLabel2.Text = "Telefono";
             // 
             // LDni
             // 
             LDni.AutoSize = true;
             LDni.Depth = 0;
             LDni.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            LDni.Location = new Point(41, 222);
+            LDni.Location = new Point(34, 251);
             LDni.MouseState = MaterialSkin.MouseState.HOVER;
             LDni.Name = "LDni";
-            LDni.Size = new Size(31, 19);
+            LDni.Size = new Size(27, 19);
             LDni.TabIndex = 11;
-            LDni.Text = "DNI:";
+            LDni.Text = "DNI";
             // 
             // txtTelefono
             // 
@@ -195,15 +196,15 @@
             txtTelefono.BorderStyle = BorderStyle.None;
             txtTelefono.Depth = 0;
             txtTelefono.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtTelefono.Hint = "(Opcional)";
+            txtTelefono.Hint = "Opcional";
             txtTelefono.LeadingIcon = null;
-            txtTelefono.Location = new Point(596, 90);
+            txtTelefono.Location = new Point(403, 96);
             txtTelefono.Margin = new Padding(3, 2, 3, 2);
             txtTelefono.MaxLength = 50;
             txtTelefono.MouseState = MaterialSkin.MouseState.OUT;
             txtTelefono.Multiline = false;
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.Size = new Size(313, 50);
+            txtTelefono.Size = new Size(320, 50);
             txtTelefono.TabIndex = 4;
             txtTelefono.Text = "";
             txtTelefono.TrailingIcon = null;
@@ -214,15 +215,15 @@
             txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Depth = 0;
             txtEmail.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            txtEmail.Hint = "(Opcional)";
+            txtEmail.Hint = "Opcional";
             txtEmail.LeadingIcon = null;
-            txtEmail.Location = new Point(596, 155);
+            txtEmail.Location = new Point(403, 187);
             txtEmail.Margin = new Padding(3, 2, 3, 2);
             txtEmail.MaxLength = 50;
             txtEmail.MouseState = MaterialSkin.MouseState.OUT;
             txtEmail.Multiline = false;
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(313, 50);
+            txtEmail.Size = new Size(320, 50);
             txtEmail.TabIndex = 5;
             txtEmail.Text = "";
             txtEmail.TrailingIcon = null;
@@ -234,13 +235,13 @@
             txtDni.Depth = 0;
             txtDni.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtDni.LeadingIcon = null;
-            txtDni.Location = new Point(113, 220);
+            txtDni.Location = new Point(34, 272);
             txtDni.Margin = new Padding(3, 2, 3, 2);
             txtDni.MaxLength = 50;
             txtDni.MouseState = MaterialSkin.MouseState.OUT;
             txtDni.Multiline = false;
             txtDni.Name = "txtDni";
-            txtDni.Size = new Size(313, 50);
+            txtDni.Size = new Size(320, 50);
             txtDni.TabIndex = 3;
             txtDni.Text = "";
             txtDni.TrailingIcon = null;
@@ -252,13 +253,13 @@
             txtApellido.Depth = 0;
             txtApellido.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtApellido.LeadingIcon = null;
-            txtApellido.Location = new Point(113, 155);
+            txtApellido.Location = new Point(34, 184);
             txtApellido.Margin = new Padding(3, 2, 3, 2);
             txtApellido.MaxLength = 50;
             txtApellido.MouseState = MaterialSkin.MouseState.OUT;
             txtApellido.Multiline = false;
             txtApellido.Name = "txtApellido";
-            txtApellido.Size = new Size(313, 50);
+            txtApellido.Size = new Size(320, 50);
             txtApellido.TabIndex = 2;
             txtApellido.Text = "";
             txtApellido.TrailingIcon = null;
@@ -270,16 +271,27 @@
             txtNombre.Depth = 0;
             txtNombre.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtNombre.LeadingIcon = null;
-            txtNombre.Location = new Point(113, 90);
+            txtNombre.Location = new Point(34, 96);
             txtNombre.Margin = new Padding(3, 2, 3, 2);
             txtNombre.MaxLength = 50;
             txtNombre.MouseState = MaterialSkin.MouseState.OUT;
             txtNombre.Multiline = false;
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(313, 50);
+            txtNombre.Size = new Size(320, 50);
             txtNombre.TabIndex = 1;
             txtNombre.Text = "";
             txtNombre.TrailingIcon = null;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            pictureBox1.Image = Properties.Resources.agregar_usuario;
+            pictureBox1.Location = new Point(0, 409);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(128, 128);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 18;
+            pictureBox1.TabStop = false;
             // 
             // FormAltaEdicionClientes
             // 
@@ -290,12 +302,13 @@
             FormStyle = FormStyles.StatusAndActionBar_None;
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormAltaEdicionClientes";
-            Padding = new Padding(3, 0, 3, 2);
+            Padding = new Padding(0);
             Sizable = false;
             Text = "Datos del Cliente";
             Load += FormClientesListado_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -315,5 +328,6 @@
         private MaterialSkin.Controls.MaterialTextBox txtApellido;
         private MaterialSkin.Controls.MaterialTextBox txtNombre;
         private MaterialSkin.Controls.MaterialLabel labelTitulo;
+        private PictureBox pictureBox1;
     }
 }

@@ -69,7 +69,6 @@
             // 
             // materialCard1
             // 
-            materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
             materialCard1.Controls.Add(btnBuscarProducto);
             materialCard1.Controls.Add(labelMetodoPago);
@@ -101,13 +100,14 @@
             materialCard1.Controls.Add(labelTotalCompraTitulo);
             materialCard1.Controls.Add(ListaDetalleVenta);
             materialCard1.Depth = 0;
+            materialCard1.Dock = DockStyle.Fill;
             materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(0, 1);
+            materialCard1.Location = new Point(0, 0);
             materialCard1.Margin = new Padding(14);
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(970, 532);
+            materialCard1.Size = new Size(974, 534);
             materialCard1.TabIndex = 0;
             // 
             // btnBuscarProducto
@@ -116,18 +116,20 @@
             btnBuscarProducto.AutoSize = false;
             btnBuscarProducto.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnBuscarProducto.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            btnBuscarProducto.Cursor = Cursors.Hand;
             btnBuscarProducto.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnBuscarProducto.Depth = 0;
             btnBuscarProducto.HighEmphasis = true;
-            btnBuscarProducto.Icon = null;
-            btnBuscarProducto.Location = new Point(274, 257);
+            btnBuscarProducto.Icon = Properties.Resources.busqueda;
+            btnBuscarProducto.Location = new Point(300, 259);
             btnBuscarProducto.Margin = new Padding(4, 6, 4, 6);
             btnBuscarProducto.MouseState = MaterialSkin.MouseState.HOVER;
             btnBuscarProducto.Name = "btnBuscarProducto";
             btnBuscarProducto.NoAccentTextColor = Color.Empty;
-            btnBuscarProducto.Size = new Size(119, 48);
-            btnBuscarProducto.TabIndex = 27;
-            btnBuscarProducto.Text = "Buscar Producto";
+            btnBuscarProducto.Size = new Size(104, 48);
+            btnBuscarProducto.TabIndex = 4;
+            btnBuscarProducto.Text = "Producto";
+            btnBuscarProducto.TextAlign = ContentAlignment.MiddleRight;
             btnBuscarProducto.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnBuscarProducto.UseAccentColor = false;
             btnBuscarProducto.UseVisualStyleBackColor = true;
@@ -139,7 +141,7 @@
             labelMetodoPago.AutoSize = true;
             labelMetodoPago.Depth = 0;
             labelMetodoPago.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelMetodoPago.Location = new Point(551, 388);
+            labelMetodoPago.Location = new Point(555, 375);
             labelMetodoPago.MouseState = MaterialSkin.MouseState.HOVER;
             labelMetodoPago.Name = "labelMetodoPago";
             labelMetodoPago.Size = new Size(121, 19);
@@ -152,7 +154,7 @@
             labelDetalleVenta.AutoSize = true;
             labelDetalleVenta.Depth = 0;
             labelDetalleVenta.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelDetalleVenta.Location = new Point(428, 34);
+            labelDetalleVenta.Location = new Point(428, 25);
             labelDetalleVenta.MouseState = MaterialSkin.MouseState.HOVER;
             labelDetalleVenta.Name = "labelDetalleVenta";
             labelDetalleVenta.Size = new Size(116, 19);
@@ -166,7 +168,7 @@
             labelTotalCompraValor.Depth = 0;
             labelTotalCompraValor.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTotalCompraValor.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            labelTotalCompraValor.Location = new Point(780, 332);
+            labelTotalCompraValor.Location = new Point(784, 334);
             labelTotalCompraValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelTotalCompraValor.Name = "labelTotalCompraValor";
             labelTotalCompraValor.Size = new Size(8, 24);
@@ -177,18 +179,20 @@
             // 
             btnCancelarCompra.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCancelarCompra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancelarCompra.Cursor = Cursors.Hand;
             btnCancelarCompra.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnCancelarCompra.Depth = 0;
             btnCancelarCompra.HighEmphasis = true;
-            btnCancelarCompra.Icon = null;
-            btnCancelarCompra.Location = new Point(856, 427);
+            btnCancelarCompra.Icon = Properties.Resources.cancelar;
+            btnCancelarCompra.Location = new Point(561, 423);
             btnCancelarCompra.Margin = new Padding(4, 6, 4, 6);
             btnCancelarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancelarCompra.Name = "btnCancelarCompra";
             btnCancelarCompra.NoAccentTextColor = Color.Empty;
-            btnCancelarCompra.Size = new Size(96, 36);
+            btnCancelarCompra.Size = new Size(189, 36);
             btnCancelarCompra.TabIndex = 23;
-            btnCancelarCompra.Text = "Cancelar";
+            btnCancelarCompra.TabStop = false;
+            btnCancelarCompra.Text = "Cancelar compra";
             btnCancelarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnCancelarCompra.UseAccentColor = false;
             btnCancelarCompra.UseVisualStyleBackColor = true;
@@ -198,17 +202,19 @@
             // 
             btnConfirmarCompra.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnConfirmarCompra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnConfirmarCompra.Cursor = Cursors.Hand;
             btnConfirmarCompra.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnConfirmarCompra.Depth = 0;
             btnConfirmarCompra.HighEmphasis = true;
-            btnConfirmarCompra.Icon = null;
-            btnConfirmarCompra.Location = new Point(678, 427);
+            btnConfirmarCompra.Icon = Properties.Resources.confirmar;
+            btnConfirmarCompra.Location = new Point(758, 423);
             btnConfirmarCompra.Margin = new Padding(4, 6, 4, 6);
             btnConfirmarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             btnConfirmarCompra.Name = "btnConfirmarCompra";
             btnConfirmarCompra.NoAccentTextColor = Color.Empty;
-            btnConfirmarCompra.Size = new Size(170, 36);
+            btnConfirmarCompra.Size = new Size(198, 36);
             btnConfirmarCompra.TabIndex = 22;
+            btnConfirmarCompra.TabStop = false;
             btnConfirmarCompra.Text = "Confirmar compra";
             btnConfirmarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnConfirmarCompra.UseAccentColor = false;
@@ -220,6 +226,7 @@
             comboBoxMetodoPago.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             comboBoxMetodoPago.AutoResize = false;
             comboBoxMetodoPago.BackColor = Color.FromArgb(255, 255, 255);
+            comboBoxMetodoPago.Cursor = Cursors.Hand;
             comboBoxMetodoPago.Depth = 0;
             comboBoxMetodoPago.DrawMode = DrawMode.OwnerDrawVariable;
             comboBoxMetodoPago.DropDownHeight = 174;
@@ -230,29 +237,31 @@
             comboBoxMetodoPago.FormattingEnabled = true;
             comboBoxMetodoPago.IntegralHeight = false;
             comboBoxMetodoPago.ItemHeight = 43;
-            comboBoxMetodoPago.Location = new Point(678, 359);
+            comboBoxMetodoPago.Location = new Point(682, 361);
             comboBoxMetodoPago.MaxDropDownItems = 4;
             comboBoxMetodoPago.MouseState = MaterialSkin.MouseState.OUT;
             comboBoxMetodoPago.Name = "comboBoxMetodoPago";
             comboBoxMetodoPago.Size = new Size(275, 49);
             comboBoxMetodoPago.StartIndex = 0;
             comboBoxMetodoPago.TabIndex = 21;
+            comboBoxMetodoPago.TabStop = false;
             // 
             // btnCancelarAgregado
             // 
             btnCancelarAgregado.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancelarAgregado.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancelarAgregado.Cursor = Cursors.Hand;
             btnCancelarAgregado.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnCancelarAgregado.Depth = 0;
             btnCancelarAgregado.HighEmphasis = true;
-            btnCancelarAgregado.Icon = null;
-            btnCancelarAgregado.Location = new Point(197, 427);
+            btnCancelarAgregado.Icon = Properties.Resources.borrar;
+            btnCancelarAgregado.Location = new Point(222, 423);
             btnCancelarAgregado.Margin = new Padding(4, 6, 4, 6);
             btnCancelarAgregado.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancelarAgregado.Name = "btnCancelarAgregado";
             btnCancelarAgregado.NoAccentTextColor = Color.Empty;
-            btnCancelarAgregado.Size = new Size(96, 36);
-            btnCancelarAgregado.TabIndex = 20;
+            btnCancelarAgregado.Size = new Size(124, 36);
+            btnCancelarAgregado.TabIndex = 7;
             btnCancelarAgregado.Text = "Cancelar ";
             btnCancelarAgregado.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnCancelarAgregado.UseAccentColor = false;
@@ -263,17 +272,18 @@
             // 
             btnAgregarProducto.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAgregarProducto.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnAgregarProducto.Cursor = Cursors.Hand;
             btnAgregarProducto.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnAgregarProducto.Depth = 0;
             btnAgregarProducto.HighEmphasis = true;
-            btnAgregarProducto.Icon = null;
-            btnAgregarProducto.Location = new Point(21, 427);
+            btnAgregarProducto.Icon = Properties.Resources.nuevo;
+            btnAgregarProducto.Location = new Point(18, 423);
             btnAgregarProducto.Margin = new Padding(4, 6, 4, 6);
             btnAgregarProducto.MouseState = MaterialSkin.MouseState.HOVER;
             btnAgregarProducto.Name = "btnAgregarProducto";
             btnAgregarProducto.NoAccentTextColor = Color.Empty;
-            btnAgregarProducto.Size = new Size(168, 36);
-            btnAgregarProducto.TabIndex = 19;
+            btnAgregarProducto.Size = new Size(196, 36);
+            btnAgregarProducto.TabIndex = 6;
             btnAgregarProducto.Text = "Agregar Producto";
             btnAgregarProducto.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAgregarProducto.UseAccentColor = false;
@@ -286,7 +296,7 @@
             labelStockDisponibleValor.AutoSize = true;
             labelStockDisponibleValor.Depth = 0;
             labelStockDisponibleValor.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelStockDisponibleValor.Location = new Point(247, 388);
+            labelStockDisponibleValor.Location = new Point(267, 391);
             labelStockDisponibleValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelStockDisponibleValor.Name = "labelStockDisponibleValor";
             labelStockDisponibleValor.Size = new Size(5, 19);
@@ -299,7 +309,7 @@
             labelStockDisponibleTitulo.AutoSize = true;
             labelStockDisponibleTitulo.Depth = 0;
             labelStockDisponibleTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelStockDisponibleTitulo.Location = new Point(177, 388);
+            labelStockDisponibleTitulo.Location = new Point(197, 391);
             labelStockDisponibleTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelStockDisponibleTitulo.Name = "labelStockDisponibleTitulo";
             labelStockDisponibleTitulo.Size = new Size(64, 19);
@@ -311,11 +321,11 @@
             numericCantidadProducto.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             numericCantidadProducto.BorderStyle = BorderStyle.FixedSingle;
             numericCantidadProducto.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            numericCantidadProducto.Location = new Point(96, 383);
+            numericCantidadProducto.Location = new Point(92, 385);
             numericCantidadProducto.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericCantidadProducto.Name = "numericCantidadProducto";
             numericCantidadProducto.Size = new Size(75, 29);
-            numericCantidadProducto.TabIndex = 16;
+            numericCantidadProducto.TabIndex = 5;
             numericCantidadProducto.TextAlign = HorizontalAlignment.Center;
             numericCantidadProducto.UpDownAlign = LeftRightAlignment.Left;
             numericCantidadProducto.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -326,7 +336,7 @@
             labelPrecioProductoValor.AutoSize = true;
             labelPrecioProductoValor.Depth = 0;
             labelPrecioProductoValor.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelPrecioProductoValor.Location = new Point(156, 345);
+            labelPrecioProductoValor.Location = new Point(131, 345);
             labelPrecioProductoValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelPrecioProductoValor.Name = "labelPrecioProductoValor";
             labelPrecioProductoValor.Size = new Size(5, 19);
@@ -339,7 +349,7 @@
             labelNombreProductoValor.AutoSize = true;
             labelNombreProductoValor.Depth = 0;
             labelNombreProductoValor.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreProductoValor.Location = new Point(156, 315);
+            labelNombreProductoValor.Location = new Point(92, 310);
             labelNombreProductoValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelNombreProductoValor.Name = "labelNombreProductoValor";
             labelNombreProductoValor.Size = new Size(5, 19);
@@ -352,7 +362,7 @@
             labelCantidadProducto.AutoSize = true;
             labelCantidadProducto.Depth = 0;
             labelCantidadProducto.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelCantidadProducto.Location = new Point(21, 389);
+            labelCantidadProducto.Location = new Point(17, 391);
             labelCantidadProducto.MouseState = MaterialSkin.MouseState.HOVER;
             labelCantidadProducto.Name = "labelCantidadProducto";
             labelCantidadProducto.Size = new Size(69, 19);
@@ -365,7 +375,7 @@
             labelPrecioProductoTitulo.AutoSize = true;
             labelPrecioProductoTitulo.Depth = 0;
             labelPrecioProductoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelPrecioProductoTitulo.Location = new Point(21, 345);
+            labelPrecioProductoTitulo.Location = new Point(17, 345);
             labelPrecioProductoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelPrecioProductoTitulo.Name = "labelPrecioProductoTitulo";
             labelPrecioProductoTitulo.Size = new Size(108, 19);
@@ -378,12 +388,12 @@
             labelNombreProductoTitulo.AutoSize = true;
             labelNombreProductoTitulo.Depth = 0;
             labelNombreProductoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreProductoTitulo.Location = new Point(21, 315);
+            labelNombreProductoTitulo.Location = new Point(17, 310);
             labelNombreProductoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelNombreProductoTitulo.Name = "labelNombreProductoTitulo";
-            labelNombreProductoTitulo.Size = new Size(129, 19);
+            labelNombreProductoTitulo.Size = new Size(69, 19);
             labelNombreProductoTitulo.TabIndex = 11;
-            labelNombreProductoTitulo.Text = "Nombre Producto:";
+            labelNombreProductoTitulo.Text = "Producto:";
             // 
             // txtBuscarProducto
             // 
@@ -395,8 +405,8 @@
             txtBuscarProducto.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtBuscarProducto.HideSelection = true;
             txtBuscarProducto.Hint = "Código o Nombre del Producto";
-            txtBuscarProducto.LeadingIcon = null;
-            txtBuscarProducto.Location = new Point(21, 257);
+            txtBuscarProducto.LeadingIcon = Properties.Resources.caja_abierta;
+            txtBuscarProducto.Location = new Point(17, 259);
             txtBuscarProducto.MaxLength = 32767;
             txtBuscarProducto.MouseState = MaterialSkin.MouseState.OUT;
             txtBuscarProducto.Name = "txtBuscarProducto";
@@ -408,9 +418,8 @@
             txtBuscarProducto.SelectionLength = 0;
             txtBuscarProducto.SelectionStart = 0;
             txtBuscarProducto.ShortcutsEnabled = true;
-            txtBuscarProducto.Size = new Size(246, 48);
-            txtBuscarProducto.TabIndex = 10;
-            txtBuscarProducto.TabStop = false;
+            txtBuscarProducto.Size = new Size(276, 48);
+            txtBuscarProducto.TabIndex = 3;
             txtBuscarProducto.TextAlign = HorizontalAlignment.Left;
             txtBuscarProducto.TrailingIcon = null;
             txtBuscarProducto.UseSystemPasswordChar = false;
@@ -422,7 +431,7 @@
             labelApellidoValor.AutoSize = true;
             labelApellidoValor.Depth = 0;
             labelApellidoValor.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelApellidoValor.Location = new Point(89, 165);
+            labelApellidoValor.Location = new Point(86, 163);
             labelApellidoValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelApellidoValor.Name = "labelApellidoValor";
             labelApellidoValor.Size = new Size(5, 19);
@@ -434,7 +443,7 @@
             labelNombreValor.AutoSize = true;
             labelNombreValor.Depth = 0;
             labelNombreValor.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreValor.Location = new Point(89, 133);
+            labelNombreValor.Location = new Point(85, 129);
             labelNombreValor.MouseState = MaterialSkin.MouseState.HOVER;
             labelNombreValor.Name = "labelNombreValor";
             labelNombreValor.Size = new Size(5, 19);
@@ -446,7 +455,7 @@
             labelApellidoTitulo.AutoSize = true;
             labelApellidoTitulo.Depth = 0;
             labelApellidoTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelApellidoTitulo.Location = new Point(21, 165);
+            labelApellidoTitulo.Location = new Point(18, 163);
             labelApellidoTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelApellidoTitulo.Name = "labelApellidoTitulo";
             labelApellidoTitulo.Size = new Size(62, 19);
@@ -458,7 +467,7 @@
             labelNombreTitulo.AutoSize = true;
             labelNombreTitulo.Depth = 0;
             labelNombreTitulo.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelNombreTitulo.Location = new Point(21, 133);
+            labelNombreTitulo.Location = new Point(18, 129);
             labelNombreTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelNombreTitulo.Name = "labelNombreTitulo";
             labelNombreTitulo.Size = new Size(61, 19);
@@ -470,19 +479,21 @@
             BtnBuscarDniCliente.AutoSize = false;
             BtnBuscarDniCliente.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnBuscarDniCliente.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BtnBuscarDniCliente.Cursor = Cursors.Hand;
             BtnBuscarDniCliente.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnBuscarDniCliente.Depth = 0;
             BtnBuscarDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             BtnBuscarDniCliente.HighEmphasis = true;
-            BtnBuscarDniCliente.Icon = null;
-            BtnBuscarDniCliente.Location = new Point(274, 78);
+            BtnBuscarDniCliente.Icon = Properties.Resources.busqueda;
+            BtnBuscarDniCliente.Location = new Point(300, 78);
             BtnBuscarDniCliente.Margin = new Padding(4, 6, 4, 6);
             BtnBuscarDniCliente.MouseState = MaterialSkin.MouseState.HOVER;
             BtnBuscarDniCliente.Name = "BtnBuscarDniCliente";
             BtnBuscarDniCliente.NoAccentTextColor = Color.Empty;
-            BtnBuscarDniCliente.Size = new Size(119, 48);
-            BtnBuscarDniCliente.TabIndex = 5;
-            BtnBuscarDniCliente.Text = "Buscar Cliente";
+            BtnBuscarDniCliente.Size = new Size(104, 48);
+            BtnBuscarDniCliente.TabIndex = 2;
+            BtnBuscarDniCliente.Text = "Cliente";
+            BtnBuscarDniCliente.TextAlign = ContentAlignment.MiddleRight;
             BtnBuscarDniCliente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BtnBuscarDniCliente.UseAccentColor = false;
             BtnBuscarDniCliente.UseVisualStyleBackColor = true;
@@ -497,7 +508,7 @@
             txtBuscarDniCliente.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtBuscarDniCliente.HideSelection = true;
             txtBuscarDniCliente.Hint = "Ingrese DNI del Cliente";
-            txtBuscarDniCliente.LeadingIcon = null;
+            txtBuscarDniCliente.LeadingIcon = Properties.Resources.clientes;
             txtBuscarDniCliente.Location = new Point(17, 78);
             txtBuscarDniCliente.MaxLength = 32767;
             txtBuscarDniCliente.MouseState = MaterialSkin.MouseState.OUT;
@@ -510,9 +521,8 @@
             txtBuscarDniCliente.SelectionLength = 0;
             txtBuscarDniCliente.SelectionStart = 0;
             txtBuscarDniCliente.ShortcutsEnabled = true;
-            txtBuscarDniCliente.Size = new Size(250, 48);
+            txtBuscarDniCliente.Size = new Size(276, 48);
             txtBuscarDniCliente.TabIndex = 1;
-            txtBuscarDniCliente.TabStop = false;
             txtBuscarDniCliente.TextAlign = HorizontalAlignment.Left;
             txtBuscarDniCliente.TrailingIcon = null;
             txtBuscarDniCliente.UseSystemPasswordChar = false;
@@ -523,11 +533,12 @@
             labelProducto.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             labelProducto.AutoSize = true;
             labelProducto.Depth = 0;
-            labelProducto.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelProducto.Location = new Point(18, 235);
+            labelProducto.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelProducto.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            labelProducto.Location = new Point(17, 239);
             labelProducto.MouseState = MaterialSkin.MouseState.HOVER;
             labelProducto.Name = "labelProducto";
-            labelProducto.Size = new Size(65, 19);
+            labelProducto.Size = new Size(59, 17);
             labelProducto.TabIndex = 4;
             labelProducto.Text = "Producto";
             // 
@@ -535,11 +546,12 @@
             // 
             labelCliente.AutoSize = true;
             labelCliente.Depth = 0;
-            labelCliente.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            labelCliente.Location = new Point(17, 56);
+            labelCliente.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelCliente.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            labelCliente.Location = new Point(17, 58);
             labelCliente.MouseState = MaterialSkin.MouseState.HOVER;
             labelCliente.Name = "labelCliente";
-            labelCliente.Size = new Size(53, 19);
+            labelCliente.Size = new Size(51, 17);
             labelCliente.TabIndex = 3;
             labelCliente.Text = "Clliente";
             // 
@@ -549,7 +561,7 @@
             materialLabel1.Depth = 0;
             materialLabel1.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             materialLabel1.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            materialLabel1.Location = new Point(17, 14);
+            materialLabel1.Location = new Point(12, 15);
             materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel1.Name = "materialLabel1";
             materialLabel1.Size = new Size(137, 29);
@@ -562,7 +574,7 @@
             labelTotalCompraTitulo.Depth = 0;
             labelTotalCompraTitulo.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTotalCompraTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            labelTotalCompraTitulo.Location = new Point(699, 333);
+            labelTotalCompraTitulo.Location = new Point(703, 335);
             labelTotalCompraTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelTotalCompraTitulo.Name = "labelTotalCompraTitulo";
             labelTotalCompraTitulo.Size = new Size(75, 23);
@@ -578,14 +590,14 @@
             ListaDetalleVenta.Columns.AddRange(new ColumnHeader[] { Codigo, Producto, Cantidad, Precio, Subtotal });
             ListaDetalleVenta.Depth = 0;
             ListaDetalleVenta.FullRowSelect = true;
-            ListaDetalleVenta.Location = new Point(428, 56);
+            ListaDetalleVenta.Location = new Point(428, 47);
             ListaDetalleVenta.MinimumSize = new Size(200, 100);
             ListaDetalleVenta.MouseLocation = new Point(-1, -1);
             ListaDetalleVenta.MouseState = MaterialSkin.MouseState.OUT;
             ListaDetalleVenta.MultiSelect = false;
             ListaDetalleVenta.Name = "ListaDetalleVenta";
             ListaDetalleVenta.OwnerDraw = true;
-            ListaDetalleVenta.Size = new Size(525, 273);
+            ListaDetalleVenta.Size = new Size(529, 275);
             ListaDetalleVenta.TabIndex = 0;
             ListaDetalleVenta.UseCompatibleStateImageBehavior = false;
             ListaDetalleVenta.View = View.Details;
@@ -623,7 +635,7 @@
             Controls.Add(materialCard1);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Name = "FormNuevaVenta";
-            Padding = new Padding(3, 0, 3, 3);
+            Padding = new Padding(0);
             Sizable = false;
             Text = "FormNuevaVenta";
             materialCard1.ResumeLayout(false);

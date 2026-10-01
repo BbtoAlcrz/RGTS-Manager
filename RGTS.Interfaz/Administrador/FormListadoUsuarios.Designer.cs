@@ -54,7 +54,6 @@ namespace RGTS.Interfaz.Administrador
             // 
             // panelListaUsuarios
             // 
-            panelListaUsuarios.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelListaUsuarios.BackColor = Color.FromArgb(255, 255, 255);
             panelListaUsuarios.Controls.Add(labelTitulo);
             panelListaUsuarios.Controls.Add(materialCard1);
@@ -65,13 +64,14 @@ namespace RGTS.Interfaz.Administrador
             panelListaUsuarios.Controls.Add(ComboBoxListarRol);
             panelListaUsuarios.Controls.Add(TxtBuscarUsuario);
             panelListaUsuarios.Depth = 0;
+            panelListaUsuarios.Dock = DockStyle.Fill;
             panelListaUsuarios.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panelListaUsuarios.Location = new Point(5, 7);
+            panelListaUsuarios.Location = new Point(0, 0);
             panelListaUsuarios.Margin = new Padding(20);
             panelListaUsuarios.MouseState = MaterialSkin.MouseState.HOVER;
             panelListaUsuarios.Name = "panelListaUsuarios";
             panelListaUsuarios.Padding = new Padding(15);
-            panelListaUsuarios.Size = new Size(871, 550);
+            panelListaUsuarios.Size = new Size(882, 564);
             panelListaUsuarios.TabIndex = 0;
             panelListaUsuarios.Tag = "";
             // 
@@ -81,7 +81,7 @@ namespace RGTS.Interfaz.Administrador
             labelTitulo.Depth = 0;
             labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(13, 15);
+            labelTitulo.Location = new Point(12, 15);
             labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelTitulo.Name = "labelTitulo";
             labelTitulo.Size = new Size(214, 29);
@@ -95,12 +95,12 @@ namespace RGTS.Interfaz.Administrador
             materialCard1.Controls.Add(ListaUsuarios);
             materialCard1.Depth = 0;
             materialCard1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialCard1.Location = new Point(20, 126);
+            materialCard1.Location = new Point(12, 126);
             materialCard1.Margin = new Padding(14);
             materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard1.Name = "materialCard1";
             materialCard1.Padding = new Padding(14);
-            materialCard1.Size = new Size(833, 282);
+            materialCard1.Size = new Size(857, 296);
             materialCard1.TabIndex = 7;
             // 
             // ListaUsuarios
@@ -119,7 +119,7 @@ namespace RGTS.Interfaz.Administrador
             ListaUsuarios.MouseState = MaterialSkin.MouseState.OUT;
             ListaUsuarios.Name = "ListaUsuarios";
             ListaUsuarios.OwnerDraw = true;
-            ListaUsuarios.Size = new Size(805, 254);
+            ListaUsuarios.Size = new Size(829, 268);
             ListaUsuarios.TabIndex = 2;
             ListaUsuarios.TabStop = false;
             ListaUsuarios.UseCompatibleStateImageBehavior = false;
@@ -162,6 +162,7 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarEstado.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ComboBoxListarEstado.AutoResize = false;
             ComboBoxListarEstado.BackColor = SystemColors.Window;
+            ComboBoxListarEstado.Cursor = Cursors.Hand;
             ComboBoxListarEstado.Depth = 0;
             ComboBoxListarEstado.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBoxListarEstado.DropDownHeight = 174;
@@ -173,11 +174,11 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarEstado.Hint = "Estado";
             ComboBoxListarEstado.IntegralHeight = false;
             ComboBoxListarEstado.ItemHeight = 43;
-            ComboBoxListarEstado.Location = new Point(626, 61);
+            ComboBoxListarEstado.Location = new Point(637, 60);
             ComboBoxListarEstado.MaxDropDownItems = 4;
             ComboBoxListarEstado.MouseState = MaterialSkin.MouseState.OUT;
             ComboBoxListarEstado.Name = "ComboBoxListarEstado";
-            ComboBoxListarEstado.Size = new Size(227, 49);
+            ComboBoxListarEstado.Size = new Size(232, 49);
             ComboBoxListarEstado.StartIndex = 0;
             ComboBoxListarEstado.TabIndex = 4;
             ComboBoxListarEstado.SelectedIndexChanged += ComboBoxListarEstado_SelectedIndexChanged;
@@ -185,20 +186,23 @@ namespace RGTS.Interfaz.Administrador
             // BtnCambiarEstadoUsuario
             // 
             BtnCambiarEstadoUsuario.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            BtnCambiarEstadoUsuario.AutoSize = false;
             BtnCambiarEstadoUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnCambiarEstadoUsuario.BackColor = SystemColors.Window;
+            BtnCambiarEstadoUsuario.Cursor = Cursors.Hand;
             BtnCambiarEstadoUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnCambiarEstadoUsuario.Depth = 0;
             BtnCambiarEstadoUsuario.HighEmphasis = true;
-            BtnCambiarEstadoUsuario.Icon = null;
-            BtnCambiarEstadoUsuario.Location = new Point(731, 500);
+            BtnCambiarEstadoUsuario.Icon = Properties.Resources.click;
+            BtnCambiarEstadoUsuario.Location = new Point(719, 513);
             BtnCambiarEstadoUsuario.Margin = new Padding(4, 6, 4, 6);
             BtnCambiarEstadoUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnCambiarEstadoUsuario.Name = "BtnCambiarEstadoUsuario";
             BtnCambiarEstadoUsuario.NoAccentTextColor = Color.Empty;
-            BtnCambiarEstadoUsuario.Size = new Size(122, 36);
+            BtnCambiarEstadoUsuario.Size = new Size(150, 36);
             BtnCambiarEstadoUsuario.TabIndex = 6;
             BtnCambiarEstadoUsuario.Text = "Deshabilitar";
+            BtnCambiarEstadoUsuario.TextAlign = ContentAlignment.MiddleRight;
             BtnCambiarEstadoUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
             BtnCambiarEstadoUsuario.UseAccentColor = false;
             BtnCambiarEstadoUsuario.UseVisualStyleBackColor = false;
@@ -209,16 +213,17 @@ namespace RGTS.Interfaz.Administrador
             BtnEditarUsuario.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnEditarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BtnEditarUsuario.BackColor = SystemColors.Window;
+            BtnEditarUsuario.Cursor = Cursors.Hand;
             BtnEditarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnEditarUsuario.Depth = 0;
             BtnEditarUsuario.HighEmphasis = true;
-            BtnEditarUsuario.Icon = null;
-            BtnEditarUsuario.Location = new Point(162, 500);
+            BtnEditarUsuario.Icon = Properties.Resources.editar;
+            BtnEditarUsuario.Location = new Point(183, 513);
             BtnEditarUsuario.Margin = new Padding(4, 6, 4, 6);
             BtnEditarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnEditarUsuario.Name = "BtnEditarUsuario";
             BtnEditarUsuario.NoAccentTextColor = Color.Empty;
-            BtnEditarUsuario.Size = new Size(136, 36);
+            BtnEditarUsuario.Size = new Size(164, 36);
             BtnEditarUsuario.TabIndex = 5;
             BtnEditarUsuario.Text = "Editar Usuario";
             BtnEditarUsuario.Type = MaterialButton.MaterialButtonType.Outlined;
@@ -230,16 +235,17 @@ namespace RGTS.Interfaz.Administrador
             // 
             BtnAgregarUsuario.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             BtnAgregarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnAgregarUsuario.Cursor = Cursors.Hand;
             BtnAgregarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnAgregarUsuario.Depth = 0;
             BtnAgregarUsuario.HighEmphasis = true;
-            BtnAgregarUsuario.Icon = null;
-            BtnAgregarUsuario.Location = new Point(20, 500);
+            BtnAgregarUsuario.Icon = Properties.Resources.nuevo;
+            BtnAgregarUsuario.Location = new Point(13, 513);
             BtnAgregarUsuario.Margin = new Padding(4, 6, 4, 6);
             BtnAgregarUsuario.MouseState = MaterialSkin.MouseState.HOVER;
             BtnAgregarUsuario.Name = "BtnAgregarUsuario";
             BtnAgregarUsuario.NoAccentTextColor = Color.Empty;
-            BtnAgregarUsuario.Size = new Size(134, 36);
+            BtnAgregarUsuario.Size = new Size(162, 36);
             BtnAgregarUsuario.TabIndex = 1;
             BtnAgregarUsuario.Text = "Nuevo Usuario";
             BtnAgregarUsuario.Type = MaterialButton.MaterialButtonType.Contained;
@@ -252,6 +258,7 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarRol.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ComboBoxListarRol.AutoResize = false;
             ComboBoxListarRol.BackColor = SystemColors.Window;
+            ComboBoxListarRol.Cursor = Cursors.Hand;
             ComboBoxListarRol.Depth = 0;
             ComboBoxListarRol.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBoxListarRol.DropDownHeight = 174;
@@ -263,7 +270,7 @@ namespace RGTS.Interfaz.Administrador
             ComboBoxListarRol.Hint = "Rol";
             ComboBoxListarRol.IntegralHeight = false;
             ComboBoxListarRol.ItemHeight = 43;
-            ComboBoxListarRol.Location = new Point(412, 61);
+            ComboBoxListarRol.Location = new Point(423, 60);
             ComboBoxListarRol.MaxDropDownItems = 4;
             ComboBoxListarRol.MouseState = MaterialSkin.MouseState.OUT;
             ComboBoxListarRol.Name = "ComboBoxListarRol";
@@ -278,12 +285,13 @@ namespace RGTS.Interfaz.Administrador
             TxtBuscarUsuario.AnimateReadOnly = false;
             TxtBuscarUsuario.BackgroundImageLayout = ImageLayout.None;
             TxtBuscarUsuario.CharacterCasing = CharacterCasing.Normal;
+            TxtBuscarUsuario.Cursor = Cursors.IBeam;
             TxtBuscarUsuario.Depth = 0;
             TxtBuscarUsuario.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             TxtBuscarUsuario.HideSelection = true;
             TxtBuscarUsuario.Hint = "Buscar por DNI o Nombre";
-            TxtBuscarUsuario.LeadingIcon = null;
-            TxtBuscarUsuario.Location = new Point(19, 61);
+            TxtBuscarUsuario.LeadingIcon = Properties.Resources.busqueda;
+            TxtBuscarUsuario.Location = new Point(12, 60);
             TxtBuscarUsuario.MaxLength = 32767;
             TxtBuscarUsuario.MouseState = MaterialSkin.MouseState.OUT;
             TxtBuscarUsuario.Name = "TxtBuscarUsuario";
@@ -295,7 +303,7 @@ namespace RGTS.Interfaz.Administrador
             TxtBuscarUsuario.SelectionLength = 0;
             TxtBuscarUsuario.SelectionStart = 0;
             TxtBuscarUsuario.ShortcutsEnabled = true;
-            TxtBuscarUsuario.Size = new Size(387, 48);
+            TxtBuscarUsuario.Size = new Size(405, 48);
             TxtBuscarUsuario.TabIndex = 0;
             TxtBuscarUsuario.TabStop = false;
             TxtBuscarUsuario.TextAlign = HorizontalAlignment.Left;
@@ -309,12 +317,12 @@ namespace RGTS.Interfaz.Administrador
             pnlEdicionContenedor.Depth = 0;
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            pnlEdicionContenedor.Location = new Point(15, 15);
+            pnlEdicionContenedor.Location = new Point(0, 0);
             pnlEdicionContenedor.Margin = new Padding(14);
             pnlEdicionContenedor.MouseState = MaterialSkin.MouseState.HOVER;
             pnlEdicionContenedor.Name = "pnlEdicionContenedor";
             pnlEdicionContenedor.Padding = new Padding(14);
-            pnlEdicionContenedor.Size = new Size(852, 534);
+            pnlEdicionContenedor.Size = new Size(882, 564);
             pnlEdicionContenedor.TabIndex = 8;
             pnlEdicionContenedor.Visible = false;
             // 
@@ -327,7 +335,7 @@ namespace RGTS.Interfaz.Administrador
             Controls.Add(pnlEdicionContenedor);
             FormStyle = FormStyles.StatusAndActionBar_None;
             Name = "FormListadoUsuarios";
-            Padding = new Padding(15);
+            Padding = new Padding(0);
             Sizable = false;
             Text = "Lista de usuarios";
             Load += FormListadoUsuarios_Load;

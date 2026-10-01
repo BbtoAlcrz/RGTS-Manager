@@ -55,10 +55,10 @@
             PanelContenedorVistas.Depth = 0;
             PanelContenedorVistas.ForeColor = Color.FromArgb(222, 0, 0, 0);
             PanelContenedorVistas.Location = new Point(218, 69);
-            PanelContenedorVistas.Margin = new Padding(15, 15, 15, 15);
+            PanelContenedorVistas.Margin = new Padding(15);
             PanelContenedorVistas.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorVistas.Name = "PanelContenedorVistas";
-            PanelContenedorVistas.Padding = new Padding(15, 15, 15, 15);
+            PanelContenedorVistas.Padding = new Padding(15);
             PanelContenedorVistas.Size = new Size(610, 468);
             PanelContenedorVistas.TabIndex = 2;
             // 
@@ -72,10 +72,10 @@
             PanelPerfilInfo.Depth = 0;
             PanelPerfilInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
             PanelPerfilInfo.Location = new Point(10, 351);
-            PanelPerfilInfo.Margin = new Padding(14, 14, 14, 14);
+            PanelPerfilInfo.Margin = new Padding(14);
             PanelPerfilInfo.MouseState = MaterialSkin.MouseState.HOVER;
             PanelPerfilInfo.Name = "PanelPerfilInfo";
-            PanelPerfilInfo.Padding = new Padding(10, 10, 10, 10);
+            PanelPerfilInfo.Padding = new Padding(10);
             PanelPerfilInfo.Size = new Size(188, 100);
             PanelPerfilInfo.TabIndex = 3;
             // 
@@ -110,11 +110,12 @@
             BotonCerrarSesion.AutoSize = false;
             BotonCerrarSesion.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonCerrarSesion.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonCerrarSesion.Cursor = Cursors.Hand;
             BotonCerrarSesion.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonCerrarSesion.Depth = 0;
             BotonCerrarSesion.Dock = DockStyle.Bottom;
             BotonCerrarSesion.HighEmphasis = false;
-            BotonCerrarSesion.Icon = null;
+            BotonCerrarSesion.Icon = Properties.Resources.cerrar_sesion;
             BotonCerrarSesion.Location = new Point(10, 54);
             BotonCerrarSesion.Margin = new Padding(4, 6, 4, 6);
             BotonCerrarSesion.MouseState = MaterialSkin.MouseState.HOVER;
@@ -152,11 +153,12 @@
             BotonModuloUsuarios.AutoSize = false;
             BotonModuloUsuarios.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloUsuarios.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloUsuarios.Cursor = Cursors.Hand;
             BotonModuloUsuarios.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloUsuarios.Depth = 0;
             BotonModuloUsuarios.DrawShadows = false;
             BotonModuloUsuarios.HighEmphasis = true;
-            BotonModuloUsuarios.Icon = null;
+            BotonModuloUsuarios.Icon = Properties.Resources.usuarios;
             BotonModuloUsuarios.Location = new Point(4, 6);
             BotonModuloUsuarios.Margin = new Padding(4, 6, 4, 6);
             BotonModuloUsuarios.MouseState = MaterialSkin.MouseState.HOVER;
@@ -175,11 +177,12 @@
             BotonModuloProductos.AutoSize = false;
             BotonModuloProductos.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloProductos.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloProductos.Cursor = Cursors.Hand;
             BotonModuloProductos.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloProductos.Depth = 0;
             BotonModuloProductos.DrawShadows = false;
             BotonModuloProductos.HighEmphasis = true;
-            BotonModuloProductos.Icon = null;
+            BotonModuloProductos.Icon = Properties.Resources.caja_abierta;
             BotonModuloProductos.Location = new Point(4, 54);
             BotonModuloProductos.Margin = new Padding(4, 6, 4, 6);
             BotonModuloProductos.MouseState = MaterialSkin.MouseState.HOVER;
@@ -198,11 +201,12 @@
             BotonModuloProveedores.AutoSize = false;
             BotonModuloProveedores.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloProveedores.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloProveedores.Cursor = Cursors.Hand;
             BotonModuloProveedores.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloProveedores.Depth = 0;
             BotonModuloProveedores.DrawShadows = false;
             BotonModuloProveedores.HighEmphasis = true;
-            BotonModuloProveedores.Icon = null;
+            BotonModuloProveedores.Icon = Properties.Resources.camiones;
             BotonModuloProveedores.Location = new Point(4, 102);
             BotonModuloProveedores.Margin = new Padding(4, 6, 4, 6);
             BotonModuloProveedores.MouseState = MaterialSkin.MouseState.HOVER;
@@ -222,11 +226,12 @@
             BotonModuloClientes.AutoSize = false;
             BotonModuloClientes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloClientes.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloClientes.Cursor = Cursors.Hand;
             BotonModuloClientes.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloClientes.Depth = 0;
             BotonModuloClientes.DrawShadows = false;
             BotonModuloClientes.HighEmphasis = true;
-            BotonModuloClientes.Icon = null;
+            BotonModuloClientes.Icon = Properties.Resources.clientes;
             BotonModuloClientes.Location = new Point(4, 150);
             BotonModuloClientes.Margin = new Padding(4, 6, 4, 6);
             BotonModuloClientes.MouseState = MaterialSkin.MouseState.HOVER;
@@ -246,11 +251,12 @@
             BotonModuloVentas.AutoSize = false;
             BotonModuloVentas.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloVentas.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloVentas.Cursor = Cursors.Hand;
             BotonModuloVentas.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloVentas.Depth = 0;
             BotonModuloVentas.DrawShadows = false;
             BotonModuloVentas.HighEmphasis = true;
-            BotonModuloVentas.Icon = null;
+            BotonModuloVentas.Icon = Properties.Resources.ventas;
             BotonModuloVentas.Location = new Point(4, 198);
             BotonModuloVentas.Margin = new Padding(4, 6, 4, 6);
             BotonModuloVentas.MouseState = MaterialSkin.MouseState.HOVER;
@@ -270,11 +276,12 @@
             BotonModuloCompras.AutoSize = false;
             BotonModuloCompras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BotonModuloCompras.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloCompras.Cursor = Cursors.Hand;
             BotonModuloCompras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BotonModuloCompras.Depth = 0;
             BotonModuloCompras.DrawShadows = false;
             BotonModuloCompras.HighEmphasis = true;
-            BotonModuloCompras.Icon = null;
+            BotonModuloCompras.Icon = Properties.Resources.compras;
             BotonModuloCompras.Location = new Point(4, 246);
             BotonModuloCompras.Margin = new Padding(4, 6, 4, 6);
             BotonModuloCompras.MouseState = MaterialSkin.MouseState.HOVER;
@@ -297,10 +304,10 @@
             PanelContenedorMenu.Depth = 0;
             PanelContenedorMenu.ForeColor = Color.FromArgb(222, 0, 0, 0);
             PanelContenedorMenu.Location = new Point(5, 70);
-            PanelContenedorMenu.Margin = new Padding(10, 10, 10, 10);
+            PanelContenedorMenu.Margin = new Padding(10);
             PanelContenedorMenu.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorMenu.Name = "PanelContenedorMenu";
-            PanelContenedorMenu.Padding = new Padding(10, 10, 10, 10);
+            PanelContenedorMenu.Padding = new Padding(10);
             PanelContenedorMenu.Size = new Size(208, 466);
             PanelContenedorMenu.TabIndex = 0;
             // 

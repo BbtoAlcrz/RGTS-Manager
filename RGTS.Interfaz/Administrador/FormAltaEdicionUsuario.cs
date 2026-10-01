@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.Interfaz.Properties;
 using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Administrador
@@ -60,6 +61,7 @@ namespace RGTS.Interfaz.Administrador
                 BtnAgregarUsuarioNuevo.Text = "Guardar";
                 TextBoxUsuarioDni.ReadOnly = true;
                 LabelUsuarioContrasenia.Text = "Nueva Contraseña (dejar vacio para no cambiar)";
+                pictureBox1.Image = Resources.editar_usuario;
             }
             else
             {

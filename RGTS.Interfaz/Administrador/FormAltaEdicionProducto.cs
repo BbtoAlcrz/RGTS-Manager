@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
+using MaterialSkin.Properties;
 using RGTS.Entidades;
+using RGTS.Interfaz.Properties;
 using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz
@@ -28,6 +30,10 @@ namespace RGTS.Interfaz
         private void ConfigurarModo()
         {
             labelTitulo.Text = _productoEditar == null ? "Agregar Producto" : "Editar Producto";
+            if (_productoEditar != null)
+            {
+                pictureBox1.Image = Properties.Resources.editar_producto;
+            }
         }
 
         private void FormProductoAltaEdicion_Load(object sender, EventArgs e)

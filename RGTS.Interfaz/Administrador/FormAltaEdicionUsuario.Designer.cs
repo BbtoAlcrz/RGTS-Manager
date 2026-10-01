@@ -32,6 +32,7 @@ namespace RGTS.Interfaz.Administrador
         private void InitializeComponent()
         {
             panel1 = new MaterialCard();
+            pictureBox1 = new PictureBox();
             labelTitulo = new MaterialLabel();
             BtnCancelarUsuario = new MaterialButton();
             BtnAgregarUsuarioNuevo = new MaterialButton();
@@ -48,12 +49,13 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioNombre = new MaterialLabel();
             LabelUsuarioDni = new MaterialLabel();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(255, 255, 255);
+            panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(labelTitulo);
             panel1.Controls.Add(BtnCancelarUsuario);
             panel1.Controls.Add(BtnAgregarUsuarioNuevo);
@@ -70,14 +72,26 @@ namespace RGTS.Interfaz.Administrador
             panel1.Controls.Add(LabelUsuarioNombre);
             panel1.Controls.Add(LabelUsuarioDni);
             panel1.Depth = 0;
+            panel1.Dock = DockStyle.Fill;
             panel1.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            panel1.Location = new Point(2, 1);
+            panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(14);
             panel1.MouseState = MaterialSkin.MouseState.HOVER;
             panel1.Name = "panel1";
             panel1.Padding = new Padding(10);
-            panel1.Size = new Size(776, 498);
+            panel1.Size = new Size(782, 505);
             panel1.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            pictureBox1.Image = Properties.Resources.agregar_usuario;
+            pictureBox1.Location = new Point(0, 377);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(128, 128);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 16;
+            pictureBox1.TabStop = false;
             // 
             // labelTitulo
             // 
@@ -85,7 +99,7 @@ namespace RGTS.Interfaz.Administrador
             labelTitulo.Depth = 0;
             labelTitulo.Font = new Font("Roboto", 24F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelTitulo.FontType = MaterialSkin.MaterialSkinManager.fontType.H5;
-            labelTitulo.Location = new Point(13, 10);
+            labelTitulo.Location = new Point(12, 15);
             labelTitulo.MouseState = MaterialSkin.MouseState.HOVER;
             labelTitulo.Name = "labelTitulo";
             labelTitulo.Size = new Size(62, 29);
@@ -96,6 +110,7 @@ namespace RGTS.Interfaz.Administrador
             // 
             BtnCancelarUsuario.AutoSize = false;
             BtnCancelarUsuario.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnCancelarUsuario.Cursor = Cursors.Hand;
             BtnCancelarUsuario.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnCancelarUsuario.Depth = 0;
             BtnCancelarUsuario.HighEmphasis = true;
@@ -117,6 +132,7 @@ namespace RGTS.Interfaz.Administrador
             // 
             BtnAgregarUsuarioNuevo.AutoSize = false;
             BtnAgregarUsuarioNuevo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnAgregarUsuarioNuevo.Cursor = Cursors.Hand;
             BtnAgregarUsuarioNuevo.Density = MaterialButton.MaterialButtonDensity.Default;
             BtnAgregarUsuarioNuevo.Depth = 0;
             BtnAgregarUsuarioNuevo.HighEmphasis = true;
@@ -166,6 +182,7 @@ namespace RGTS.Interfaz.Administrador
             // 
             ComboBoxUsuarioRol.AutoResize = false;
             ComboBoxUsuarioRol.BackColor = Color.FromArgb(255, 255, 255);
+            ComboBoxUsuarioRol.Cursor = Cursors.Hand;
             ComboBoxUsuarioRol.Depth = 0;
             ComboBoxUsuarioRol.DrawMode = DrawMode.OwnerDrawVariable;
             ComboBoxUsuarioRol.DropDownHeight = 174;
@@ -368,19 +385,20 @@ namespace RGTS.Interfaz.Administrador
             LabelUsuarioDni.TabIndex = 0;
             LabelUsuarioDni.Text = "DNI";
             // 
-            // FormAgregarUsuario
+            // FormAltaEdicionUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(782, 505);
             Controls.Add(panel1);
             FormStyle = FormStyles.StatusAndActionBar_None;
-            Name = "FormAgregarUsuario";
-            Padding = new Padding(3, 0, 3, 3);
+            Name = "FormAltaEdicionUsuario";
+            Padding = new Padding(0);
             Sizable = false;
             Text = "Registrar nuevo usuario";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -402,5 +420,6 @@ namespace RGTS.Interfaz.Administrador
         private MaterialButton BtnAgregarUsuarioNuevo;
         private MaterialButton BtnCancelarUsuario;
         private MaterialLabel labelTitulo;
+        private PictureBox pictureBox1;
     }
 }

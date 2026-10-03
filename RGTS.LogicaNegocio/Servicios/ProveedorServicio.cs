@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RGTS.AccesoDatos.Repositorios;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Validaciones;
 
@@ -8,49 +9,12 @@ namespace RGTS.LogicaNegocio.Servicios
 {
     public class ProveedorServicio
     {
-        // Colección única en memoria compartida durante la ejecución
-        private static readonly List<Proveedor> _proveedoresMemoria = new()
+        private readonly ProveedorRepositorio _repositorio;
+
+        public ProveedorServicio()
         {
-            new Proveedor
-            {
-                IdProveedor = 1,
-                RazonSocial = "TechImport S.A.",
-                NombreComercial = "TechImport SA",
-                TipoProveedor = "Consolas de Mesa",
-                Telefono = "11-4567-8901",
-                Email = "contacto@techimport.com",
-                NombreContacto = "Martín",
-                ApellidoContacto = "Pérez",
-                Direccion = "Av. Corrientes 1234, CABA",
-                Activo = true
-            },
-            new Proveedor
-            {
-                IdProveedor = 2,
-                RazonSocial = "Distribuidora Gamer S.R.L.",
-                NombreComercial = "Gamer Distribuidora",
-                TipoProveedor = "Mandos",
-                Telefono = "11-9876-5432",
-                Email = "ventas@gamerdist.com",
-                NombreContacto = "Gonzalo",
-                ApellidoContacto = "Rodríguez",
-                Direccion = "Belgrano 456, Rosario",
-                Activo = true
-            },
-            new Proveedor
-            {
-                IdProveedor = 3,
-                RazonSocial = "ElectroSur Argentina S.A.",
-                NombreComercial = "ElectroSur",
-                TipoProveedor = "Accesorios",
-                Telefono = "379-412-3456",
-                Email = "info@electrosur.com",
-                NombreContacto = "Claudia",
-                ApellidoContacto = "Fernández",
-                Direccion = "Junín 789, Corrientes",
-                Activo = true
-            }
-        };
+            _repositorio = new ProveedorRepositorio();
+        }
 
         private static string? LimpiarTexto(string? texto)
         {
@@ -59,24 +23,12 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public List<Proveedor> ObtenerTodos(string? filtro = null)
         {
-            IEnumerable<Proveedor> query = _proveedoresMemoria;
-
-            if (!string.IsNullOrWhiteSpace(filtro))
-            {
-                string normalizado = filtro.Trim().ToLower();
-                query = query.Where(p =>
-                    (!string.IsNullOrEmpty(p.RazonSocial) && p.RazonSocial.ToLower().Contains(normalizado)) ||
-                    (!string.IsNullOrEmpty(p.NombreComercial) && p.NombreComercial.ToLower().Contains(normalizado)) ||
-                    (!string.IsNullOrEmpty(p.Telefono) && p.Telefono.Contains(normalizado))
-                );
-            }
-
-            return query.OrderBy(p => p.NombreComercial).ToList();
+            return _repositorio.ObtenerTodos(filtro);
         }
 
         public Proveedor? BuscarPorId(int idProveedor)
         {
-            return _proveedoresMemoria.FirstOrDefault(p => p.IdProveedor == idProveedor);
+            return _repositorio.BuscarPorId(idProveedor);
         }
 
         public void RegistrarProveedor(
@@ -91,11 +43,14 @@ namespace RGTS.LogicaNegocio.Servicios
         {
             ProveedorValidacion.Validar(razonSocial, nombreComercial, tipoProveedor, telefono, email, nombreProveedor, apellidoProveedor, direccion);
 
-            int nuevoId = _proveedoresMemoria.Count > 0 ? _proveedoresMemoria.Max(p => p.IdProveedor) + 1 : 1;
-
-            Proveedor nuevoProveedor = new Proveedor
+            var existentes = _repositorio.ObtenerTodos();
+            if (existentes.Any(p => p.NombreComercial.Equals(nombreComercial.Trim(), StringComparison.OrdinalIgnoreCase)))
             {
-                IdProveedor = nuevoId,
+                throw new InvalidOperationException("Ya existe un proveedor registrado con ese nombre comercial.");
+            }
+
+            var nuevoProveedor = new Proveedor
+            {
                 RazonSocial = razonSocial.Trim(),
                 NombreComercial = nombreComercial.Trim(),
                 TipoProveedor = tipoProveedor,
@@ -107,7 +62,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 Activo = true
             };
 
-            _proveedoresMemoria.Add(nuevoProveedor);
+            _repositorio.Insertar(nuevoProveedor);
         }
 
         public void ModificarProveedor(
@@ -123,8 +78,14 @@ namespace RGTS.LogicaNegocio.Servicios
         {
             ProveedorValidacion.Validar(razonSocial, nombreComercial, tipoProveedor, telefono, email, nombreProveedor, apellidoProveedor, direccion);
 
-            var proveedor = _proveedoresMemoria.FirstOrDefault(p => p.IdProveedor == idProveedor)
+            var proveedor = _repositorio.BuscarPorId(idProveedor)
                 ?? throw new InvalidOperationException("El proveedor a modificar no fue encontrado.");
+
+            var existentes = _repositorio.ObtenerTodos();
+            if (existentes.Any(p => p.NombreComercial.Equals(nombreComercial.Trim(), StringComparison.OrdinalIgnoreCase) && p.IdProveedor != idProveedor))
+            {
+                throw new InvalidOperationException("Ya existe otro proveedor registrado con ese nombre comercial.");
+            }
 
             proveedor.RazonSocial = razonSocial.Trim();
             proveedor.NombreComercial = nombreComercial.Trim();
@@ -134,11 +95,13 @@ namespace RGTS.LogicaNegocio.Servicios
             proveedor.NombreContacto = LimpiarTexto(nombreProveedor);
             proveedor.ApellidoContacto = LimpiarTexto(apellidoProveedor);
             proveedor.Direccion = direccion.Trim();
+
+            _repositorio.Actualizar(proveedor);
         }
 
         public void CambiarEstadoProveedor(int idProveedor, bool nuevoEstado)
         {
-            var proveedor = _proveedoresMemoria.FirstOrDefault(p => p.IdProveedor == idProveedor)
+            var proveedor = _repositorio.BuscarPorId(idProveedor)
                 ?? throw new InvalidOperationException("El proveedor no fue encontrado.");
 
             if (proveedor.Activo == nuevoEstado)
@@ -147,7 +110,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 throw new InvalidOperationException($"El proveedor ya se encuentra {estadoTexto}.");
             }
 
-            proveedor.Activo = nuevoEstado;
+            _repositorio.CambiarEstado(idProveedor, nuevoEstado);
         }
     }
 }

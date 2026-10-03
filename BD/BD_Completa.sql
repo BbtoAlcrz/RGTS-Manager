@@ -44,10 +44,11 @@ BEGIN
         activo BIT NOT NULL DEFAULT 1
     );
 
-    CREATE TABLE CATEGORIA (
-        id_categoria INT IDENTITY(1,1) PRIMARY KEY,
-        nombre_categoria VARCHAR(50) NOT NULL UNIQUE,
-        descripcion VARCHAR(200) NULL
+   CREATE TABLE CATEGORIA (
+    id_categoria INT IDENTITY(1,1) PRIMARY KEY,
+    nombre_categoria VARCHAR(50) NOT NULL UNIQUE,
+    descripcion VARCHAR(200) NULL,
+    activo BIT NOT NULL DEFAULT 1
     );
 
     CREATE TABLE PROVEEDOR (

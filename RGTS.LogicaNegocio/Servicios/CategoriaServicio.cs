@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RGTS.AccesoDatos.Repositorios;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Validaciones;
 
@@ -8,19 +9,17 @@ namespace RGTS.LogicaNegocio.Servicios
 {
     public class CategoriaServicio
     {
-        private static readonly List<Categoria> _categoriasMemoria = new()
-        {
-            new Categoria { IdCategoria = 1, NombreCategoria = "Consolas",  Descripcion = "Consolas de videojuegos", Activo = true },
-            new Categoria { IdCategoria = 2, NombreCategoria = "Mandos",    Descripcion = "Mandos y controles", Activo = true },
-            new Categoria { IdCategoria = 3, NombreCategoria = "Portátiles", Descripcion = "Consolas portátiles", Activo = true },
-            new Categoria { IdCategoria = 4, NombreCategoria = "Accesorios", Descripcion = "Accesorios varios", Activo = true }
-        };
+        private readonly CategoriaRepositorio _categoriaRepositorio;
 
+        public CategoriaServicio()
+        {
+            _categoriaRepositorio = new CategoriaRepositorio();
+        }
 
         // Obtiene todas las categorías o filtra por nombre
         public List<Categoria> ObtenerTodas(string? filtroNombre = null, bool soloActivas = false)
         {
-            IEnumerable<Categoria> query = _categoriasMemoria;
+            IEnumerable<Categoria> query = _categoriaRepositorio.ObtenerTodas();
 
             if (soloActivas)
             {
@@ -38,9 +37,8 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public Categoria? ObtenerPorId(int idCategoria)
         {
-            return _categoriasMemoria.FirstOrDefault(c => c.IdCategoria == idCategoria);
+            return _categoriaRepositorio.ObtenerPorId(idCategoria);
         }
-
 
         // Valida y registra una nueva categoría
         public void RegistrarCategoria(string nombre, string descripcion)
@@ -48,47 +46,49 @@ namespace RGTS.LogicaNegocio.Servicios
             CategoriaValidacion.Validar(nombre, descripcion);
 
             string nombreNormalizado = nombre.Trim();
-            if (_categoriasMemoria.Any(c => c.NombreCategoria.Equals(nombreNormalizado, StringComparison.OrdinalIgnoreCase)))
+            var existentes = _categoriaRepositorio.ObtenerTodas();
+
+            if (existentes.Any(c => c.NombreCategoria.Equals(nombreNormalizado, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new InvalidOperationException("Ya existe una categoría registrada con ese nombre");
             }
 
-            int nuevoId = _categoriasMemoria.Count > 0 ? _categoriasMemoria.Max(c => c.IdCategoria) + 1 : 1;
-
             var nuevaCategoria = new Categoria
             {
-                IdCategoria = nuevoId,
                 NombreCategoria = nombreNormalizado,
                 Descripcion = descripcion?.Trim() ?? string.Empty,
                 Activo = true
             };
 
-            _categoriasMemoria.Add(nuevaCategoria);
+            _categoriaRepositorio.Insertar(nuevaCategoria);
         }
-
 
         // Valida y modifica una categoría existente
         public void ModificarCategoria(int idCategoria, string nombre, string descripcion)
         {
             CategoriaValidacion.Validar(nombre, descripcion);
 
-            var categoria = _categoriasMemoria.FirstOrDefault(c => c.IdCategoria == idCategoria)
+            var categoria = _categoriaRepositorio.ObtenerPorId(idCategoria)
                 ?? throw new InvalidOperationException("No se encontró la categoría a modificar");
 
             string nombreNormalizado = nombre.Trim();
-            if (_categoriasMemoria.Any(c => c.NombreCategoria.Equals(nombreNormalizado, StringComparison.OrdinalIgnoreCase) && c.IdCategoria != idCategoria))
+            var existentes = _categoriaRepositorio.ObtenerTodas();
+
+            if (existentes.Any(c => c.NombreCategoria.Equals(nombreNormalizado, StringComparison.OrdinalIgnoreCase) && c.IdCategoria != idCategoria))
             {
                 throw new InvalidOperationException("Ya existe otra categoría registrada con ese nombre");
             }
 
             categoria.NombreCategoria = nombreNormalizado;
             categoria.Descripcion = descripcion?.Trim() ?? string.Empty;
+
+            _categoriaRepositorio.Actualizar(categoria);
         }
 
         // Baja / Reactivación
         public void CambiarEstadoCategoria(int idCategoria, bool nuevoEstado)
         {
-            var categoria = _categoriasMemoria.FirstOrDefault(c => c.IdCategoria == idCategoria)
+            var categoria = _categoriaRepositorio.ObtenerPorId(idCategoria)
                 ?? throw new InvalidOperationException("No se encontró la categoría");
 
             if (categoria.Activo == nuevoEstado)
@@ -97,11 +97,10 @@ namespace RGTS.LogicaNegocio.Servicios
                 throw new InvalidOperationException($"La categoría ya se encuentra {estadoTexto}");
             }
 
-            categoria.Activo = nuevoEstado;
+            _categoriaRepositorio.CambiarEstado(idCategoria, nuevoEstado);
         }
 
-
-        // el armado de entidad
+        // Armado de entidad sin persistir (usado si algún formulario solo necesita validar + armar)
         public Categoria ValidarYArmarCategoria(int idCategoria, string nombre, string descripcion)
         {
             CategoriaValidacion.Validar(nombre, descripcion);

@@ -159,5 +159,88 @@ namespace RGTS.AccesoDatos.Repositorios
                 Activo = Convert.ToBoolean(reader["activo"])
             };
         }
+
+        // Obtiene un producto puntual por su id, con su categoría asociada
+        public Producto? ObtenerPorId(int idProducto)
+        {
+            string query = @"
+        SELECT p.id_producto, p.id_categoria, c.nombre_categoria,
+               p.codigo, p.nombre, p.descripcion,
+               p.precio, p.stock_actual, p.stock_minimo, p.stock_maximo, p.activo
+        FROM PRODUCTO p
+        INNER JOIN CATEGORIA c ON p.id_categoria = c.id_categoria
+        WHERE p.id_producto = @IdProducto";
+
+            using (var con = _conexion.ObtenerConexion())
+            using (var cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return MapearProducto(reader);
+                }
+            }
+            return null;
+        }
+
+        // Obtiene solo productos activos, filtrados por texto (usado en Ventas)
+        public List<Producto> ObtenerActivosPorFiltro(string texto, int maxResultados = 10)
+        {
+            var lista = new List<Producto>();
+            string query = @"
+        SELECT TOP (@Max) p.id_producto, p.id_categoria, c.nombre_categoria,
+               p.codigo, p.nombre, p.descripcion,
+               p.precio, p.stock_actual, p.stock_minimo, p.stock_maximo, p.activo
+        FROM PRODUCTO p
+        INNER JOIN CATEGORIA c ON p.id_categoria = c.id_categoria
+        WHERE p.activo = 1
+          AND (p.nombre LIKE '%' + @Texto + '%' OR p.codigo LIKE '%' + @Texto + '%')";
+
+            using (var con = _conexion.ObtenerConexion())
+            using (var cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add(new SqlParameter("@Texto", SqlDbType.VarChar, 100) { Value = texto ?? "" });
+                cmd.Parameters.Add(new SqlParameter("@Max", SqlDbType.Int) { Value = maxResultados });
+                con.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                        lista.Add(MapearProducto(reader));
+                }
+            }
+            return lista;
+        }
+
+        // Cambia el estado activo/inactivo del producto (reemplaza/generaliza a Eliminar)
+        public void CambiarEstado(int idProducto, bool nuevoEstado)
+        {
+            string query = "UPDATE PRODUCTO SET activo = @Activo WHERE id_producto = @IdProducto";
+
+            using (var con = _conexion.ObtenerConexion())
+            using (var cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add(new SqlParameter("@Activo", SqlDbType.Bit) { Value = nuevoEstado });
+                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Actualiza solamente el stock de un producto (usado por IncrementarStock/DescontarStock)
+        public void ActualizarStock(int idProducto, int nuevoStock)
+        {
+            string query = "UPDATE PRODUCTO SET stock_actual = @StockActual WHERE id_producto = @IdProducto";
+
+            using (var con = _conexion.ObtenerConexion())
+            using (var cmd = new SqlCommand(query, con))
+            {
+                cmd.Parameters.Add(new SqlParameter("@StockActual", SqlDbType.Int) { Value = nuevoStock });
+                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

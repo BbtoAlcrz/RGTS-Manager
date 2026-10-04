@@ -121,6 +121,7 @@ BEGIN
         id_cliente INT NULL,
         fecha DATETIME NOT NULL DEFAULT GETDATE(),
         total_derivado DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+        metodo_pago VARCHAR(30) NOT NULL,
         CONSTRAINT FK_Venta_Usuario FOREIGN KEY (dni_usuario) REFERENCES USUARIO(dni),
         CONSTRAINT FK_Venta_Cliente FOREIGN KEY (id_cliente) REFERENCES CLIENTE(id_cliente)
     );

@@ -172,8 +172,8 @@ namespace RGTS.Interfaz.Administrador
                 if (_proveedorSeleccionado == null)
                     throw new ArgumentException("Debe seleccionar un proveedor.");
 
-                string usuario = FormPrincipal.UsuarioSesion?.NombreCompleto ?? "Encargado Depósito";
-                _compraServicio.RegistrarCompra(usuario, _proveedorSeleccionado, _detalle);
+                string dniUsuario = FormPrincipal.UsuarioSesion?.Dni ?? "000000";
+                _compraServicio.RegistrarCompra(dniUsuario, _proveedorSeleccionado, _detalle);
 
                 MessageBox.Show("Orden de compra registrada correctamente en estado Pendiente.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

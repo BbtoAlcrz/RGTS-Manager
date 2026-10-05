@@ -12,6 +12,8 @@ namespace RGTS.LogicaNegocio.Servicios
         private readonly CompraRepositorio _repositorio;
         private readonly ProductoServicio _productoServicio = new();
 
+        private readonly UsuarioServicio _usuarioServicio = new();
+
         public CompraServicio()
         {
             _repositorio = new CompraRepositorio();

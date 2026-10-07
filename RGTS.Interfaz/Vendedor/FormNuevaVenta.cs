@@ -313,6 +313,7 @@ namespace RGTS.Interfaz.Vendedor
                 );
 
                 if (rta != DialogResult.Yes) return;
+                _ventaServicio.CancelarReservasCarrito(_carrito); 
             }
 
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());

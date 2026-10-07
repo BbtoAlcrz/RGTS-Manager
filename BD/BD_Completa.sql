@@ -79,6 +79,7 @@ BEGIN
         stock_actual INT NOT NULL DEFAULT 0,
         stock_minimo INT NOT NULL DEFAULT 0,
         stock_maximo INT NOT NULL DEFAULT 0,
+        stock_reservado INT NOT NULL DEFAULT 0,
         activo BIT NOT NULL DEFAULT 1,
         CONSTRAINT FK_Producto_Categoria FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id_categoria)
     );

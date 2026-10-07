@@ -12,6 +12,7 @@
         public int StockActual { get; set; }
         public int StockMinimo { get; set; }
         public int StockMaximo { get; set; }
+        public int StockReservado { get; set; }
         public bool Activo { get; set; }
     }
 }

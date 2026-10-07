@@ -36,8 +36,9 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public DetalleVenta GenerarDetalle(Producto producto, int cantidad, List<DetalleVenta> carrito)
         {
-            int yaEnCarrito = carrito.Where(d => d.IdProducto == producto.IdProducto).Sum(d => d.Cantidad);
-            VentaValidacion.ValidarAgregarProducto(producto, cantidad, yaEnCarrito);
+            // La reserva en BD valida atómicamente que haya disponible suficiente
+            // (evita que dos vendedores vendan el mismo stock al mismo tiempo)
+            _productoServicio.ReservarStock(producto.IdProducto, cantidad);
 
             return new DetalleVenta
             {
@@ -57,10 +58,10 @@ namespace RGTS.LogicaNegocio.Servicios
 
             int nuevoId = _repositorio.RegistrarVenta(dniUsuario, cliente?.IdCliente, total, metodoPago, detalles);
 
-            // Descontar inventario real
+            // Confirmar venta: descuenta stock real y libera la reserva de cada ítem
             foreach (var detalle in detalles)
             {
-                _productoServicio.DescontarStock(detalle.IdProducto, detalle.Cantidad);
+                _productoServicio.ConfirmarStock(detalle.IdProducto, detalle.Cantidad);
             }
 
             return new Venta
@@ -86,6 +87,15 @@ namespace RGTS.LogicaNegocio.Servicios
             return _repositorio.ObtenerVendedoresConVentas()
                 .Select(v => (v.Dni, NombreCompleto: $"{v.Nombre} {v.Apellido}"))
                 .ToList();
+        }
+
+        // Libera todas las reservas de un carrito sin confirmar (venta cancelada)
+        public void CancelarReservasCarrito(List<DetalleVenta> carrito)
+        {
+            foreach (var detalle in carrito)
+            {
+                _productoServicio.LiberarStock(detalle.IdProducto, detalle.Cantidad);
+            }
         }
     }
 }

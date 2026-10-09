@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz.Vendedor
 {
@@ -44,21 +45,64 @@ namespace RGTS.Interfaz.Vendedor
             labelTotalVentaValor.Text = _venta.TotalDerivado.ToString("C2");
 
             // Artículos de la venta
-            if (_venta.Detalles != null && _venta.Detalles.Count > 0)
+            listViewProductos.BeginUpdate();
+            listViewProductos.Items.Clear();
+
+            if (_venta.Detalles.Count > 0)
             {
-                labelDetalleProductosValor.Text = string.Join(Environment.NewLine, _venta.Detalles.Select(d =>
-                    $"[{d.Producto?.Codigo ?? "Sin/Cod"}] | {d.Producto?.Nombre ?? "Producto"} " +
-                    $"x{d.Cantidad} unidad/es |  {d.PrecioUnitario:C2}"));
+                foreach (var detalle in _venta.Detalles)
+                {
+                    var item = new ListViewItem(new[]
+                    {
+                        detalle.Producto?.Nombre ?? "Producto desconocido",
+                        detalle.Cantidad.ToString(),
+                        detalle.PrecioUnitario.ToString("C2"),
+                        detalle.SubtotalCalculado.ToString("C2")
+                    });
+                    listViewProductos.Items.Add(item);
+                }
             }
             else
             {
-                labelDetalleProductosValor.Text = "~ Sin productos asociados";
+                labelDetalleProductosTitulo.Text = "Sin productos asociados a esta venta";
             }
+
+            listViewProductos.EndUpdate();
         }
 
         private void btnVolver_Click(object? sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void BtnExportarPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                {
+                    sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                    sfd.FileName = $"Factura_Venta_{_venta.IdVenta:D5}.pdf";
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        var pdfService = new PdfFacturaServicio();
+                        pdfService.GenerarFactura(_venta, sfd.FileName);
+
+                        MessageBox.Show("Comprobante generado correctamente.", "PDF Creado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = sfd.FileName,
+                            UseShellExecute = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar PDF: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

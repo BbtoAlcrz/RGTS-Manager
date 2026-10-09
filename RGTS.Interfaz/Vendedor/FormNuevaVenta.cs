@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
@@ -259,7 +261,7 @@ namespace RGTS.Interfaz.Vendedor
         {
             try
             {
-                string metodoPago = comboBoxMetodoPago.SelectedItem?.ToString() ?? string.Empty;
+                string metodoPago = comboBoxMetodoPago.SelectedItem?.ToString() ?? "Efectivo";
 
                 // Registra la venta asociada al vendedor en sesión y su DNI
                 Venta ventaRegistrada = _ventaServicio.RegistrarVenta(
@@ -275,7 +277,7 @@ namespace RGTS.Interfaz.Vendedor
                     : "Consumidor Final";
 
                 MessageBox.Show(
-                    $"Venta N° {ventaRegistrada.IdVenta:D5} confirmada exitosamente\n\n" +
+                    $"Venta N°: {ventaRegistrada.IdVenta:D5} confirmada exitosamente\n\n" +
                     $"- Vendedor (DNI): {ventaRegistrada.DniUsuario}\n" +
                     $"- Cliente: {nombreCliente}\n" +
                     $"- Método: {metodoPago}\n" +
@@ -285,6 +287,36 @@ namespace RGTS.Interfaz.Vendedor
                     MessageBoxIcon.Information
                 );
 
+                DialogResult respuesta = MessageBox.Show(
+                    "¿Quiere generar el comprobante en formato PDF?",
+                    "Emitir Factura PDF",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (respuesta == DialogResult.Yes)
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    {
+                        sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                        sfd.FileName = $"Factura_Venta_{ventaRegistrada.IdVenta:D5}.pdf";
+
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            var pdfService = new PdfFacturaServicio();
+                            pdfService.GenerarFactura(ventaRegistrada, sfd.FileName);
+
+                            // Abre el PDF generado con el visor predeterminado del sistema
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = sfd.FileName,
+                                UseShellExecute = true
+                            });
+                        }
+                    }
+                }
+
+                // limpia la ventana
                 _carrito.Clear();
                 txtBuscarDniCliente.Clear();
                 LimpiarSeccionCliente();

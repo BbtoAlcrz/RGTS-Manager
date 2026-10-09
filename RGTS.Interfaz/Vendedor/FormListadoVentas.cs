@@ -197,6 +197,7 @@ namespace RGTS.Interfaz.Vendedor
             if (listaVentas.SelectedItems.Count == 0) return;
 
             var ventaSeleccionada = (Venta)listaVentas.SelectedItems[0].Tag;
+            ventaSeleccionada.Detalles = _ventaServicio.ObtenerDetallesPorVenta(ventaSeleccionada.IdVenta);
             MostrarSubVentana(new FormDetalleVenta(ventaSeleccionada));
         }
 

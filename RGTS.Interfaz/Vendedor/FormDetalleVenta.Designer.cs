@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
-            labelDetalleProductosValor = new MaterialSkin.Controls.MaterialLabel();
+            listViewProductos = new MaterialSkin.Controls.MaterialListView();
+            BtnExportarPDF = new MaterialSkin.Controls.MaterialButton();
             labelDetalleProductosTitulo = new MaterialSkin.Controls.MaterialLabel();
             labelTotalVentaValor = new MaterialSkin.Controls.MaterialLabel();
             labelTotalVentaTitulo = new MaterialSkin.Controls.MaterialLabel();
@@ -43,13 +44,18 @@
             labelNroVentaTitulo = new MaterialSkin.Controls.MaterialLabel();
             btnVolver = new MaterialSkin.Controls.MaterialButton();
             labelTitulo = new MaterialSkin.Controls.MaterialLabel();
+            nombre = new ColumnHeader();
+            precioUnitario = new ColumnHeader();
+            cantidad = new ColumnHeader();
+            subtotal = new ColumnHeader();
             materialCard1.SuspendLayout();
             SuspendLayout();
             // 
             // materialCard1
             // 
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
-            materialCard1.Controls.Add(labelDetalleProductosValor);
+            materialCard1.Controls.Add(listViewProductos);
+            materialCard1.Controls.Add(BtnExportarPDF);
             materialCard1.Controls.Add(labelDetalleProductosTitulo);
             materialCard1.Controls.Add(labelTotalVentaValor);
             materialCard1.Controls.Add(labelTotalVentaTitulo);
@@ -74,18 +80,46 @@
             materialCard1.Size = new Size(925, 530);
             materialCard1.TabIndex = 0;
             // 
-            // labelDetalleProductosValor
+            // listViewProductos
             // 
-            labelDetalleProductosValor.AutoSize = true;
-            labelDetalleProductosValor.Depth = 0;
-            labelDetalleProductosValor.Font = new Font("Roboto", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            labelDetalleProductosValor.FontType = MaterialSkin.MaterialSkinManager.fontType.Button;
-            labelDetalleProductosValor.Location = new Point(394, 85);
-            labelDetalleProductosValor.MouseState = MaterialSkin.MouseState.HOVER;
-            labelDetalleProductosValor.Name = "labelDetalleProductosValor";
-            labelDetalleProductosValor.Size = new Size(6, 17);
-            labelDetalleProductosValor.TabIndex = 51;
-            labelDetalleProductosValor.Text = "-";
+            listViewProductos.AutoSizeTable = false;
+            listViewProductos.BackColor = Color.FromArgb(255, 255, 255);
+            listViewProductos.BorderStyle = BorderStyle.None;
+            listViewProductos.Columns.AddRange(new ColumnHeader[] { nombre, cantidad, precioUnitario, subtotal });
+            listViewProductos.Depth = 0;
+            listViewProductos.FullRowSelect = true;
+            listViewProductos.Location = new Point(394, 82);
+            listViewProductos.MinimumSize = new Size(200, 100);
+            listViewProductos.MouseLocation = new Point(-1, -1);
+            listViewProductos.MouseState = MaterialSkin.MouseState.OUT;
+            listViewProductos.Name = "listViewProductos";
+            listViewProductos.OwnerDraw = true;
+            listViewProductos.Size = new Size(514, 433);
+            listViewProductos.TabIndex = 53;
+            listViewProductos.UseCompatibleStateImageBehavior = false;
+            listViewProductos.View = View.Details;
+            // 
+            // BtnExportarPDF
+            // 
+            BtnExportarPDF.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            BtnExportarPDF.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BtnExportarPDF.Cursor = Cursors.Hand;
+            BtnExportarPDF.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BtnExportarPDF.Depth = 0;
+            BtnExportarPDF.HighEmphasis = true;
+            BtnExportarPDF.Icon = Properties.Resources.confirmar;
+            BtnExportarPDF.Location = new Point(151, 479);
+            BtnExportarPDF.Margin = new Padding(4, 6, 4, 6);
+            BtnExportarPDF.MouseState = MaterialSkin.MouseState.HOVER;
+            BtnExportarPDF.Name = "BtnExportarPDF";
+            BtnExportarPDF.NoAccentTextColor = Color.Empty;
+            BtnExportarPDF.Size = new Size(154, 36);
+            BtnExportarPDF.TabIndex = 52;
+            BtnExportarPDF.Text = "Exportar PDF";
+            BtnExportarPDF.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BtnExportarPDF.UseAccentColor = false;
+            BtnExportarPDF.UseVisualStyleBackColor = true;
+            BtnExportarPDF.Click += BtnExportarPDF_Click;
             // 
             // labelDetalleProductosTitulo
             // 
@@ -229,6 +263,7 @@
             btnVolver.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnVolver.AutoSize = false;
             btnVolver.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnVolver.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
             btnVolver.Cursor = Cursors.Hand;
             btnVolver.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnVolver.Depth = 0;
@@ -242,7 +277,7 @@
             btnVolver.Size = new Size(125, 36);
             btnVolver.TabIndex = 39;
             btnVolver.Text = "Volver ";
-            btnVolver.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnVolver.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnVolver.UseAccentColor = false;
             btnVolver.UseVisualStyleBackColor = true;
             btnVolver.Click += btnVolver_Click;
@@ -259,6 +294,30 @@
             labelTitulo.Size = new Size(177, 29);
             labelTitulo.TabIndex = 20;
             labelTitulo.Text = "Detalle de Venta";
+            // 
+            // nombre
+            // 
+            nombre.DisplayIndex = 0;
+            nombre.Text = "Nombre";
+            nombre.Width = 100;
+            // 
+            // cantidad
+            // 
+            cantidad.DisplayIndex = 1;
+            cantidad.Text = "Cantidad";
+            cantidad.Width = 90;
+            // 
+            // precioUnitario
+            // 
+            precioUnitario.DisplayIndex = 2;
+            precioUnitario.Text = "Precio U.";
+            precioUnitario.Width = 90;
+            // 
+            // subtotal
+            // 
+            subtotal.DisplayIndex = 3;
+            subtotal.Text = "SubTotal";
+            subtotal.Width = 90;
             // 
             // FormDetalleVenta
             // 
@@ -291,7 +350,12 @@
         private MaterialSkin.Controls.MaterialLabel labelVendedorValor;
         private MaterialSkin.Controls.MaterialLabel labelVendedorTitulo;
         private MaterialSkin.Controls.MaterialLabel labelFechaVentaValor;
-        private MaterialSkin.Controls.MaterialLabel labelDetalleProductosValor;
         private MaterialSkin.Controls.MaterialLabel labelDetalleProductosTitulo;
+        private MaterialSkin.Controls.MaterialButton BtnExportarPDF;
+        private MaterialSkin.Controls.MaterialListView listViewProductos;
+        private ColumnHeader nombre;
+        private ColumnHeader precioUnitario;
+        private ColumnHeader cantidad;
+        private ColumnHeader subtotal;
     }
 }

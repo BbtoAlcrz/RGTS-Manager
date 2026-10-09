@@ -82,6 +82,11 @@ namespace RGTS.LogicaNegocio.Servicios
             return _repositorio.ObtenerHistorial(dniVendedor, filtroDniCliente, fechaDesde, fechaHasta);
         }
 
+        public List<DetalleVenta> ObtenerDetallesPorVenta(int idVenta)
+        {
+            return _repositorio.ObtenerDetallesPorVenta(idVenta);
+        }
+
         public List<(string Dni, string NombreCompleto)> ObtenerVendedoresConVentas()
         {
             return _repositorio.ObtenerVendedoresConVentas()

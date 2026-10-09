@@ -1,0 +1,59 @@
+-- SEEDERS (DEJAR SIEMPRE A LO ÚLTIMO) **********
+IF NOT EXISTS (SELECT 1 FROM ROL)
+BEGIN
+    INSERT INTO ROL (nombre_rol, descripcion) VALUES 
+    ('Administrador', 'Control y administración total del sistema'),
+    ('Vendedor', 'Gestion de ventas y consultas de catálogo'),
+    ('Encargado de Deposito', 'Control de stock, compras y proveedores');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM USUARIO)
+BEGIN
+    -- Contraseña inicial sin hashear como prueba
+    INSERT INTO USUARIO (dni, id_rol, nombre, apellido, email, contrasena_hash, activo) VALUES
+    ('47366368', 1, 'Fausto', 'Avalos Alurralde', 'admin@a.com', 'admin123', 1),
+    ('45020546', 2, 'Benito', 'Alcaraz', 'vendedor@v.com', 'vendedor123', 1),
+    ('12345678', 3, 'Carlos', 'Deposito', 'deposito@d.com', 'deposito123', 1);
+END
+GO
+
+
+-- CLIENTES
+IF NOT EXISTS (SELECT 1 FROM CLIENTE)
+BEGIN
+    INSERT INTO CLIENTE (nombre, apellido, dni, telefono, email) VALUES
+    ('Hugh', 'Jackman', '12101968', '3794-123456', 'notWolverine@gmail.com'),
+    ('Taylor', 'Swift', '13121989', '3795-654321', 'itsTaylor@gmail.com');
+
+    INSERT INTO CLIENTE (nombre, apellido, dni, telefono) VALUES
+    ('Ryan', 'Reynolds', '23101976', '1107-121314');
+
+    INSERT INTO CLIENTE (nombre, apellido, dni) VALUES
+    ('Tom', 'Holland', '01061996'),
+    ('Julián', 'Alvarez', '31012000');
+END
+GO
+
+
+IF NOT EXISTS (SELECT 1 FROM CATEGORIA)
+BEGIN
+    INSERT INTO CATEGORIA (nombre_categoria, descripcion, activo) VALUES
+    ('Sobremesa', 'Conectala a la tele y disfrutá de los grandes clásicos', 1),
+    ('Portátil', 'Llevá tus partidas clasicas vayas donde vayas', 1),
+    ('Joystick', 'Mandos, Joyticks y Pads originales o alternativos', 1),
+    ('Juegos', 'Discos y cartuchos originales para todas las generaciones', 1),
+    ('Accesorios', 'Cables, fuentes de alimentación, memory cards y más', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM PROVEEDOR)
+BEGIN
+    INSERT INTO PROVEEDOR (razon_social, nombre_comercial, tipo_proveedor, nombre_contacto, apellido_contacto, telefono, direccion) VALUES
+    ('Distribuidora Gamer S.R.L', 'Gamer distribuidora', 'Mandos y Accesorios', 'Gonzalo', 'Montiel', '1143-090807', 'Belgrano 387, Buenos Aires'),
+    ('TechImport S.A','TechImport', 'Sobremesa', 'Emiliano', 'Martinez', '3414-323258', 'Av. Siempre Viva 742, Rosario');
+
+    INSERT INTO PROVEEDOR (razon_social, nombre_comercial, tipo_proveedor, telefono, correo, direccion) VALUES
+    ('RetroShop S.R.L', 'Retro Shop', 'Portatiles y juegos', '1117-650837', 'RetroShop@shopp.com' , '12 de Octubre 1100, Resistencia');
+END
+GO 

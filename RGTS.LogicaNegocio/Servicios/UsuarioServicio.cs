@@ -9,6 +9,7 @@ namespace RGTS.LogicaNegocio.Servicios
 {
     public class UsuarioServicio
     {
+        private static readonly Random _random = new();
         private readonly UsuarioRepositorio _usuarioRepositorio;
 
         public UsuarioServicio()
@@ -87,6 +88,37 @@ namespace RGTS.LogicaNegocio.Servicios
             }
 
             _usuarioRepositorio.CambiarEstado(dniObjetivo, nuevoEstado);
+        }
+
+
+        public string ObtenerSaludoBienvenida(Usuario? usuario)
+        {
+            if (usuario == null) return "Hola! Te damos la bienvenida al sistema";
+
+            int horaActual = DateTime.Now.Hour;
+
+            string momentoDía = horaActual switch
+            {
+                >= 5 and < 12 => "Buenos días",
+                >= 12 and < 20 => "Buenas tardes",
+                _ => "Buenas noches"
+            };
+
+            string nombre = usuario.Nombre?.Trim() ?? "";
+            string rol = usuario.Rol?.NombreRol?.Trim() ?? "Usuario";
+
+            // plantillas de bienvenida
+            string[] plantillasSaludos =
+            {
+                $"{momentoDía} {nombre}, Qué bueno verte de nuevo! :)",
+                $"Hola {nombre}! tu panel de {rol} está listo :)",
+                $"{momentoDía} {nombre}, ya podes empezar a trabajar, éxitos! :)",
+                $"Bienvenido/a, {nombre}! Que tengas una jornada muy productiva :)"
+            };
+
+            // Selección aleatoria usando Random
+            int indice = _random.Next(plantillasSaludos.Length);
+            return plantillasSaludos[indice];
         }
 
     }

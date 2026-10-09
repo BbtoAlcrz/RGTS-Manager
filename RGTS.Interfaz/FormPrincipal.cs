@@ -8,18 +8,20 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
+using RGTS.AccesoDatos;
 using RGTS.Interfaz.Administrador;
 using RGTS.Interfaz.EncargadoDeposito;
 using RGTS.Interfaz.Vendedor;
+using RGTS.LogicaNegocio.Servicios;
 
 namespace RGTS.Interfaz
 {
     public partial class FormPrincipal : MaterialForm
     {
         // esto mantiene la información de login del usuario y el nombre de su rol en toda la aplicación
+        private readonly UsuarioServicio _usuarioServicio = new UsuarioServicio();
         public static Usuario? UsuarioSesion { get; private set; }
         public static string? RolSesion { get; private set; }
-
         public static FormPrincipal? InstanciaActual { get; private set; }
         private Form? _formularioActivo = null;
 
@@ -37,6 +39,8 @@ namespace RGTS.Interfaz
             RolSesion = UsuarioSesion.Rol?.NombreRol;
 
             // cambia el nombre y el rol dependiendo del usuario de la sesion
+            labelBienvenida.Text = _usuarioServicio.ObtenerSaludoBienvenida(UsuarioSesion);
+
             LabelNombreUsuario.Text = UsuarioSesion.NombreCompleto;
             LabelRolUsuario.Text = RolSesion;
 
@@ -155,11 +159,35 @@ namespace RGTS.Interfaz
             }
         }
 
+        public static void CerrarSesion()
+        {
+            UsuarioSesion = null;
+            RolSesion = null;
+
+            if (InstanciaActual != null)
+            {
+                var formPrincipal = InstanciaActual;
+                InstanciaActual = null; // Se setea en null para que FormClosed no ejecute Environment.Exit
+                formPrincipal.Hide();
+                formPrincipal.Dispose();
+            }
+
+            // Instancia y apertura del Login
+            FormIniciarSesion formLogin = new FormIniciarSesion();
+            formLogin.Show();
+        }
+
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Al cerrar el FormPrincipal (con la X de la ventana), cerramos toda la aplicación.
-            // No hay relogin en caliente: para volver a entrar hay que reabrir el ejecutable.
-            Environment.Exit(0);
+            // Si la InstanciaActual NO era null, significa que el usuario apretó la 'X' para salir
+            if (InstanciaActual != null)
+            {
+                InstanciaActual = null;
+                UsuarioSesion = null;
+                RolSesion = null;
+
+                Environment.Exit(0);
+            }
         }
 
         private void BotonModuloUsuarios_Click(object sender, EventArgs e)
@@ -198,8 +226,8 @@ namespace RGTS.Interfaz
             // (no vuelve al login): decisión tomada para evitar los problemas de
             // relogin en caliente con MaterialSkin,
             DialogResult resultado = MessageBox.Show(
-                "¿Seguro que desea cerrar el programa?",
-                "Confirmar Cierre",
+                "¿Seguro que desea cerrar Sesión?",
+                "Confirmar Cierre de sesión",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2 // Deja el foco por defecto en la opción NO por seguridad
@@ -207,12 +235,8 @@ namespace RGTS.Interfaz
 
             if (resultado == DialogResult.Yes)
             {
-                // Limpiar sesión activa antes de terminar el proceso
-                UsuarioSesion = null;
-                RolSesion = null;
-                Environment.Exit(0);
+                CerrarSesion();
             }
-            // Si presiona "No", el bloque no se ejecuta y permanece en la pantalla actual
         }
 
     }

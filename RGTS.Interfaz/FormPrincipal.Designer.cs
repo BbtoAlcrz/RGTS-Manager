@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             PanelContenedorVistas = new MaterialSkin.Controls.MaterialCard();
+            labelBienvenida = new MaterialSkin.Controls.MaterialLabel();
             PanelPerfilInfo = new MaterialSkin.Controls.MaterialCard();
             LabelRolUsuario = new MaterialSkin.Controls.MaterialLabel();
             LabelNombreUsuario = new MaterialSkin.Controls.MaterialLabel();
@@ -41,6 +42,7 @@
             BotonModuloVentas = new MaterialSkin.Controls.MaterialButton();
             BotonModuloCompras = new MaterialSkin.Controls.MaterialButton();
             PanelContenedorMenu = new MaterialSkin.Controls.MaterialCard();
+            PanelContenedorVistas.SuspendLayout();
             PanelPerfilInfo.SuspendLayout();
             PanelBotones.SuspendLayout();
             PanelContenedorMenu.SuspendLayout();
@@ -52,6 +54,7 @@
             PanelContenedorVistas.AutoScroll = true;
             PanelContenedorVistas.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             PanelContenedorVistas.BackColor = Color.FromArgb(255, 255, 255);
+            PanelContenedorVistas.Controls.Add(labelBienvenida);
             PanelContenedorVistas.Depth = 0;
             PanelContenedorVistas.ForeColor = Color.FromArgb(222, 0, 0, 0);
             PanelContenedorVistas.Location = new Point(218, 69);
@@ -59,8 +62,26 @@
             PanelContenedorVistas.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorVistas.Name = "PanelContenedorVistas";
             PanelContenedorVistas.Padding = new Padding(15);
-            PanelContenedorVistas.Size = new Size(610, 468);
+            PanelContenedorVistas.Size = new Size(759, 468);
             PanelContenedorVistas.TabIndex = 2;
+            // 
+            // labelBienvenida
+            // 
+            labelBienvenida.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            labelBienvenida.AutoSize = true;
+            labelBienvenida.Depth = 0;
+            labelBienvenida.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
+            labelBienvenida.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            labelBienvenida.ForeColor = Color.Silver;
+            labelBienvenida.Location = new Point(250, 220);
+            labelBienvenida.Margin = new Padding(0);
+            labelBienvenida.MouseState = MaterialSkin.MouseState.HOVER;
+            labelBienvenida.Name = "labelBienvenida";
+            labelBienvenida.Size = new Size(100, 24);
+            labelBienvenida.TabIndex = 0;
+            labelBienvenida.Text = "Bienvenido";
+            labelBienvenida.TextAlign = ContentAlignment.MiddleCenter;
+            labelBienvenida.UseAccent = true;
             // 
             // PanelPerfilInfo
             // 
@@ -317,7 +338,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(833, 542);
+            ClientSize = new Size(982, 542);
             Controls.Add(PanelContenedorVistas);
             Controls.Add(PanelContenedorMenu);
             Name = "FormPrincipal";
@@ -327,6 +348,8 @@
             Text = "RGTS - Manager";
             WindowState = FormWindowState.Maximized;
             FormClosed += FormPrincipal_FormClosed;
+            PanelContenedorVistas.ResumeLayout(false);
+            PanelContenedorVistas.PerformLayout();
             PanelPerfilInfo.ResumeLayout(false);
             PanelPerfilInfo.PerformLayout();
             PanelBotones.ResumeLayout(false);
@@ -348,5 +371,6 @@
         private MaterialSkin.Controls.MaterialButton BotonModuloCompras;
         private MaterialSkin.Controls.MaterialLabel LabelRolUsuario;
         private MaterialSkin.Controls.MaterialButton BotonModuloProveedores;
+        private MaterialSkin.Controls.MaterialLabel labelBienvenida;
     }
 }

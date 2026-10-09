@@ -65,21 +65,21 @@
             // 
             // TextboxEmail
             // 
-            this.TextboxEmail.AnimateReadOnly = false;
-            this.TextboxEmail.BorderStyle = BorderStyle.None;
-            this.TextboxEmail.Depth = 0;
-            this.TextboxEmail.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            this.TextboxEmail.Hint = "Ingresa tu email";
-            this.TextboxEmail.LeadingIcon = null;
-            this.TextboxEmail.Location = new Point(48, 139);
-            this.TextboxEmail.MaxLength = 50;
-            this.TextboxEmail.MouseState = MaterialSkin.MouseState.OUT;
-            this.TextboxEmail.Multiline = false;
-            this.TextboxEmail.Name = "TextboxEmail";
-            this.TextboxEmail.Size = new Size(285, 50);
-            this.TextboxEmail.TabIndex = 0;
-            this.TextboxEmail.Text = "";
-            this.TextboxEmail.TrailingIcon = null;
+            TextboxEmail.AnimateReadOnly = false;
+            TextboxEmail.BorderStyle = BorderStyle.None;
+            TextboxEmail.Depth = 0;
+            TextboxEmail.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            TextboxEmail.Hint = "Ingresa tu email";
+            TextboxEmail.LeadingIcon = null;
+            TextboxEmail.Location = new Point(48, 139);
+            TextboxEmail.MaxLength = 50;
+            TextboxEmail.MouseState = MaterialSkin.MouseState.OUT;
+            TextboxEmail.Multiline = false;
+            TextboxEmail.Name = "TextboxEmail";
+            TextboxEmail.Size = new Size(285, 50);
+            TextboxEmail.TabIndex = 0;
+            TextboxEmail.Text = "";
+            TextboxEmail.TrailingIcon = null;
             // 
             // TextboxContraseña
             // 
@@ -131,10 +131,13 @@
             Controls.Add(LContraseña);
             Controls.Add(LEmail);
             Controls.Add(TextboxContraseña);
-            Controls.Add(this.TextboxEmail);
+            Controls.Add(TextboxEmail);
+            MaximizeBox = false;
             Name = "FormIniciarSesion";
+            Sizable = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Iniciar Sesión";
+            FormClosed += FormIniciarSesion_FormClosed;
             ResumeLayout(false);
             PerformLayout();
         }

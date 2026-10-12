@@ -117,7 +117,8 @@ namespace RGTS.Interfaz
                     BotonModuloProveedores,
                     BotonModuloClientes,
                     BotonModuloVentas,
-                    BotonModuloCompras
+                    BotonModuloCompras,
+                    BotonModuloReportes
                 },
 
                 "Vendedor" => new[]
@@ -219,6 +220,11 @@ namespace RGTS.Interfaz
             AbrirFormularioEnPanel<FormListadoVentas>();
         }
 
+        private void BotonModuloReportes_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormReportes>();
+        }
+
         private void BotonCerrarSesion_Click(object sender, EventArgs e)
         {
             // Muestra la ventana emergente con botones de Sí y No, y un ícono de pregunta.
@@ -239,5 +245,6 @@ namespace RGTS.Interfaz
             }
         }
 
+        
     }
 }

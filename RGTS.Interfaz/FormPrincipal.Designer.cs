@@ -337,7 +337,7 @@
             BotonModuloReportes.NoAccentTextColor = Color.Empty;
             BotonModuloReportes.Size = new Size(180, 36);
             BotonModuloReportes.TabIndex = 8;
-            BotonModuloReportes.Text = "Reportes";
+            BotonModuloReportes.Text = "Reportes y Backup";
             BotonModuloReportes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BotonModuloReportes.UseAccentColor = false;
             BotonModuloReportes.UseVisualStyleBackColor = true;

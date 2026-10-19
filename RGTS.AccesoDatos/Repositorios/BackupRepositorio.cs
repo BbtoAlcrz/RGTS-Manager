@@ -46,5 +46,73 @@ namespace RGTS.AccesoDatos.Repositorios
                 }
             }
         }
+
+        public (string NombreBD, DateTime Fecha) ObtenerCabecera(string rutaArchivo)
+        {
+            using (SqlConnection con = _conexionBD.ObtenerConexion())
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("RESTORE HEADERONLY FROM DISK = @Ruta;", con))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@Ruta", SqlDbType.NVarChar, 260) { Value = rutaArchivo });
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                            throw new InvalidOperationException("El archivo no contiene un backup válido.");
+
+                        return (reader["DatabaseName"].ToString() ?? "", Convert.ToDateTime(reader["BackupFinishDate"]));
+                    }
+                }
+            }
+        }
+
+        public string ObtenerNombreBDActual()
+        {
+            using (SqlConnection con = _conexionBD.ObtenerConexion())
+            {
+                return con.Database;
+            }
+        }
+
+        // Restaura la BD desde un .bak. Se conecta a master porque no se puede restaurar la BD en la que se está conectado.
+        public void RestaurarBackup(string rutaArchivo)
+        {
+            string nombreBD;
+            string cadenaMaster;
+
+            using (SqlConnection conOrigen = _conexionBD.ObtenerConexion())
+            {
+                nombreBD = conOrigen.Database;
+                var builder = new SqlConnectionStringBuilder(conOrigen.ConnectionString) { InitialCatalog = "master" };
+                cadenaMaster = builder.ConnectionString;
+            }
+
+            SqlConnection.ClearAllPools(); // cierra las conexiones agrupadas de la propia app
+
+            using (SqlConnection con = new SqlConnection(cadenaMaster))
+            {
+                con.Open();
+                string bd = Quote(nombreBD);
+
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand($"ALTER DATABASE {bd} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;", con))
+                        cmd.ExecuteNonQuery();
+
+                    using (SqlCommand cmd = new SqlCommand($"RESTORE DATABASE {bd} FROM DISK = @Ruta WITH REPLACE;", con))
+                    {
+                        cmd.CommandTimeout = 600;
+                        cmd.Parameters.Add(new SqlParameter("@Ruta", SqlDbType.NVarChar, 260) { Value = rutaArchivo });
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                finally
+                {
+                    // Pase lo que pase, la BD no puede quedar en modo un-solo-usuario
+                    using (SqlCommand cmd = new SqlCommand($"ALTER DATABASE {bd} SET MULTI_USER;", con))
+                        cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

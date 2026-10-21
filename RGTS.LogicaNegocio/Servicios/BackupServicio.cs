@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Versioning;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using RGTS.AccesoDatos.Repositorios;
 using RGTS.Entidades;
 
@@ -13,19 +16,78 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public string NombreSugerido() => $"RGTS_Manager_BD_{DateTime.Now:yyyyMMdd_HHmm}.bak";
 
-        // Genera el backup y lo deja en rutaDestino (la ruta que eligió el usuario)
+        [SupportedOSPlatform("windows")]
+        private void AsegurarCarpetaTrabajo()
+        {
+            try
+            {
+                if (!Directory.Exists(CarpetaTemporal))
+                {
+                    Directory.CreateDirectory(CarpetaTemporal);
+                }
+
+                var info = new DirectoryInfo(CarpetaTemporal);
+                var seguridad = info.GetAccessControl();
+                var herencia = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
+
+                // Intenta dar permiso explícito a la instancia Express estándar
+                bool permisoServicioAsignado = false;
+                try
+                {
+                    var servicioSqlExpress = new NTAccount(@"NT SERVICE\MSSQL$SQLEXPRESS");
+                    seguridad.AddAccessRule(new FileSystemAccessRule(
+                        servicioSqlExpress, FileSystemRights.FullControl, herencia, PropagationFlags.None, AccessControlType.Allow));
+                    permisoServicioAsignado = true;
+                }
+                catch (IdentityNotMappedException)
+                {
+                    // La instancia local no es SQLEXPRESS
+                }
+
+                // Intenta dar permiso explícito a la instancia por defecto (MSSQLSERVER) si la anterior no aplicó
+                if (!permisoServicioAsignado)
+                {
+                    try
+                    {
+                        var servicioSqlDefault = new NTAccount(@"NT SERVICE\MSSQLSERVER");
+                        seguridad.AddAccessRule(new FileSystemAccessRule(
+                            servicioSqlDefault, FileSystemRights.FullControl, herencia, PropagationFlags.None, AccessControlType.Allow));
+                    }
+                    catch (IdentityNotMappedException)
+                    {
+                        // Instancia con nombre personalizado o entorno atípico
+                    }
+                }
+
+                // Asigna permisos al grupo integrado de usuarios de Windows (la app C# que copia/borra)
+                seguridad.AddAccessRule(new FileSystemAccessRule(
+                    new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null),
+                    FileSystemRights.Modify, herencia, PropagationFlags.None, AccessControlType.Allow));
+
+                // Asigna permisos a Usuarios Autenticados (Fallback universal para cualquier servicio local de SQL)
+                seguridad.AddAccessRule(new FileSystemAccessRule(
+                    new SecurityIdentifier(WellKnownSidType.AuthenticatedUserSid, null),
+                    FileSystemRights.FullControl, herencia, PropagationFlags.None, AccessControlType.Allow));
+
+                info.SetAccessControl(seguridad);
+            }
+            catch (Exception ex)
+            {
+                // Se registra para depuración interna sin romper el flujo si el SO restringe la modificación de ACL
+                System.Diagnostics.Debug.WriteLine($"[BackupServicio] Advertencia al configurar ACLs: {ex.Message}");
+            }
+        }
+
         public void ExportarBackup(Usuario? usuario, string rutaDestino)
         {
-            // Ajustá al nombre real de la propiedad del rol
             if (usuario == null || usuario.Rol?.NombreRol != "Administrador")
                 throw new UnauthorizedAccessException("Solo un Administrador puede generar backups.");
 
             if (string.IsNullOrWhiteSpace(rutaDestino))
                 throw new ArgumentException("Debe indicar dónde guardar el backup.");
 
-            if (!Directory.Exists(CarpetaTemporal))
-                throw new DirectoryNotFoundException(
-                    $"No existe la carpeta de trabajo {CarpetaTemporal}. Hay que crearla y darle permisos al servicio de SQL Server.");
+            // Se crea la carpeta y se asegura permisos dinámicamente
+            AsegurarCarpetaTrabajo();
 
             string temporal = Path.Combine(CarpetaTemporal, $"tmp_{Guid.NewGuid():N}.bak");
 
@@ -49,14 +111,13 @@ namespace RGTS.LogicaNegocio.Servicios
             if (string.IsNullOrWhiteSpace(rutaOrigen) || !File.Exists(rutaOrigen))
                 throw new FileNotFoundException("El archivo seleccionado no existe.");
 
-            if (!Directory.Exists(CarpetaTemporal))
-                throw new DirectoryNotFoundException($"No existe la carpeta de trabajo {CarpetaTemporal}.");
+            AsegurarCarpetaTrabajo();
 
             string temporal = Path.Combine(CarpetaTemporal, $"val_{Guid.NewGuid():N}.bak");
             try
             {
                 File.Copy(rutaOrigen, temporal, overwrite: true);
-                _repositorio.VerificarBackup(temporal); // archivo íntegro
+                _repositorio.VerificarBackup(temporal);
 
                 var (nombreBD, fecha) = _repositorio.ObtenerCabecera(temporal);
                 if (!string.Equals(nombreBD, _repositorio.ObtenerNombreBDActual(), StringComparison.OrdinalIgnoreCase))
@@ -73,10 +134,8 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public string RestaurarBackup(Usuario? usuario, string rutaOrigen, string contrasena)
         {
-            // Se revalida todo, no se confía en que la UI ya lo hizo
             ValidarArchivoParaRestaurar(usuario, rutaOrigen);
 
-            // Revalida la contraseña con el mismo servicio que usa el login (BCrypt)
             try
             {
                 _autenticacionServicio.IniciarSesion(usuario!.Email, contrasena);
@@ -92,7 +151,7 @@ namespace RGTS.LogicaNegocio.Servicios
             try
             {
                 File.Copy(rutaOrigen, temporal, overwrite: true);
-                _repositorio.RealizarBackup(respaldoSeguridad); // red de seguridad: estado actual antes de pisarlo
+                _repositorio.RealizarBackup(respaldoSeguridad);
                 _repositorio.RestaurarBackup(temporal);
             }
             finally
@@ -102,7 +161,5 @@ namespace RGTS.LogicaNegocio.Servicios
 
             return respaldoSeguridad;
         }
-
-
     }
 }

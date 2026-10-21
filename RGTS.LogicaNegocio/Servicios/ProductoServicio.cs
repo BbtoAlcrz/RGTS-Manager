@@ -10,6 +10,7 @@ namespace RGTS.LogicaNegocio.Servicios
     public class ProductoServicio
     {
         private readonly ProductoRepositorio _repositorio;
+        public const int MinutosReserva = 5;
 
         public ProductoServicio()
         {
@@ -141,31 +142,22 @@ namespace RGTS.LogicaNegocio.Servicios
             _repositorio.ActualizarStock(idProducto, producto.StockActual - cantidad);
         }
 
-        // Reserva stock para el carrito; lanza excepción si no hay disponible suficiente
-        public void ReservarStock(int idProducto, int cantidad)
+        public void ReservarStock(int idProducto, string dniUsuario, int cantidad)
         {
             var producto = _repositorio.ObtenerPorId(idProducto)
                 ?? throw new InvalidOperationException("El producto solicitado no fue encontrado.");
 
-            bool reservado = _repositorio.ReservarStock(idProducto, cantidad);
-            if (!reservado)
+            if (!_repositorio.ReservarStock(idProducto, dniUsuario, cantidad, MinutosReserva))
             {
-                int disponible = producto.StockActual - producto.StockReservado;
+                var actual = _repositorio.ObtenerPorId(idProducto);
+                int disponible = actual == null ? 0 : actual.StockActual - actual.StockReservado;
                 throw new InvalidOperationException(
-                    $"No hay stock suficiente para '{producto.Nombre}'. Disponible: {disponible}, solicitado: {cantidad}.");
+                    $"No hay stock suficiente para '{producto.Nombre}'. Disponible: {Math.Max(0, disponible)}, solicitado: {cantidad}.");
             }
         }
 
-        // Libera una reserva previa (cancelación de venta o quitar ítem del carrito)
-        public void LiberarStock(int idProducto, int cantidad)
-        {
-            _repositorio.LiberarStock(idProducto, cantidad);
-        }
+        public void LiberarReservasUsuario(string dniUsuario) => _repositorio.LiberarReservasUsuario(dniUsuario);
 
-        // Confirma la venta: descuenta stock real y libera la reserva
-        public void ConfirmarStock(int idProducto, int cantidad)
-        {
-            _repositorio.ConfirmarStock(idProducto, cantidad);
-        }
+        public void RenovarReservas(string dniUsuario) => _repositorio.RenovarReservasUsuario(dniUsuario, MinutosReserva);
     }
 }

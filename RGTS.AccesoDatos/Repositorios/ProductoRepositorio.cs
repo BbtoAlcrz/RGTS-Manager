@@ -168,50 +168,50 @@ namespace RGTS.AccesoDatos.Repositorios
             cmd.Parameters.Add(new SqlParameter("@StockMinimo", SqlDbType.Int) { Value = p.StockMinimo });
             cmd.Parameters.Add(new SqlParameter("@StockMaximo", SqlDbType.Int) { Value = p.StockMaximo });
         }
-        // Reserva stock para un carrito en curso. Devuelve false si no había disponible suficiente
-        // (la validación ocurre dentro del propio UPDATE en el SP, evitando condiciones de carrera
-        // entre vendedores simultáneos).
-        public bool ReservarStock(int idProducto, int cantidad)
+        
+        // Reserva stock para este usuario. Devuelve false si no hay disponible suficiente.
+        public bool ReservarStock(int idProducto, string dniUsuario, int cantidad, int minutos)
         {
             using (var con = _conexion.ObtenerConexion())
             using (var cmd = new SqlCommand("dbo.sp_ReservarStockProducto", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
+                cmd.Parameters.Add(new SqlParameter("@DniUsuario", SqlDbType.VarChar, 20) { Value = dniUsuario });
                 cmd.Parameters.Add(new SqlParameter("@Cantidad", SqlDbType.Int) { Value = cantidad });
+                cmd.Parameters.Add(new SqlParameter("@Minutos", SqlDbType.Int) { Value = minutos });
                 con.Open();
-                int filasAfectadas = Convert.ToInt32(cmd.ExecuteScalar());
-                return filasAfectadas > 0;
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
             }
         }
 
-        // Libera una reserva (al cancelar una venta o quitar un ítem del carrito)
-        public void LiberarStock(int idProducto, int cantidad)
+        // Libera todas las reservas de un usuario
+        public void LiberarReservasUsuario(string dniUsuario)
         {
             using (var con = _conexion.ObtenerConexion())
-            using (var cmd = new SqlCommand("dbo.sp_LiberarStockProducto", con))
+            using (var cmd = new SqlCommand("dbo.sp_LiberarReservasUsuario", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
-                cmd.Parameters.Add(new SqlParameter("@Cantidad", SqlDbType.Int) { Value = cantidad });
+                cmd.Parameters.Add(new SqlParameter("@DniUsuario", SqlDbType.VarChar, 20) { Value = dniUsuario });
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
         }
 
-        // Confirma la venta: descuenta stock_actual y libera la reserva correspondiente
-        public void ConfirmarStock(int idProducto, int cantidad)
+        // Extiende el vencimiento de las reservas vigentes de un usuario
+        public void RenovarReservasUsuario(string dniUsuario, int minutos)
         {
             using (var con = _conexion.ObtenerConexion())
-            using (var cmd = new SqlCommand("dbo.sp_ConfirmarStockProducto", con))
+            using (var cmd = new SqlCommand("dbo.sp_RenovarReservasUsuario", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
-                cmd.Parameters.Add(new SqlParameter("@Cantidad", SqlDbType.Int) { Value = cantidad });
+                cmd.Parameters.Add(new SqlParameter("@DniUsuario", SqlDbType.VarChar, 20) { Value = dniUsuario });
+                cmd.Parameters.Add(new SqlParameter("@Minutos", SqlDbType.Int) { Value = minutos });
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
         }
+
         // Mapea una fila del SqlDataReader a un objeto Producto
         private Producto MapearProducto(SqlDataReader reader)
         {

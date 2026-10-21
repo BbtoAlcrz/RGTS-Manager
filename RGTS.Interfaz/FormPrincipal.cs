@@ -169,6 +169,7 @@ namespace RGTS.Interfaz
             {
                 var formPrincipal = InstanciaActual;
                 InstanciaActual = null; // Se setea en null para que FormClosed no ejecute Environment.Exit
+                formPrincipal._formularioActivo?.Close();
                 formPrincipal.Hide();
                 formPrincipal.Dispose();
             }
@@ -245,6 +246,12 @@ namespace RGTS.Interfaz
             }
         }
 
-        
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // Cierra el módulo abierto para que libere lo pendiente (ej: reservas de una venta sin confirmar)
+            _formularioActivo?.Close();
+            base.OnFormClosing(e);
+        }
+
     }
 }

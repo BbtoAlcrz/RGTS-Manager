@@ -31,6 +31,7 @@ namespace RGTS.Interfaz.Vendedor
         // Datos del usuario logueado tomados de la sesión central
         private readonly string _dniUsuarioSesion;
         private readonly Usuario? _usuarioSesion;
+        private readonly System.Windows.Forms.Timer _timerReservas = new() { Interval = 60_000 };
 
         public FormNuevaVenta()
         {
@@ -48,6 +49,16 @@ namespace RGTS.Interfaz.Vendedor
             _dniUsuarioSesion = _usuarioSesion?.Dni ?? "41234567";
 
             ConfigurarControles();
+            // Una venta nueva empieza con el carrito vacío: se limpian restos de una sesión anterior que se cerró mal
+            try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); } catch { }
+
+            // Mientras el carrito esté abierto, se renueva la reserva cada minuto
+            _timerReservas.Tick += (_, _) =>
+            {
+                if (_carrito.Count == 0) return;
+                try { _ventaServicio.RenovarReservas(_dniUsuarioSesion); } catch { /* se reintenta al minuto siguiente */ }
+            };
+            _timerReservas.Start();
         }
 
         private void ConfigurarControles()
@@ -190,7 +201,7 @@ namespace RGTS.Interfaz.Vendedor
             try
             {
                 int cantidad = (int)numericCantidadProducto.Value;
-                var nuevoDetalle = _ventaServicio.GenerarDetalle(_productoSeleccionado, cantidad, _carrito);
+                var nuevoDetalle = _ventaServicio.GenerarDetalle(_productoSeleccionado, cantidad, _carrito, _dniUsuarioSesion);
 
                 var existente = _carrito.FirstOrDefault(d => d.IdProducto == nuevoDetalle.IdProducto);
                 if (existente != null)
@@ -271,6 +282,7 @@ namespace RGTS.Interfaz.Vendedor
                     metodoPago,
                     _usuarioSesion
                 );
+                _carrito.Clear(); // la venta ya está confirmada: evita liberar de más o duplicar la venta si falla el PDF
 
                 string nombreCliente = ventaRegistrada.Cliente != null
                     ? $"{ventaRegistrada.Cliente.Nombre} {ventaRegistrada.Cliente.Apellido}"
@@ -345,10 +357,27 @@ namespace RGTS.Interfaz.Vendedor
                 );
 
                 if (rta != DialogResult.Yes) return;
-                _ventaServicio.CancelarReservasCarrito(_carrito); 
+                LiberarReservasPendientes(); 
             }
 
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
+        }
+
+        private void LiberarReservasPendientes()
+        {
+            if (_carrito.Count == 0) return;
+
+            try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); }
+            catch { /* si no se pudo, la reserva vence sola a los 5 minutos */ }
+            finally { _carrito.Clear(); }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _timerReservas.Stop();
+            _timerReservas.Dispose();
+            LiberarReservasPendientes();
+            base.OnFormClosing(e);
         }
 
 
@@ -537,5 +566,6 @@ namespace RGTS.Interfaz.Vendedor
             pnlEdicionContenedor.BringToFront();
             subFormulario.Show();
         }
+
     }
 }

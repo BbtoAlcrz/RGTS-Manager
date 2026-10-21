@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using RGTS.AccesoDatos.Conexion;
 using RGTS.Entidades;
@@ -121,7 +122,7 @@ namespace RGTS.AccesoDatos.Repositorios
                             nuevoId = Convert.ToInt32(comandoCabecera.ExecuteScalar());
                         }
 
-                        foreach (var item in detalles)
+                        foreach (var item in detalles.OrderBy(d => d.IdProducto))
                         {
                             using (SqlCommand comandoDetalle = new SqlCommand("dbo.sp_InsertarDetalleVenta", conexion, transaccion))
                             {
@@ -132,6 +133,15 @@ namespace RGTS.AccesoDatos.Repositorios
                                 comandoDetalle.Parameters.Add(new SqlParameter("@PrecioUnitario", SqlDbType.Decimal) { Value = item.PrecioUnitario });
 
                                 comandoDetalle.ExecuteNonQuery();
+                            }
+                            // Descuenta el stock y consume la reserva, dentro de la misma transacción de la venta
+                            using (SqlCommand comandoStock = new SqlCommand("dbo.sp_ConfirmarStockProducto", conexion, transaccion))
+                            {
+                                comandoStock.CommandType = CommandType.StoredProcedure;
+                                comandoStock.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = item.IdProducto });
+                                comandoStock.Parameters.Add(new SqlParameter("@DniUsuario", SqlDbType.VarChar, 20) { Value = dniUsuario });
+                                comandoStock.Parameters.Add(new SqlParameter("@Cantidad", SqlDbType.Int) { Value = item.Cantidad });
+                                comandoStock.ExecuteNonQuery();
                             }
                         }
 

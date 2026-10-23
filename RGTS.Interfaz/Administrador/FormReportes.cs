@@ -13,6 +13,7 @@ namespace RGTS.Interfaz.Administrador
         private readonly VentaServicio _ventaServicio;
         private List<VentaReporteDto> _reporteVentaActual;
         private readonly BackupServicio _backupServicio = new();
+        private readonly UsuarioServicio _usuarioServicio = new();
 
         private class VendedorFiltro
         {
@@ -219,10 +220,29 @@ namespace RGTS.Interfaz.Administrador
                 Cursor = Cursors.WaitCursor;
                 string respaldoSeguridad = _backupServicio.RestaurarBackup(FormPrincipal.UsuarioSesion, dialogo.FileName, contrasena);
 
-                MessageBox.Show($"Base de datos restaurada correctamente.\nSe generó un respaldo previo de seguridad en:\n{respaldoSeguridad}\n\nLa aplicación se reiniciará automáticamente.",
+                // La app NO se reinicia: se refresca lo que muestra esta pantalla con los datos restaurados
+                try
+                {
+                    CargarFiltroVendedores();
+                    CargarReporteVentas();
+                }
+                catch (Exception exRecarga)
+                {
+                    MessageBox.Show($"La base se restauró, pero no se pudo actualizar esta pantalla: {exRecarga.Message}",
+                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                Cursor = Cursors.Default;
+                MessageBox.Show($"Base de datos restaurada correctamente.\nSe generó un respaldo previo de seguridad en:\n{respaldoSeguridad}\n\nPodés revisar los datos desde cada módulo del menú.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                Application.Restart();
+                // El usuario en sesión tiene que seguir existiendo en la base restaurada
+                if (!_usuarioServicio.SesionSigueVigente(FormPrincipal.UsuarioSesion))
+                {
+                    MessageBox.Show("Tu usuario ya no existe, está deshabilitado o cambió de rol en la base restaurada. Se cerrará la sesión.",
+                        "Sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BeginInvoke(new Action(FormPrincipal.CerrarSesion));
+                }
             }
             catch (Exception ex)
             {

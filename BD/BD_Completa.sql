@@ -61,7 +61,8 @@ BEGIN
         telefono VARCHAR(30) NULL,
         correo VARCHAR(100) NULL,
         direccion VARCHAR(150) NULL,
-        activo BIT NOT NULL DEFAULT 1
+        activo BIT NOT NULL DEFAULT 1,
+        CONSTRAINT UQ_Proveedor_NombreComercial UNIQUE (nombre_comercial)
     );
 END
 GO

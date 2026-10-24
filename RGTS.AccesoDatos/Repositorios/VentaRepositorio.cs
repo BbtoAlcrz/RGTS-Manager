@@ -97,8 +97,15 @@ namespace RGTS.AccesoDatos.Repositorios
             return lista;
         }
 
-        // Inserta la cabecera de la venta y todos sus ítems de detalle en una sola transacción
+        // Registra la venta. Si SQL Server elige esta transacción como víctima de un bloqueo cruzado,
+        // se reintenta completa (la anterior ya se revirtió, así que es seguro)
         public int RegistrarVenta(string dniUsuario, int? idCliente, decimal total, string metodoPago, List<DetalleVenta> detalles)
+        {
+            return ReintentoSql.Ejecutar(() => RegistrarVentaUnaVez(dniUsuario, idCliente, total, metodoPago, detalles));
+        }
+
+        // Inserta la cabecera, los ítems y descuenta el stock en una sola transacción: todo o nada
+        private int RegistrarVentaUnaVez(string dniUsuario, int? idCliente, decimal total, string metodoPago, List<DetalleVenta> detalles)
         {
             int nuevoId;
 
@@ -134,6 +141,7 @@ namespace RGTS.AccesoDatos.Repositorios
 
                                 comandoDetalle.ExecuteNonQuery();
                             }
+
                             // Descuenta el stock y consume la reserva, dentro de la misma transacción de la venta
                             using (SqlCommand comandoStock = new SqlCommand("dbo.sp_ConfirmarStockProducto", conexion, transaccion))
                             {
@@ -149,7 +157,7 @@ namespace RGTS.AccesoDatos.Repositorios
                     }
                     catch
                     {
-                        transaccion.Rollback();
+                        try { transaccion.Rollback(); } catch { /* la conexión se perdió: el servidor revierte solo */ }
                         throw;
                     }
                 }

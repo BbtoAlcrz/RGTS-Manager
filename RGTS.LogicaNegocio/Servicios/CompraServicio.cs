@@ -47,15 +47,9 @@ namespace RGTS.LogicaNegocio.Servicios
 
             // Si la compra se marca como recibida, impactamos el inventario
             if (nuevoEstado == "Recibida")
-            {
-                var detalles = _repositorio.ObtenerDetallesPorCompra(idCompra);
-                foreach (var item in detalles)
-                {
-                    _productoServicio.IncrementarStock(item.IdProducto, item.Cantidad);
-                }
-            }
-
-            _repositorio.CambiarEstado(idCompra, nuevoEstado);
+                _repositorio.RecibirCompra(idCompra);               // stock + estado, todo o nada
+            else
+                _repositorio.CambiarEstado(idCompra, nuevoEstado);  // Cancelada
         }
 
         public DetalleCompra ValidarYArmarItem(int idProveedorSeleccionado, Producto producto,

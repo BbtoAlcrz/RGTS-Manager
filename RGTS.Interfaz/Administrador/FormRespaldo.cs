@@ -7,6 +7,7 @@ namespace RGTS.Interfaz.Administrador
     public partial class FormRespaldo : MaterialForm
     {
         private readonly BackupServicio _backupServicio;
+        private readonly UsuarioServicio _usuarioServicio = new UsuarioServicio();
         public FormRespaldo()
         {
             _backupServicio = new BackupServicio();
@@ -93,14 +94,21 @@ namespace RGTS.Interfaz.Administrador
 
                 if (string.IsNullOrWhiteSpace(contrasena)) return; // Operación cancelada por el usuario
 
-                // Ejecución de la restauración de la BD
                 Cursor = Cursors.WaitCursor;
                 string respaldoSeguridad = _backupServicio.RestaurarBackup(FormPrincipal.UsuarioSesion, dialogo.FileName, contrasena);
-
-                MessageBox.Show($"Base de datos restaurada correctamente.\nSe generó un respaldo previo de seguridad en:\n{respaldoSeguridad}\n\nLa aplicación se reiniciará automáticamente.",
+                // Ejecución de la restauración de la BD
+                // La app NO se reinicia: se refresca lo que muestra esta pantalla con los datos restaurados
+                Cursor = Cursors.Default;
+                MessageBox.Show($"Base de datos restaurada correctamente.\nSe generó un respaldo previo de seguridad en:\n{respaldoSeguridad}\n\nPodés revisar los datos desde cada módulo del menú.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                Application.Restart();
+                
+                // El usuario en sesión tiene que seguir existiendo en la base restaurada
+                if (!_usuarioServicio.SesionSigueVigente(FormPrincipal.UsuarioSesion))
+                {
+                    MessageBox.Show("Tu usuario ya no existe, está deshabilitado o cambió de rol en la base restaurada. Se cerrará la sesión.",
+                        "Sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BeginInvoke(new Action(FormPrincipal.CerrarSesion));
+                }
             }
             catch (Exception ex)
             {

@@ -29,16 +29,15 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public int ObtenerStockDisponibleReal(int idProducto, int cantidadEnCarrito)
         {
+            // El reservado ya incluye el carrito de este usuario y el de los demás; por eso no se resta de nuevo
             var producto = _productoServicio.ObtenerTodos().FirstOrDefault(p => p.IdProducto == idProducto);
             if (producto == null) return 0;
-            return Math.Max(0, producto.StockActual - cantidadEnCarrito);
+            return Math.Max(0, producto.StockActual - producto.StockReservado);
         }
 
-        public DetalleVenta GenerarDetalle(Producto producto, int cantidad, List<DetalleVenta> carrito)
+        public DetalleVenta GenerarDetalle(Producto producto, int cantidad, List<DetalleVenta> carrito, string dniUsuario)
         {
-            // La reserva en BD valida atómicamente que haya disponible suficiente
-            // (evita que dos vendedores vendan el mismo stock al mismo tiempo)
-            _productoServicio.ReservarStock(producto.IdProducto, cantidad);
+            _productoServicio.ReservarStock(producto.IdProducto, dniUsuario, cantidad);
 
             return new DetalleVenta
             {
@@ -57,12 +56,6 @@ namespace RGTS.LogicaNegocio.Servicios
             decimal total = detalles.Sum(d => d.SubtotalDerivado);
 
             int nuevoId = _repositorio.RegistrarVenta(dniUsuario, cliente?.IdCliente, total, metodoPago, detalles);
-
-            // Confirmar venta: descuenta stock real y libera la reserva de cada ítem
-            foreach (var detalle in detalles)
-            {
-                _productoServicio.ConfirmarStock(detalle.IdProducto, detalle.Cantidad);
-            }
 
             return new Venta
             {
@@ -94,13 +87,8 @@ namespace RGTS.LogicaNegocio.Servicios
                 .ToList();
         }
 
-        // Libera todas las reservas de un carrito sin confirmar (venta cancelada)
-        public void CancelarReservasCarrito(List<DetalleVenta> carrito)
-        {
-            foreach (var detalle in carrito)
-            {
-                _productoServicio.LiberarStock(detalle.IdProducto, detalle.Cantidad);
-            }
-        }
+        public void LiberarReservasUsuario(string dniUsuario) => _productoServicio.LiberarReservasUsuario(dniUsuario);
+
+        public void RenovarReservas(string dniUsuario) => _productoServicio.RenovarReservas(dniUsuario);
     }
 }

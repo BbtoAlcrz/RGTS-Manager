@@ -1,6 +1,7 @@
 ﻿using System;
 using BCrypt.Net;
 using System.Collections.Generic;
+using System.Linq;
 using RGTS.AccesoDatos.Repositorios;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Validaciones;
@@ -120,6 +121,20 @@ namespace RGTS.LogicaNegocio.Servicios
             int indice = _random.Next(plantillasSaludos.Length);
             return plantillasSaludos[indice];
         }
+
+        // Después de restaurar la BD: el usuario en sesión tiene que seguir existiendo, activo y con el mismo rol
+        public bool SesionSigueVigente(Usuario? sesion)
+        {
+            if (sesion == null) return false;
+
+            var actual = ListarUsuarios(sesion.Dni).FirstOrDefault(u => u.Dni == sesion.Dni);
+
+            if (actual == null || !actual.Activo) return false;
+            if (sesion.IdRol != 0 && actual.IdRol != sesion.IdRol) return false;
+
+            return true;
+        }
+
 
     }
 }

@@ -31,6 +31,7 @@ namespace RGTS.Interfaz.Vendedor
         // Datos del usuario logueado tomados de la sesión central
         private readonly string _dniUsuarioSesion;
         private readonly Usuario? _usuarioSesion;
+        private readonly System.Windows.Forms.Timer _timerReservas = new() { Interval = 60_000 };
 
         public FormNuevaVenta()
         {
@@ -48,6 +49,16 @@ namespace RGTS.Interfaz.Vendedor
             _dniUsuarioSesion = _usuarioSesion?.Dni ?? "41234567";
 
             ConfigurarControles();
+            // Una venta nueva empieza con el carrito vacío: se limpian restos de una sesión anterior que se cerró mal
+            try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); } catch { }
+
+            // Mientras el carrito esté abierto, se renueva la reserva cada minuto
+            _timerReservas.Tick += (_, _) =>
+            {
+                if (_carrito.Count == 0) return;
+                try { _ventaServicio.RenovarReservas(_dniUsuarioSesion); } catch { /* se reintenta al minuto siguiente */ }
+            };
+            _timerReservas.Start();
         }
 
         private void ConfigurarControles()
@@ -190,7 +201,7 @@ namespace RGTS.Interfaz.Vendedor
             try
             {
                 int cantidad = (int)numericCantidadProducto.Value;
-                var nuevoDetalle = _ventaServicio.GenerarDetalle(_productoSeleccionado, cantidad, _carrito);
+                var nuevoDetalle = _ventaServicio.GenerarDetalle(_productoSeleccionado, cantidad, _carrito, _dniUsuarioSesion);
 
                 var existente = _carrito.FirstOrDefault(d => d.IdProducto == nuevoDetalle.IdProducto);
                 if (existente != null)
@@ -255,81 +266,82 @@ namespace RGTS.Interfaz.Vendedor
             labelTotalCompraValor.Text = _carrito.Sum(d => d.SubtotalDerivado).ToString("C2");
         }
 
-        
+
 
         private void BtnConfirmarCompra_Click(object? sender, EventArgs e)
         {
+            string metodoPago = comboBoxMetodoPago.SelectedItem?.ToString() ?? "Efectivo";
+            Venta ventaRegistrada;
+
+            // 1) El registro es todo o nada: si falla, no se guardó nada y el carrito queda intacto para reintentar
             try
             {
-                string metodoPago = comboBoxMetodoPago.SelectedItem?.ToString() ?? "Efectivo";
+                if (sender is Control boton) boton.Enabled = false; // evita doble clic mientras procesa
 
-                // Registra la venta asociada al vendedor en sesión y su DNI
-                Venta ventaRegistrada = _ventaServicio.RegistrarVenta(
-                    _dniUsuarioSesion,
-                    _clienteSeleccionado,
-                    _carrito,
-                    metodoPago,
-                    _usuarioSesion
-                );
+                ventaRegistrada = _ventaServicio.RegistrarVenta(
+                    _dniUsuarioSesion, _clienteSeleccionado, _carrito, metodoPago, _usuarioSesion);
 
-                string nombreCliente = ventaRegistrada.Cliente != null
-                    ? $"{ventaRegistrada.Cliente.Nombre} {ventaRegistrada.Cliente.Apellido}"
-                    : "Consumidor Final";
-
-                MessageBox.Show(
-                    $"Venta N°: {ventaRegistrada.IdVenta:D5} confirmada exitosamente\n\n" +
-                    $"- Vendedor (DNI): {ventaRegistrada.DniUsuario}\n" +
-                    $"- Cliente: {nombreCliente}\n" +
-                    $"- Método: {metodoPago}\n" +
-                    $"- Total: {ventaRegistrada.TotalDerivado:C2}",
-                    "Venta Exitosa",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
-                DialogResult respuesta = MessageBox.Show(
-                    "¿Quiere generar el comprobante en formato PDF?",
-                    "Emitir Factura PDF",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
-
-                if (respuesta == DialogResult.Yes)
-                {
-                    SaveFileDialog sfd = new SaveFileDialog();
-                    {
-                        sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
-                        sfd.FileName = $"Factura_Venta_{ventaRegistrada.IdVenta:D5}.pdf";
-
-                        if (sfd.ShowDialog() == DialogResult.OK)
-                        {
-                            var pdfService = new PdfFacturaServicio();
-                            pdfService.GenerarFactura(ventaRegistrada, sfd.FileName);
-
-                            // Abre el PDF generado con el visor predeterminado del sistema
-                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                            {
-                                FileName = sfd.FileName,
-                                UseShellExecute = true
-                            });
-                        }
-                    }
-                }
-
-                // limpia la ventana
-                _carrito.Clear();
-                txtBuscarDniCliente.Clear();
-                LimpiarSeccionCliente();
-                LimpiarSeccionProducto();
-                ActualizarCarrito();
-
-                // Regresa al listado principal de ventas actualizado
-                FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
+                _carrito.Clear(); // la venta ya está confirmada: evita liberar de más o duplicarla
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error al confirmar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    ex.Message + "\n\nNo se registró la venta ni se modificó el stock. Podés revisar el carrito e intentar de nuevo.",
+                    "No se pudo confirmar la venta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+            finally
+            {
+                if (sender is Control boton) boton.Enabled = true;
+            }
+
+            string nombreCliente = ventaRegistrada.Cliente != null
+                ? $"{ventaRegistrada.Cliente.Nombre} {ventaRegistrada.Cliente.Apellido}"
+                : "Consumidor Final";
+
+            MessageBox.Show(
+                $"Venta N°: {ventaRegistrada.IdVenta:D5} confirmada exitosamente\n\n" +
+                $"- Vendedor (DNI): {ventaRegistrada.DniUsuario}\n" +
+                $"- Cliente: {nombreCliente}\n" +
+                $"- Método: {metodoPago}\n" +
+                $"- Total: {ventaRegistrada.TotalDerivado:C2}",
+                "Venta Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 2) Desde acá la venta ya no se puede deshacer: un fallo del PDF no la afecta
+            try
+            {
+                if (MessageBox.Show("¿Quiere generar el comprobante en formato PDF?", "Emitir Factura PDF",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    using var sfd = new SaveFileDialog
+                    {
+                        Filter = "Archivos PDF (*.pdf)|*.pdf",
+                        FileName = $"Factura_Venta_{ventaRegistrada.IdVenta:D5}.pdf"
+                    };
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        new PdfFacturaServicio().GenerarFactura(ventaRegistrada, sfd.FileName);
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = sfd.FileName,
+                            UseShellExecute = true
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"La venta se registró correctamente, pero no se pudo generar el PDF: {ex.Message}",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // Limpia la ventana y vuelve al listado
+            txtBuscarDniCliente.Clear();
+            LimpiarSeccionCliente();
+            LimpiarSeccionProducto();
+            ActualizarCarrito();
+            FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
         }
 
         private void BtnCancelarCompra_Click(object? sender, EventArgs e)
@@ -345,10 +357,27 @@ namespace RGTS.Interfaz.Vendedor
                 );
 
                 if (rta != DialogResult.Yes) return;
-                _ventaServicio.CancelarReservasCarrito(_carrito); 
+                LiberarReservasPendientes(); 
             }
 
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
+        }
+
+        private void LiberarReservasPendientes()
+        {
+            if (_carrito.Count == 0) return;
+
+            try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); }
+            catch { /* si no se pudo, la reserva vence sola a los 5 minutos */ }
+            finally { _carrito.Clear(); }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _timerReservas.Stop();
+            _timerReservas.Dispose();
+            LiberarReservasPendientes();
+            base.OnFormClosing(e);
         }
 
 
@@ -537,5 +566,6 @@ namespace RGTS.Interfaz.Vendedor
             pnlEdicionContenedor.BringToFront();
             subFormulario.Show();
         }
+
     }
 }

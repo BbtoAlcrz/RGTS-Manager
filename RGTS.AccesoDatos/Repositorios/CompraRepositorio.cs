@@ -112,20 +112,20 @@ namespace RGTS.AccesoDatos.Repositorios
             return lista;
         }
 
-        // Cambia el estado de una compra (Pendiente -> Recibida/Cancelada)
+        // Cambia el estado de una compra (Pendiente -> Recibida/Cancelada) 
+        // Y detecta si la compra ya no estaba pendiente
         public void CambiarEstado(int idCompra, string nuevoEstado)
         {
             using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+            using (SqlCommand comando = new SqlCommand("dbo.sp_CambiarEstadoCompra", conexion))
             {
-                using (SqlCommand comando = new SqlCommand("dbo.sp_CambiarEstadoCompra", conexion))
-                {
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.Parameters.Add(new SqlParameter("@IdCompra", SqlDbType.Int) { Value = idCompra });
-                    comando.Parameters.Add(new SqlParameter("@NuevoEstado", SqlDbType.VarChar, 30) { Value = nuevoEstado });
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.Add(new SqlParameter("@IdCompra", SqlDbType.Int) { Value = idCompra });
+                comando.Parameters.Add(new SqlParameter("@NuevoEstado", SqlDbType.VarChar, 30) { Value = nuevoEstado });
 
-                    conexion.Open();
-                    comando.ExecuteNonQuery();
-                }
+                conexion.Open();
+                if (Convert.ToInt32(comando.ExecuteScalar()) == 0)
+                    throw new InvalidOperationException("La compra ya no está en estado Pendiente.");
             }
         }
 
@@ -170,7 +170,7 @@ namespace RGTS.AccesoDatos.Repositorios
                     }
                     catch
                     {
-                        transaccion.Rollback();
+                        try { transaccion.Rollback(); } catch { /* la conexión se perdió: el servidor revierte solo */ }
                         throw;
                     }
                 }
@@ -192,6 +192,22 @@ namespace RGTS.AccesoDatos.Repositorios
                 Total = Convert.ToDecimal(reader["total_derivado"]),
                 Estado = reader["estado"]?.ToString() ?? string.Empty
             };
+        }
+
+        // Recibe la compra: suma el stock de todos los ítems y cambia el estado en una sola transacción (todo o nada)
+        public void RecibirCompra(int idCompra)
+        {
+            ReintentoSql.Ejecutar(() =>
+            {
+                using (SqlConnection conexion = _conexionBD.ObtenerConexion())
+                using (SqlCommand comando = new SqlCommand("dbo.sp_RecibirCompra", conexion))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+                    comando.Parameters.Add(new SqlParameter("@IdCompra", SqlDbType.Int) { Value = idCompra });
+                    conexion.Open();
+                    comando.ExecuteNonQuery();
+                }
+            });
         }
     }
 }

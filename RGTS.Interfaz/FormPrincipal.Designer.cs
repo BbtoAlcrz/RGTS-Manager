@@ -42,6 +42,7 @@
             BotonModuloVentas = new MaterialSkin.Controls.MaterialButton();
             BotonModuloCompras = new MaterialSkin.Controls.MaterialButton();
             BotonModuloReportes = new MaterialSkin.Controls.MaterialButton();
+            BotonModuloRespaldo = new MaterialSkin.Controls.MaterialButton();
             PanelContenedorMenu = new MaterialSkin.Controls.MaterialCard();
             PanelContenedorVistas.SuspendLayout();
             PanelPerfilInfo.SuspendLayout();
@@ -163,6 +164,7 @@
             PanelBotones.Controls.Add(BotonModuloVentas);
             PanelBotones.Controls.Add(BotonModuloCompras);
             PanelBotones.Controls.Add(BotonModuloReportes);
+            PanelBotones.Controls.Add(BotonModuloRespaldo);
             PanelBotones.Dock = DockStyle.Top;
             PanelBotones.FlowDirection = FlowDirection.TopDown;
             PanelBotones.Location = new Point(10, 10);
@@ -337,11 +339,36 @@
             BotonModuloReportes.NoAccentTextColor = Color.Empty;
             BotonModuloReportes.Size = new Size(180, 36);
             BotonModuloReportes.TabIndex = 8;
-            BotonModuloReportes.Text = "Reportes y Backup";
+            BotonModuloReportes.Text = "Reportes";
             BotonModuloReportes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             BotonModuloReportes.UseAccentColor = false;
             BotonModuloReportes.UseVisualStyleBackColor = true;
             BotonModuloReportes.Click += BotonModuloReportes_Click;
+            // 
+            // BotonModuloRespaldo
+            // 
+            BotonModuloRespaldo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            BotonModuloRespaldo.AutoSize = false;
+            BotonModuloRespaldo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BotonModuloRespaldo.CharacterCasing = MaterialSkin.Controls.MaterialButton.CharacterCasingEnum.Normal;
+            BotonModuloRespaldo.Cursor = Cursors.Hand;
+            BotonModuloRespaldo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            BotonModuloRespaldo.Depth = 0;
+            BotonModuloRespaldo.DrawShadows = false;
+            BotonModuloRespaldo.HighEmphasis = true;
+            BotonModuloRespaldo.Icon = Properties.Resources.respaldo;
+            BotonModuloRespaldo.Location = new Point(4, 342);
+            BotonModuloRespaldo.Margin = new Padding(4, 6, 4, 6);
+            BotonModuloRespaldo.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonModuloRespaldo.Name = "BotonModuloRespaldo";
+            BotonModuloRespaldo.NoAccentTextColor = Color.Empty;
+            BotonModuloRespaldo.Size = new Size(180, 36);
+            BotonModuloRespaldo.TabIndex = 9;
+            BotonModuloRespaldo.Text = "Respaldo";
+            BotonModuloRespaldo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BotonModuloRespaldo.UseAccentColor = false;
+            BotonModuloRespaldo.UseVisualStyleBackColor = true;
+            BotonModuloRespaldo.Click += BotonModuloRespaldo_Click;
             // 
             // PanelContenedorMenu
             // 
@@ -400,5 +427,6 @@
         private MaterialSkin.Controls.MaterialButton BotonModuloProveedores;
         private MaterialSkin.Controls.MaterialLabel labelBienvenida;
         private MaterialSkin.Controls.MaterialButton BotonModuloReportes;
+        private MaterialSkin.Controls.MaterialButton BotonModuloRespaldo;
     }
 }

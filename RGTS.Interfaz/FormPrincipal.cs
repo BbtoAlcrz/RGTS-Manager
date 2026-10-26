@@ -47,43 +47,18 @@ namespace RGTS.Interfaz
             ConfigurarNavegacionPorRol(RolSesion);
         }
 
-        // generico para abrir cualquier formulario dentro del panel principal
-        private void AbrirFormularioEnPanel<T>() where T : Form, new()
-        {
-            if (_formularioActivo != null && _formularioActivo.GetType() == typeof(T))
-            {
-                // el formulario ya está abierto
-                return;
-            }
 
-            // cerrar el formulario si existe y esta activo
-            if (_formularioActivo != null)
-            {
-                _formularioActivo.Close();
-                _formularioActivo.Dispose();
-                _formularioActivo.Controls.Clear();
-            }
-
-            // crear el nuevo formulario
-            _formularioActivo = new T
-            {
-                TopLevel = false,
-                FormBorderStyle = FormBorderStyle.None,
-                Dock = DockStyle.Fill
-            };
-
-            // poner el panel creado en el panel principal
-            PanelContenedorVistas.Controls.Add(_formularioActivo);
-            PanelContenedorVistas.Tag = _formularioActivo;
-            _formularioActivo.Show();
-            _formularioActivo.BringToFront();
-        }
-
-        // sobrecarga para abrir un formulario ya instanciado desde afuera de esta clase
+        // la lógica de preparación e incrustación
         public void AbrirFormularioEnPanel(Form formularioHijo)
         {
             if (_formularioActivo != null)
             {
+                // si el formulario que se intenta abrir ya está activo, no hace nada
+                if (_formularioActivo.GetType() == formularioHijo.GetType())
+                {
+                    return;
+                }
+
                 _formularioActivo.Close();
                 _formularioActivo.Dispose();
                 PanelContenedorVistas.Controls.Clear();
@@ -99,6 +74,18 @@ namespace RGTS.Interfaz
             formularioHijo.Show();
             formularioHijo.BringToFront();
         }
+
+        // Sobrecarga que evita instanciar new T() si ya esta abierto y delega al metodo principal
+        private void AbrirFormularioEnPanel<T>() where T : Form, new()
+        {
+            if (_formularioActivo != null && _formularioActivo.GetType() == typeof(T))
+            {
+                return;
+            }
+
+            AbrirFormularioEnPanel(new T());
+        }
+
 
         // configura la navegacion de los botones del menu para sus formularios por rol
         private void ConfigurarNavegacionPorRol(string? rolActual)
@@ -118,7 +105,8 @@ namespace RGTS.Interfaz
                     BotonModuloClientes,
                     BotonModuloVentas,
                     BotonModuloCompras,
-                    BotonModuloReportes
+                    BotonModuloReportes,
+                    BotonModuloRespaldo
                 },
 
                 "Vendedor" => new[]
@@ -224,7 +212,10 @@ namespace RGTS.Interfaz
         {
             AbrirFormularioEnPanel<FormReportes>();
         }
-
+        private void BotonModuloRespaldo_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel<FormRespaldo>();
+        }
         private void BotonCerrarSesion_Click(object sender, EventArgs e)
         {
             // Muestra la ventana emergente con botones de Sí y No, y un ícono de pregunta.
@@ -244,7 +235,5 @@ namespace RGTS.Interfaz
                 CerrarSesion();
             }
         }
-
-        
     }
 }

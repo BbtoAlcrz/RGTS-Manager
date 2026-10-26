@@ -12,7 +12,6 @@ namespace RGTS.Entidades
         public string NombreCliente { get; set; } = string.Empty;
         public decimal TotalVenta { get; set; }
 
-
         // Detalle de producto retornado por la fila
         public int IdProducto { get; set; }
         public string CodigoProducto { get; set; } = string.Empty;
@@ -25,16 +24,22 @@ namespace RGTS.Entidades
         public decimal PrecioCostoActual { get; set; }
     }
 
-
-    // Para rellenar las metricas en la pantalla de reportes de ventas
+    // Para la tarjeta de informacion en la vista de reportes de ventas
     public class VentasMetricasDto
     {
+        // Desempeño Financiero
         public int CantidadVentas { get; set; }
         public decimal TotalFacturado { get; set; }
-        public decimal PromedioFacturado { get; set; }
-        public decimal MargenGanancias { get; set; }
-        public string FechaConMasVentas { get; set; } = "--";
-        public string ProductoMasVendido { get; set; } = "--";
-        public string CategoriaMasVendida { get; set; } = "--";
+        public decimal PromedioFacturadoPorVendedor { get; set; }
+        public decimal MargenGananciasTotal { get; set; }
+
+        // Rendimiento de Vendedores
+        public string VendedorEstrella { get; set; } = "--";
+        public string VendedorConMasOperaciones { get; set; } = "--";
+
+        // Desempeño Temporal
+        public string FechaPicoVentas { get; set; } = "--";
+        public string DiaConMasVentas { get; set; } = "--";
+        public string HoraPicoVentas { get; set; } = "--";
     }
 }

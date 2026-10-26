@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using RGTS.AccesoDatos.Repositorios;
 using RGTS.Entidades;
 
@@ -18,7 +20,7 @@ namespace RGTS.LogicaNegocio.Servicios
         {
             if (fechaDesde > fechaHasta)
             {
-                throw new ArgumentException("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.");
+                throw new ArgumentException("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'...");
             }
 
             return _reporteRepositorio.ObtenerReporteVentas(fechaDesde, fechaHasta, dniVendedor);
@@ -31,43 +33,77 @@ namespace RGTS.LogicaNegocio.Servicios
             if (ventas == null || ventas.Count == 0)
                 return metricas;
 
-            // filtra ventas unicas para evitar duplicar totales de ventas
+            // Agrupar ventas unicas para evitar duplicar cada ítem de detalle
             var ventasUnicas = ventas.GroupBy(v => v.IdVenta).Select(g => g.First()).ToList();
 
+            // DESEMPEÑO FINANCIERO
             metricas.CantidadVentas = ventasUnicas.Count;
             metricas.TotalFacturado = ventasUnicas.Sum(v => v.TotalVenta);
-            metricas.PromedioFacturado = metricas.CantidadVentas > 0 ? metricas.TotalFacturado / metricas.CantidadVentas : 0m;
 
-            // Costo estimado, asume un 30% de margen de ganancia sobre el precio unitario de la venta
+            int cantidadVendedoresActivos = ventasUnicas.Select(v => v.DniVendedor).Distinct().Count();
+            metricas.PromedioFacturadoPorVendedor = cantidadVendedoresActivos > 0
+                ? metricas.TotalFacturado / cantidadVendedoresActivos
+                : 0m;
+
+            // margen de ganancias (30% sobre el total facturado)
             decimal costoEstimado = ventas.Sum(v => (v.PrecioUnitario * 0.70m) * v.Cantidad);
-            metricas.MargenGanancias = metricas.TotalFacturado - costoEstimado;
+            metricas.MargenGananciasTotal = metricas.TotalFacturado - costoEstimado;
 
-            // fecha con más ventas
-            var fechaTop = ventasUnicas
-                .GroupBy(v => v.Fecha.Date)
+            // RENDIMIENTO DE VENDEDORES
+            var vendedorEstrellaGroup = ventasUnicas
+                .GroupBy(v => v.NombreVendedor)
+                .OrderByDescending(g => g.Sum(x => x.TotalVenta))
+                .FirstOrDefault();
+
+            if (vendedorEstrellaGroup != null)
+            {
+                metricas.VendedorEstrella = $"{vendedorEstrellaGroup.Key} ({vendedorEstrellaGroup.Sum(x => x.TotalVenta):C2})";
+            }
+
+            var vendedorMasOperacionesGroup = ventasUnicas
+                .GroupBy(v => v.NombreVendedor)
                 .OrderByDescending(g => g.Count())
-                .FirstOrDefault()?.Key;
-            metricas.FechaConMasVentas = fechaTop.HasValue ? fechaTop.Value.ToString("dd/MM/yyyy") : "--";
-
-            // Producto más vendido por unidades totales
-            var productoTop = ventas
-                .GroupBy(v => v.NombreProducto)
-                .Select(g => new { Nombre = g.Key, Unidades = g.Sum(x => x.Cantidad) })
-                .OrderByDescending(x => x.Unidades)
                 .FirstOrDefault();
 
-            if (productoTop != null)
-                metricas.ProductoMasVendido = $"{productoTop.Nombre} ({productoTop.Unidades} un.)";
+            if (vendedorMasOperacionesGroup != null)
+            {
+                metricas.VendedorConMasOperaciones = $"{vendedorMasOperacionesGroup.Key} ({vendedorMasOperacionesGroup.Count()} op.)";
+            }
 
-            // Categoría más vendida por monto total facturado
-            var categoriaTop = ventas
-                .GroupBy(v => v.NombreCategoria)
-                .Select(g => new { Nombre = g.Key, Total = g.Sum(x => x.Subtotal) })
-                .OrderByDescending(x => x.Total)
+            // DESEMPEÑO TEMPORAL
+            // Fecha con más recaudación
+            var fechaPicoGroup = ventasUnicas
+                .GroupBy(v => v.Fecha.Date)
+                .OrderByDescending(g => g.Sum(x => x.TotalVenta))
                 .FirstOrDefault();
 
-            if (categoriaTop != null)
-                metricas.CategoriaMasVendida = categoriaTop.Nombre;
+            if (fechaPicoGroup != null)
+            {
+                metricas.FechaPicoVentas = fechaPicoGroup.Key.ToString("dd/MM/yyyy");
+            }
+
+            // Día de la semana con más operaciones
+            var culturaEs = new CultureInfo("es-ES");
+            var diaPicoGroup = ventasUnicas
+                .GroupBy(v => v.Fecha.ToString("dddd", culturaEs))
+                .OrderByDescending(g => g.Count())
+                .FirstOrDefault();
+
+            if (diaPicoGroup != null)
+            {
+                metricas.DiaConMasVentas = culturaEs.TextInfo.ToTitleCase(diaPicoGroup.Key);
+            }
+
+            // Hora pico de operaciones
+            var horaPicoGroup = ventasUnicas
+                .GroupBy(v => v.Fecha.Hour)
+                .OrderByDescending(g => g.Count())
+                .FirstOrDefault();
+
+            if (horaPicoGroup != null)
+            {
+                metricas.HoraPicoVentas = $"{horaPicoGroup.Key:D2}:00 - {horaPicoGroup.Key + 1:D2}:00 hs";
+            }
 
             return metricas;
         }

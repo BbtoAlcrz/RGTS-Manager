@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
+using System.Linq;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
@@ -9,228 +10,239 @@ namespace RGTS.Interfaz.Administrador
 {
     public partial class FormReportes : MaterialForm
     {
-        private readonly ReporteVentaServicio _reporteVentaServicio;
-        private readonly VentaServicio _ventaServicio;
-        private List<VentaReporteDto> _reporteVentaActual;
-        private readonly BackupServicio _backupServicio = new();
+        private readonly ReporteVentaServicio _reporteVentaServicio = new();
+        private readonly ReporteClienteServicio _reporteClienteServicio = new();
+        private readonly ReporteProductoServicio _reporteProductoServicio = new();
 
-        private class VendedorFiltro
-        {
-            public string Texto { get; set; } = string.Empty;
-            public string? Dni { get; set; }
-        }
+        private List<VentaReporteDto> _reporteVentaActual = new();
+        private List<ClienteReporteDto> _reporteClienteActual = new();
+        private List<ProductoReporteDto> _reporteProductoActual = new();
 
         public FormReportes()
         {
-            _reporteVentaServicio = new ReporteVentaServicio();
-            _ventaServicio = new VentaServicio();
-            _reporteVentaActual = new List<VentaReporteDto>();
-
             InitializeComponent();
-            ConfigurarEventosReporteVenta();
-            CargarFiltroVendedores();
+            ConfigurarEventosReportes();
         }
 
-
-        private void ConfigurarEventosReporteVenta()
+        private void ConfigurarEventosReportes()
         {
+            // Rango de fecha por defecto: inicio del mes actual a la fecha
             DtpDesde.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             DtpHasta.Value = DateTime.Today;
 
-            DtpDesde.ValueChanged += (s, e) => CargarReporteVentas();
-            DtpHasta.ValueChanged += (s, e) => CargarReporteVentas();
-            ComboBoxVendedor.SelectedIndexChanged += ComboBoxVendedor_SelectedIndexChanged;
+            DtpDesde.ValueChanged += (s, e) => RecargarTodosLosReportes();
+            DtpHasta.ValueChanged += (s, e) => RecargarTodosLosReportes();
 
-            CargarReporteVentas();
+            RecargarTodosLosReportes();
         }
 
+        private void RecargarTodosLosReportes()
+        {
+            DateTime desde = DtpDesde.Value.Date;
+            DateTime hasta = DtpHasta.Value.Date;
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                UseWaitCursor = true;
+
+                SuspendLayout();
+                chartVentas.SuspendLayout();
+                chartClientes.SuspendLayout();
+                chartProductos.SuspendLayout();
+
+                CargarReporteVentas(desde, hasta);
+                CargarReporteClientes(desde, hasta);
+                CargarReporteProductos(desde, hasta);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar los reportes: {ex.Message}", "Error de Carga",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                chartVentas.ResumeLayout();
+                chartClientes.ResumeLayout();
+                chartProductos.ResumeLayout();
+                ResumeLayout(true);
+
+                UseWaitCursor = false;
+                Cursor = Cursors.Default;
+            }
+        }
+
+
+        // SECCION VENTAS
+        private void CargarReporteVentas(DateTime desde, DateTime hasta)
+        {
+            try
+            {
+                _reporteVentaActual = _reporteVentaServicio.ObtenerReporteVentas(desde, hasta, null);
+
+                CargarMetricasVentas(_reporteVentaActual);
+                CargarGraficoVentasPorVendedor(_reporteVentaActual);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar reporte de ventas: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
 
         private void CargarMetricasVentas(List<VentaReporteDto> ventas)
         {
             VentasMetricasDto metricas = _reporteVentaServicio.CalcularMetricas(ventas);
 
+            // Desempeño Financiero
             LabelCantidadVentasValor.Text = metricas.CantidadVentas.ToString();
             LabelTotalFacturadoValor.Text = metricas.TotalFacturado.ToString("C2");
-            LabelFacturaPromedioValor.Text = metricas.PromedioFacturado.ToString("C2");
-            LabelMargenGanaciasValor.Text = metricas.MargenGanancias.ToString("C2");
+            LabelFacturaPromedioValor.Text = metricas.PromedioFacturadoPorVendedor.ToString("C2");
+            LabelMargenGanaciasValor.Text = metricas.MargenGananciasTotal.ToString("C2");
 
-            LabelFechaVentasValor.Text = metricas.FechaConMasVentas;
-            LabelProductoMasVendidoValor.Text = metricas.ProductoMasVendido;
-            LabelCategoriaMasVendidaValor.Text = metricas.CategoriaMasVendida;
+            // Rendimiento de Vendedores
+            LabelVendedorEstrellaValor.Text = metricas.VendedorEstrella;
+            LabelMasOperacionesValor.Text = metricas.VendedorConMasOperaciones;
+
+            // Desempeño Temporal
+            LabelFechaPicoValor.Text = metricas.FechaPicoVentas;
+            LabelDiaMasVentasValor.Text = metricas.DiaConMasVentas;
+            LabelHoraPicoValor.Text = metricas.HoraPicoVentas;
         }
 
-
-        private void CargarGraficoVentas(List<VentaReporteDto> ventas)
+        private void CargarGraficoVentasPorVendedor(List<VentaReporteDto> ventas)
         {
-            chartVentas.Series["VentasDiarias"].Points.Clear();
+            var serie = chartVentas.Series["VentasDiarias"];
+            serie.Points.Clear();
 
             if (ventas == null || ventas.Count == 0) return;
 
-            var ventasAgrupadasPorDia = ventas
-                .GroupBy(v => v.Fecha.Date)
+            var ventasPorVendedor = ventas
+                .GroupBy(v => v.NombreVendedor)
                 .Select(g => new
                 {
-                    FechaTexto = g.Key.ToString("dd/MM"),
-                    // Tomamos el TotalVenta de las ventas unicas de ese día
-                    TotalDia = g.GroupBy(v => v.IdVenta).Sum(x => x.First().TotalVenta)
+                    Vendedor = string.IsNullOrWhiteSpace(g.Key) ? "Sin Vendedor" : g.Key,
+                    TotalFacturado = g.GroupBy(v => v.IdVenta).Sum(x => x.First().TotalVenta)
                 })
-                .OrderBy(x => x.FechaTexto);
+                .OrderByDescending(x => x.TotalFacturado);
 
-            foreach (var item in ventasAgrupadasPorDia)
+            foreach (var item in ventasPorVendedor)
             {
-                // Dia/Mes en X, monto total en Y
-                chartVentas.Series["VentasDiarias"].Points.AddXY(item.FechaTexto, item.TotalDia);
+                serie.Points.AddXY(item.Vendedor, item.TotalFacturado);
             }
         }
 
 
-        private void CargarReporteVentas()
+        // SECCION CLIENTES
+        private void CargarReporteClientes(DateTime desde, DateTime hasta)
         {
             try
             {
-                DateTime desde = DtpDesde.Value.Date;
-                DateTime hasta = DtpHasta.Value.Date;
-                string? dniVendedor = ComboBoxVendedor.SelectedValue?.ToString();
+                _reporteClienteActual = _reporteClienteServicio.ObtenerReporteClientes(desde, hasta);
+                ClientesMetricasDto metricas = _reporteClienteServicio.CalcularMetricas(_reporteClienteActual);
 
-                _reporteVentaActual = _reporteVentaServicio.ObtenerReporteVentas(desde, hasta, dniVendedor);
-                CargarMetricasVentas(_reporteVentaActual);
-                CargarGraficoVentas(_reporteVentaActual);
+                // Desempeño de CLientes
+                LabelClientesActivosValor.Text = metricas.TotalClientesActivos.ToString();
+                LabelClientesNuevosValor.Text = metricas.ClientesNuevos.ToString();
+                LabelAporteRegistradosValor.Text = $"{metricas.AporteClientesRegistradosPorcentaje:F1}%";
+
+                // Metricas de Recurrencia
+                LabelClienteEstrellaValor.Text = metricas.ClienteEstrella;
+                LabelClientesRecurrentesValor.Text = metricas.CantidadClientesRecurrentes.ToString();
+                LabelPorcentajeRecurrenciaValor.Text = $"{metricas.PorcentajeRecurrencia:F1}%";
+
+                // Promedio Comercial
+                LabelPromGastoClienteValor.Text = metricas.FacturacionClientesRegistrados.ToString("C2");
+                LabelPromedioComprasClientesValor.Text = metricas.PromedioComprasPorCliente.ToString("N1");
+                LabelClientesUnicosValor.Text = metricas.ClientesCompradoresUnicos.ToString();
+
+                CargarGraficoClientes(metricas);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar reporte de ventas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Error al cargar el reporte de clientes: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void CargarGraficoClientes(ClientesMetricasDto metricas)
+        {
+            var serie = chartClientes.Series["DistribucionClientes"];
+            serie.Points.Clear();
+
+            if (metricas == null) return;
+
+            int totalClientes = metricas.CantidadNuncaCompraron + metricas.CantidadCompraronUnaVez + metricas.CantidadCompraronMultiple;
+            if (totalClientes == 0) return;
+
+            // Muestra porcentaje sobre las porciones
+            serie.IsValueShownAsLabel = true;
+            serie.Label = "#PERCENT{0.00%}";
+            serie["PieLabelStyle"] = "Inside";
+
+            if (metricas.CantidadNuncaCompraron > 0)
+            {
+                int idx = serie.Points.AddXY("Nunca Compraron", metricas.CantidadNuncaCompraron);
+                serie.Points[idx].LegendText = "Nunca Compraron";
+            }
+
+            if (metricas.CantidadCompraronUnaVez > 0)
+            {
+                int idx = serie.Points.AddXY("Compraron 1 vez", metricas.CantidadCompraronUnaVez);
+                serie.Points[idx].LegendText = "Compraron 1 vez";
+            }
+
+            if (metricas.CantidadCompraronMultiple > 0)
+            {
+                int idx = serie.Points.AddXY("Varias Compras", metricas.CantidadCompraronMultiple);
+                serie.Points[idx].LegendText = "Varias Compras";
             }
         }
 
 
-        private void CargarFiltroVendedores()
+        // SECCION PRODUCTOS
+        private void CargarReporteProductos(DateTime desde, DateTime hasta)
         {
-
-            ComboBoxVendedor.SelectedIndexChanged -= ComboBoxVendedor_SelectedIndexChanged;
-
-            var lista = new List<VendedorFiltro>
-            {
-                new VendedorFiltro { Texto = "Todos los Vendedores", Dni = null }
-            };
-
-            var vendedores = _ventaServicio.ObtenerVendedoresConVentas();
-            foreach (var v in vendedores)
-            {
-                lista.Add(new VendedorFiltro
-                {
-                    Texto = $"{v.NombreCompleto} ({v.Dni})",
-                    Dni = v.Dni
-                });
-            }
-
-            ComboBoxVendedor.DataSource = lista;
-            ComboBoxVendedor.DisplayMember = "Texto";
-            ComboBoxVendedor.ValueMember = "Dni";
-            ComboBoxVendedor.SelectedIndex = 0;
-
-
-            ComboBoxVendedor.SelectedIndexChanged += ComboBoxVendedor_SelectedIndexChanged;
-        }
-
-        private void ComboBoxVendedor_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-            CargarReporteVentas();
-        }
-
-        private void BtnBackup_Click(object sender, EventArgs e)
-        {
-            using var dialogo = new SaveFileDialog
-            {
-                Filter = "Backup de SQL Server (*.bak)|*.bak",
-                FileName = _backupServicio.NombreSugerido()
-            };
-
-            if (dialogo.ShowDialog() != DialogResult.OK) return;
-
             try
             {
-                Cursor = Cursors.WaitCursor;
-                _backupServicio.ExportarBackup(FormPrincipal.UsuarioSesion, dialogo.FileName);
-                MessageBox.Show("Backup generado correctamente.", "Copia de Seguridad", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _reporteProductoActual = _reporteProductoServicio.ObtenerReporteProductos(desde, hasta);
+                ProductosMetricasDto metricas = _reporteProductoServicio.CalcularMetricas(_reporteProductoActual);
+
+                // Valorizacion de Inventario
+                LabelValorInventarioValor.Text = metricas.ValorTotalInventario.ToString("C2");
+                LabelProductosActivosValor.Text = metricas.TotalProductosActivos.ToString();
+                LabelProductosInactivosValor.Text = metricas.TotalProductosInactivos.ToString();
+
+                // Control de Stock
+                LabelStockCriticoValor.Text = metricas.ProductosStockCritico.ToString();
+                LabelPorductosAgotadosValor.Text = metricas.ProductosAgotados.ToString();
+                LabelStockOptimoValor.Text = $"{metricas.PorcentajeStockOptimo:F1}%";
+
+                // Rendimiento y Rotacion 
+                LabelProductoEstrellaValor.Text = metricas.ProductoEstrella;
+                LabelCategoriaEstrellaValor.Text = metricas.CategoriaEstrella;
+                LabelPromedioVendidoValor.Text = metricas.PromedioUnidadesVendidas.ToString("N1");
+
+                CargarGraficoProductos(metricas);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"No se pudo generar el backup: {ex.Message}", "Error de Backup", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
+                MessageBox.Show($"Error al cargar el reporte de productos: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void BtnRestaurar_Click(object sender, EventArgs e)
+        private void CargarGraficoProductos(ProductosMetricasDto metricas)
         {
-            using var dialogo = new OpenFileDialog { Filter = "Backup de SQL Server (*.bak)|*.bak" };
-            if (dialogo.ShowDialog() != DialogResult.OK) return;
+            var serie = chartProductos.Series["TopProductos"];
+            serie.Points.Clear();
 
-            try
+            if (metricas?.Top5MasVendidos == null || metricas.Top5MasVendidos.Count == 0) return;
+
+            var top5Invertido = metricas.Top5MasVendidos
+                .OrderBy(p => p.UnidadesVendidasEnPeriodo)
+                .ToList();
+
+            foreach (var prod in top5Invertido)
             {
-                // Valida el archivo y extrae la fecha
-                Cursor = Cursors.WaitCursor;
-                DateTime fecha = _backupServicio.ValidarArchivoParaRestaurar(FormPrincipal.UsuarioSesion, dialogo.FileName);
-                Cursor = Cursors.Default;
-
-                // Cuadro modal de confirmación con contraseña
-                string? contrasena = null;
-                using (var form = new Form
-                {
-                    Text = "Confirmar Restauración de Base de Datos",
-                    FormBorderStyle = FormBorderStyle.FixedDialog,
-                    StartPosition = FormStartPosition.CenterParent,
-                    MaximizeBox = false,
-                    MinimizeBox = false,
-                    ClientSize = new Size(420, 210)
-                })
-                {
-                    var lblAviso = new Label
-                    {
-                        Text = $"Backup seleccionado: {Path.GetFileName(dialogo.FileName)}\n" +
-                               $"Fecha de creación: {fecha:dd/MM/yyyy HH:mm}\n\n" +
-                               "ATENCIÓN: Se reemplazarán TODOS los datos actuales. Los cambios posteriores a este backup se perderán de forma permanente.",
-                        Left = 15,
-                        Top = 15,
-                        Width = 390,
-                        Height = 90,
-                        ForeColor = Color.DarkRed
-                    };
-                    var lblClave = new Label { Text = "Ingrese su contraseña de Administrador para confirmar:", Left = 15, Top = 115, Width = 390 };
-                    var txtClave = new TextBox { Left = 15, Top = 138, Width = 390, UseSystemPasswordChar = true };
-                    var btnOk = new Button { Text = "Restaurar", Left = 225, Top = 170, Width = 85, Enabled = false, DialogResult = DialogResult.OK };
-                    var btnCancelar = new Button { Text = "Cancelar", Left = 320, Top = 170, Width = 85, DialogResult = DialogResult.Cancel };
-
-                    txtClave.TextChanged += (_, _) => btnOk.Enabled = txtClave.Text.Trim().Length > 0;
-
-                    form.Controls.AddRange(new Control[] { lblAviso, lblClave, txtClave, btnOk, btnCancelar });
-                    form.AcceptButton = btnOk;
-                    form.CancelButton = btnCancelar;
-
-                    if (form.ShowDialog(this) == DialogResult.OK)
-                        contrasena = txtClave.Text;
-                }
-
-                if (string.IsNullOrWhiteSpace(contrasena)) return; // Operación cancelada por el usuario
-
-                // Ejecución de la restauración de la BD
-                Cursor = Cursors.WaitCursor;
-                string respaldoSeguridad = _backupServicio.RestaurarBackup(FormPrincipal.UsuarioSesion, dialogo.FileName, contrasena);
-
-                MessageBox.Show($"Base de datos restaurada correctamente.\nSe generó un respaldo previo de seguridad en:\n{respaldoSeguridad}\n\nLa aplicación se reiniciará automáticamente.",
-                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                Application.Restart();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error al Restaurar", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
+                serie.Points.AddXY(prod.NombreProducto, prod.UnidadesVendidasEnPeriodo);
             }
         }
     }

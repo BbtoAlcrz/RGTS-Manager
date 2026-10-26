@@ -31,6 +31,7 @@ namespace RGTS.LogicaNegocio.Servicios
                     // encabezado
                     page.Header().Row(row =>
                     {
+                        // LOGO
                         row.RelativeItem().Column(col =>
                         {
                             //el logo de la empresa está en RGTS-Manager\RGTS.Interfaz\Resources\logo.png

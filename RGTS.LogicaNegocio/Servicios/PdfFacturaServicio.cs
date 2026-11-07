@@ -19,6 +19,8 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public string GenerarFactura(Venta venta, string rutaDestino)
         {
+            string rutaLogo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Recursos", "logo.png");
+
             Document.Create(container => 
             {
                 container.Page(page =>
@@ -34,10 +36,15 @@ namespace RGTS.LogicaNegocio.Servicios
                         // LOGO
                         row.RelativeItem().Column(col =>
                         {
-                            //el logo de la empresa está en RGTS-Manager\RGTS.Interfaz\Resources\logo.png
-                            col.Item().Text("RetroGames Tech-Store").FontSize(20).Bold().FontColor(Colors.Indigo.Darken2);
-                            col.Item().Text("Venta de Consolas y Accesorios Gamer");
-                            col.Item().Text("Corrientes, Argentina");
+                            if (File.Exists(rutaLogo))
+                            {
+                                col.Item().Height(45).Image(rutaLogo);
+                                col.Item().PaddingVertical(2);
+                            }
+                            col.Item().Text("RetroGames Tech-Store").FontSize(18).Bold().FontColor(Colors.Indigo.Darken2);
+                            col.Item().Text("Venta de Consolas y Accesorios Gamer").FontSize(12).Bold();
+                            col.Item().Text("CUIT: 30-91449777-2").FontSize(12);
+                            col.Item().Text("9 de Julio 1449, Corrientes - Argentina").FontSize(12);
                         });
 
                         row.RelativeItem().AlignRight().Column(col =>

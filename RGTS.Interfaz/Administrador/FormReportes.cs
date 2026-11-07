@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using MaterialSkin.Controls;
 using RGTS.Entidades;
 using RGTS.LogicaNegocio.Servicios;
@@ -13,10 +15,13 @@ namespace RGTS.Interfaz.Administrador
         private readonly ReporteVentaServicio _reporteVentaServicio = new();
         private readonly ReporteClienteServicio _reporteClienteServicio = new();
         private readonly ReporteProductoServicio _reporteProductoServicio = new();
+        private readonly ReportePdfServicio _reportePdfServicio = new();
 
         private List<VentaReporteDto> _reporteVentaActual = new();
         private List<ClienteReporteDto> _reporteClienteActual = new();
         private List<ProductoReporteDto> _reporteProductoActual = new();
+
+        private bool _actualizandoFechas;
 
         public FormReportes()
         {
@@ -26,12 +31,14 @@ namespace RGTS.Interfaz.Administrador
 
         private void ConfigurarEventosReportes()
         {
-            // Rango de fecha por defecto: inicio del mes actual a la fecha
+            // inicio del mes actual a la fecha
             DtpDesde.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             DtpHasta.Value = DateTime.Today;
 
-            DtpDesde.ValueChanged += (s, e) => RecargarTodosLosReportes();
-            DtpHasta.ValueChanged += (s, e) => RecargarTodosLosReportes();
+            DtpDesde.ValueChanged += RangoFechasCambiado;
+            DtpHasta.ValueChanged += RangoFechasCambiado;
+            // actualiza estado del botn al cambiar de pestaña
+            materialTabControl1.SelectedIndexChanged += (s, e) => ActualizarEstadoBotonReporte();
 
             RecargarTodosLosReportes();
         }
@@ -39,7 +46,7 @@ namespace RGTS.Interfaz.Administrador
         private void RecargarTodosLosReportes()
         {
             DateTime desde = DtpDesde.Value.Date;
-            DateTime hasta = DtpHasta.Value.Date;
+            DateTime hasta = DtpHasta.Value.Date.AddDays(1).AddTicks(-1);
 
             try
             {
@@ -54,6 +61,8 @@ namespace RGTS.Interfaz.Administrador
                 CargarReporteVentas(desde, hasta);
                 CargarReporteClientes(desde, hasta);
                 CargarReporteProductos(desde, hasta);
+
+                ActualizarEstadoBotonReporte();
             }
             catch (Exception ex)
             {
@@ -72,21 +81,62 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
+        private void RangoFechasCambiado(object? sender, EventArgs e)
+        {
+            if (_actualizandoFechas) return;
 
-        // SECCION VENTAS
+            if (DtpDesde.Value.Date > DtpHasta.Value.Date)
+            {
+                _actualizandoFechas = true;
+                try
+                {
+                    MessageBox.Show("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'.",
+                                    "Rango de Fechas Inválido",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+
+                    DtpDesde.Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    DtpHasta.Value = DateTime.Today;
+                }
+                finally
+                {
+                    _actualizandoFechas = false;
+                }
+            }
+
+            RecargarTodosLosReportes();
+
+            if (!PestanaActivaTieneDatos())
+            {
+                MessageBox.Show("No hay datos disponibles para el rango de fechas seleccionado.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private bool PestanaActivaTieneDatos()
+        {
+            string nombre = materialTabControl1.SelectedTab?.Name ?? "";
+            return nombre switch
+            {
+                "ReporteVentas" => _reporteVentaActual.Count > 0,
+                "ReporteClientes" => _reporteClienteActual.Any(c => c.ComprasEnPeriodo > 0),
+                "ReporteProductos" => _reporteProductoActual.Any(p => p.UnidadesVendidasEnPeriodo > 0),
+                _ => false
+            };
+        }
+
+        private void ActualizarEstadoBotonReporte()
+        {
+            BtnGenerarReporte.Enabled = PestanaActivaTieneDatos();
+        }
+
+
+        // SECCIÓN VENTAS
         private void CargarReporteVentas(DateTime desde, DateTime hasta)
         {
-            try
-            {
-                _reporteVentaActual = _reporteVentaServicio.ObtenerReporteVentas(desde, hasta, null);
-
-                CargarMetricasVentas(_reporteVentaActual);
-                CargarGraficoVentasPorVendedor(_reporteVentaActual);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar reporte de ventas: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            _reporteVentaActual = _reporteVentaServicio.ObtenerReporteVentas(desde, hasta, null);
+            CargarMetricasVentas(_reporteVentaActual);
+            CargarGraficoVentasPorVendedor(_reporteVentaActual);
         }
 
         private void CargarMetricasVentas(List<VentaReporteDto> ventas)
@@ -114,6 +164,7 @@ namespace RGTS.Interfaz.Administrador
             var serie = chartVentas.Series["VentasDiarias"];
             serie.Points.Clear();
 
+            // si no hay ventas en el periodo, el grafico se limpia 
             if (ventas == null || ventas.Count == 0) return;
 
             var ventasPorVendedor = ventas
@@ -131,36 +182,28 @@ namespace RGTS.Interfaz.Administrador
             }
         }
 
-
-        // SECCION CLIENTES
+         
+        // SECCIÓN CLIENTES
         private void CargarReporteClientes(DateTime desde, DateTime hasta)
         {
-            try
-            {
-                _reporteClienteActual = _reporteClienteServicio.ObtenerReporteClientes(desde, hasta);
-                ClientesMetricasDto metricas = _reporteClienteServicio.CalcularMetricas(_reporteClienteActual);
+            _reporteClienteActual = _reporteClienteServicio.ObtenerReporteClientes(desde, hasta);
+            ClientesMetricasDto metricas = _reporteClienteServicio.CalcularMetricas(_reporteClienteActual);
 
-                // Desempeño de CLientes
-                LabelClientesActivosValor.Text = metricas.TotalClientesActivos.ToString();
-                LabelClientesNuevosValor.Text = metricas.ClientesNuevos.ToString();
-                LabelAporteRegistradosValor.Text = $"{metricas.AporteClientesRegistradosPorcentaje:F1}%";
+            // Desempeño de Clientes
+            LabelClientesActivosValor.Text = metricas.TotalClientesActivos.ToString();
+            LabelClientesNuevosValor.Text = metricas.ClientesNuevos.ToString();
 
-                // Metricas de Recurrencia
-                LabelClienteEstrellaValor.Text = metricas.ClienteEstrella;
-                LabelClientesRecurrentesValor.Text = metricas.CantidadClientesRecurrentes.ToString();
-                LabelPorcentajeRecurrenciaValor.Text = $"{metricas.PorcentajeRecurrencia:F1}%";
+            // Métricas de Recurrencia
+            LabelClienteEstrellaValor.Text = metricas.ClienteEstrella;
+            LabelClientesRecurrentesValor.Text = metricas.CantidadClientesRecurrentes.ToString();
+            LabelPorcentajeRecurrenciaValor.Text = $"{metricas.PorcentajeRecurrencia:F1}%";
 
-                // Promedio Comercial
-                LabelPromGastoClienteValor.Text = metricas.FacturacionClientesRegistrados.ToString("C2");
-                LabelPromedioComprasClientesValor.Text = metricas.PromedioComprasPorCliente.ToString("N1");
-                LabelClientesUnicosValor.Text = metricas.ClientesCompradoresUnicos.ToString();
+            // Promedio Comercial
+            LabelPromGastoClienteValor.Text = metricas.FacturacionClientesRegistrados.ToString("C2");
+            LabelPromedioComprasClientesValor.Text = metricas.PromedioComprasPorCliente.ToString("N1");
+            LabelClientesUnicosValor.Text = metricas.ClientesCompradoresUnicos.ToString();
 
-                CargarGraficoClientes(metricas);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar el reporte de clientes: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            CargarGraficoClientes(metricas);
         }
 
         private void CargarGraficoClientes(ClientesMetricasDto metricas)
@@ -170,10 +213,9 @@ namespace RGTS.Interfaz.Administrador
 
             if (metricas == null) return;
 
-            int totalClientes = metricas.CantidadNuncaCompraron + metricas.CantidadCompraronUnaVez + metricas.CantidadCompraronMultiple;
-            if (totalClientes == 0) return;
+            // Solo se dibuja el gráfico si hubo compras en el período seleccionado!!!
+            if (metricas.ClientesCompradoresUnicos == 0) return;
 
-            // Muestra porcentaje sobre las porciones
             serie.IsValueShownAsLabel = true;
             serie.Label = "#PERCENT{0.00%}";
             serie["PieLabelStyle"] = "Inside";
@@ -196,9 +238,9 @@ namespace RGTS.Interfaz.Administrador
                 serie.Points[idx].LegendText = "Varias Compras";
             }
         }
+        
 
-
-        // SECCION PRODUCTOS
+        // SECCIÓN PRODUCTOS
         private void CargarReporteProductos(DateTime desde, DateTime hasta)
         {
             try
@@ -206,17 +248,16 @@ namespace RGTS.Interfaz.Administrador
                 _reporteProductoActual = _reporteProductoServicio.ObtenerReporteProductos(desde, hasta);
                 ProductosMetricasDto metricas = _reporteProductoServicio.CalcularMetricas(_reporteProductoActual);
 
-                // Valorizacion de Inventario
+                // Valorización de Inventario
                 LabelValorInventarioValor.Text = metricas.ValorTotalInventario.ToString("C2");
                 LabelProductosActivosValor.Text = metricas.TotalProductosActivos.ToString();
-                LabelProductosInactivosValor.Text = metricas.TotalProductosInactivos.ToString();
 
                 // Control de Stock
                 LabelStockCriticoValor.Text = metricas.ProductosStockCritico.ToString();
                 LabelPorductosAgotadosValor.Text = metricas.ProductosAgotados.ToString();
                 LabelStockOptimoValor.Text = $"{metricas.PorcentajeStockOptimo:F1}%";
 
-                // Rendimiento y Rotacion 
+                // Rendimiento y Rotación
                 LabelProductoEstrellaValor.Text = metricas.ProductoEstrella;
                 LabelCategoriaEstrellaValor.Text = metricas.CategoriaEstrella;
                 LabelPromedioVendidoValor.Text = metricas.PromedioUnidadesVendidas.ToString("N1");
@@ -225,7 +266,8 @@ namespace RGTS.Interfaz.Administrador
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar el reporte de productos: {ex.Message}", "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Error al cargar el reporte de productos: {ex.Message}", "Error de Carga",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -234,16 +276,100 @@ namespace RGTS.Interfaz.Administrador
             var serie = chartProductos.Series["TopProductos"];
             serie.Points.Clear();
 
-            if (metricas?.Top5MasVendidos == null || metricas.Top5MasVendidos.Count == 0) return;
+            if (metricas?.Top5MasVendidos == null || metricas.Top5MasVendidos.Count == 0)
+            {
+                chartProductos.ChartAreas[0].RecalculateAxesScale();
+                chartProductos.Invalidate();
+                chartProductos.Update();
+                return;
+            }
 
-            var top5Invertido = metricas.Top5MasVendidos
-                .OrderBy(p => p.UnidadesVendidasEnPeriodo)
-                .ToList();
+            // solo los productos que vendieron unidades en el rango filtrado
+            var top5Invertido = metricas.Top5MasVendidos.OrderBy(p => p.UnidadesVendidasEnPeriodo).ToList();
 
             foreach (var prod in top5Invertido)
             {
                 serie.Points.AddXY(prod.NombreProducto, prod.UnidadesVendidasEnPeriodo);
             }
+
+            chartProductos.ChartAreas[0].RecalculateAxesScale();
+            chartProductos.Invalidate();
+            chartProductos.Update();
+        }
+
+
+        // SECCIÓN PDF
+        private void BtnGenerarReporte_Click(object sender, EventArgs e)
+        {
+            TabPage pestanaActiva = materialTabControl1.SelectedTab;
+            if (pestanaActiva == null) return;
+
+            try
+            {
+                switch (pestanaActiva.Name)
+                {
+                    case "ReporteVentas":
+                        GenerarPdfVentas();
+                        break;
+                    case "ReporteClientes":
+                        GenerarPdfClientes();
+                        break;
+                    case "ReporteProductos":
+                        GenerarPdfProductos();
+                        break;
+                    default:
+                        MessageBox.Show("No hay un reporte configurado para esta pestaña.", "Aviso",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al generar el reporte: {ex.Message}",
+                    "Error de Exportación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private byte[] ObtenerImagenGrafico(System.Windows.Forms.DataVisualization.Charting.Chart chart)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart.SaveImage(ms, System.Windows.Forms.DataVisualization.Charting.ChartImageFormat.Png);
+                return ms.ToArray();
+            }
+        }
+
+        private void GenerarPdfVentas()
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                sfd.FileName = $"Reporte_Ventas_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] imagenGrafico = ObtenerImagenGrafico(chartVentas);
+                    VentasMetricasDto metricas = _reporteVentaServicio.CalcularMetricas(_reporteVentaActual);
+
+                    _reportePdfServicio.GenerarReporteVentasPdf(sfd.FileName, DtpDesde.Value.Date, DtpHasta.Value.Date, metricas, imagenGrafico);
+
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = sfd.FileName,
+                        UseShellExecute = true
+                    });
+                }
+            }
+        }
+
+        private void GenerarPdfClientes()
+        {
+            MessageBox.Show("Generando reporte PDF de Clientes...", "Reportes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void GenerarPdfProductos()
+        {
+            MessageBox.Show("Generando reporte PDF de Productos...", "Reportes", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

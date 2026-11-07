@@ -17,11 +17,12 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public List<ClienteReporteDto> ObtenerReporteClientes(DateTime fechaDesde, DateTime fechaHasta)
         {
+            
             if (fechaDesde > fechaHasta)
             {
                 throw new ArgumentException("La fecha 'Desde' no puede ser posterior a la fecha 'Hasta'");
             }
-
+            
             return _repositorio.ObtenerReporteClientes(fechaDesde, fechaHasta);
         }
 
@@ -46,11 +47,6 @@ namespace RGTS.LogicaNegocio.Servicios
 
             // clientes nuevos (primera compra ocurrió en este periodo)
             metricas.ClientesNuevos = clientesRegistrados.Count(c => c.ComprasHistoricas > 0 && c.ComprasHistoricas == c.ComprasEnPeriodo);
-
-            // aporte de registrados sobre la facturación general
-            metricas.AporteClientesRegistradosPorcentaje = facturacionTotalGeneral > 0
-                ? (facturacionRegistrados / facturacionTotalGeneral) * 100m
-                : 0m;
 
 
             // Cliente Estrella (mayor gasto en el período)

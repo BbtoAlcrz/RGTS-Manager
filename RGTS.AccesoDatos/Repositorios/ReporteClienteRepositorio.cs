@@ -43,7 +43,8 @@ namespace RGTS.AccesoDatos.Repositorios
                                 NombreCompleto = reader["NombreCompleto"]?.ToString() ?? string.Empty,
                                 ComprasEnPeriodo = Convert.ToInt32(reader["ComprasEnPeriodo"]),
                                 ComprasHistoricas = Convert.ToInt32(reader["ComprasHistoricas"]),
-                                TotalGastadoPeriodo = Convert.ToDecimal(reader["TotalGastadoPeriodo"])
+                                TotalGastadoPeriodo = Convert.ToDecimal(reader["TotalGastadoPeriodo"]),
+                                Activo = Convert.ToBoolean(reader["Activo"])
                             });
                         }
                     }

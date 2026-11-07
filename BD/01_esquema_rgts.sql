@@ -9,6 +9,8 @@
    Cómo usarlo: ejecutarlo COMPLETO sobre un servidor donde todavía no exista
    el esquema. Si la base ya tiene las tablas, el script se detiene solo y no
    modifica nada (borrar o renombrar la base antes de volver a ejecutarlo).
+   En ese caso SQL Server igual compila los procedimientos y puede mostrar
+   errores 'Invalid column name': son solo avisos, la base no cambia.
 
    Orden de ejecución:  1) 01_esquema_rgts.sql   2) 02_datos_precargados.sql
    Generado a partir de la base de desarrollo el 07/11/2026.
@@ -29,7 +31,7 @@ GO
 -- Protección: si el esquema ya existe, saltea todo el script
 IF OBJECT_ID('dbo.USUARIO', 'U') IS NOT NULL
 BEGIN
-    RAISERROR('La base RGTS_Manager_BD ya tiene el esquema creado. No se ejecuta nada: use una base vacia.', 16, 1);
+    RAISERROR('La base RGTS_Manager_BD ya tiene el esquema creado: NO SE MODIFICO NADA. Borre la base y vuelva a ejecutar. Los errores que aparezcan debajo son solo de compilacion y no cambian la base.', 16, 1);
     SET NOEXEC ON;
 END
 GO

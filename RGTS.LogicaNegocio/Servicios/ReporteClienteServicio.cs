@@ -43,7 +43,8 @@ namespace RGTS.LogicaNegocio.Servicios
             decimal facturacionTotalGeneral = facturacionRegistrados + facturacionConsumidorFinal;
 
             // total de clientes activos habilitados en el sistema
-            metricas.TotalClientesActivos = clientesRegistrados.Count;
+            // (el reporte también trae inactivos que compraron en el período, para que cuadre la facturación)
+            metricas.TotalClientesActivos = clientesRegistrados.Count(c => c.Activo);
 
             // clientes nuevos (primera compra ocurrió en este periodo)
             metricas.ClientesNuevos = clientesRegistrados.Count(c => c.ComprasHistoricas > 0 && c.ComprasHistoricas == c.ComprasEnPeriodo);

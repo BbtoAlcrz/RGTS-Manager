@@ -364,12 +364,56 @@ namespace RGTS.Interfaz.Administrador
 
         private void GenerarPdfClientes()
         {
-            MessageBox.Show("Generando reporte PDF de Clientes...", "Reportes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                sfd.FileName = $"Reporte_Clientes_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] imagenGrafico = ObtenerImagenGrafico(chartClientes);
+
+                    ClientesMetricasDto metricas = _reporteClienteServicio.CalcularMetricas(_reporteClienteActual);
+
+                    _reportePdfServicio.GenerarReporteClientesPdf(sfd.FileName,DtpDesde.Value.Date,DtpHasta.Value.Date,metricas,imagenGrafico);
+
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = sfd.FileName,
+                        UseShellExecute = true
+                    });
+                }
+            }
         }
 
         private void GenerarPdfProductos()
         {
-            MessageBox.Show("Generando reporte PDF de Productos...", "Reportes", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Archivos PDF (*.pdf)|*.pdf";
+                sfd.FileName = $"Reporte_Productos_{DateTime.Now:yyyyMMdd_HHmm}.pdf";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] imagenGrafico = ObtenerImagenGrafico(chartProductos);
+
+                    ProductosMetricasDto metricas = _reporteProductoServicio.CalcularMetricas(_reporteProductoActual);
+
+                    _reportePdfServicio.GenerarReporteProductosPdf(
+                        sfd.FileName,
+                        DtpDesde.Value.Date,
+                        DtpHasta.Value.Date,
+                        metricas,
+                        imagenGrafico
+                    );
+
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = sfd.FileName,
+                        UseShellExecute = true
+                    });
+                }
+            }
         }
     }
 }

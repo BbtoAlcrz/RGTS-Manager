@@ -26,7 +26,45 @@ namespace RGTS.Interfaz.Administrador
         public FormReportes()
         {
             InitializeComponent();
+            ConfigurarLayoutAdaptable();
             ConfigurarEventosReportes();
+        }
+
+        // DISEÑO ADAPTABLE
+        // Los anclajes (Anchor) del diseñador se calculan mal cuando Windows usa una escala de pantalla
+        // mayor al 100% y el formulario se muestra dentro del panel de FormPrincipal: el contenido de las
+        // pestañas no se estira y el botón de PDF se desplaza. Por eso estos tres controles se ubican por
+        // código cada vez que cambia el tamaño, sin depender de los anclajes.
+        private void ConfigurarLayoutAdaptable()
+        {
+            materialTabSelector1.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            materialTabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            BtnGenerarReporte.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+
+            materialCard1.Resize += (s, e) => AjustarLayout();
+            Load += (s, e) => AjustarLayout();
+        }
+
+        private void AjustarLayout()
+        {
+            Size area = materialCard1.ClientSize;
+            if (area.Width <= 0 || area.Height <= 0) return;
+
+            int margen = materialCard1.Padding.Left;   // ya viene escalado según la pantalla
+            int separacion = margen / 2;
+
+            // barra de pestañas: todo el ancho, arriba
+            materialTabSelector1.SetBounds(0, 0, area.Width, materialTabSelector1.Height);
+
+            // botón de PDF: abajo a la izquierda
+            int topBoton = area.Height - margen - BtnGenerarReporte.Height;
+            BtnGenerarReporte.Location = new Point(margen, topBoton);
+
+            // contenido de las pestañas: desde debajo de las fechas hasta arriba del botón
+            int topContenido = Math.Max(DtpDesde.Bottom, DtpHasta.Bottom) + separacion;
+            int anchoContenido = Math.Max(200, area.Width - 2 * margen);
+            int altoContenido = Math.Max(200, topBoton - separacion - topContenido);
+            materialTabControl1.SetBounds(margen, topContenido, anchoContenido, altoContenido);
         }
 
         private void ConfigurarEventosReportes()
@@ -58,11 +96,19 @@ namespace RGTS.Interfaz.Administrador
                 chartClientes.SuspendLayout();
                 chartProductos.SuspendLayout();
 
-                CargarReporteVentas(desde, hasta);
-                CargarReporteClientes(desde, hasta);
-                CargarReporteProductos(desde, hasta);
+                // cada reporte se carga por separado: si uno falla, los otros se muestran igual
+                var errores = new List<string>();
+                CargarReporteSeguro("Reporte de ventas", () => CargarReporteVentas(desde, hasta), errores);
+                CargarReporteSeguro("Reporte de clientes", () => CargarReporteClientes(desde, hasta), errores);
+                CargarReporteSeguro("Reporte de productos", () => CargarReporteProductos(desde, hasta), errores);
 
                 ActualizarEstadoBotonReporte();
+
+                if (errores.Count > 0)
+                {
+                    MessageBox.Show("No se pudieron cargar algunos reportes:\n\n" + string.Join("\n", errores),
+                        "Error de Carga", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
@@ -78,6 +124,18 @@ namespace RGTS.Interfaz.Administrador
 
                 UseWaitCursor = false;
                 Cursor = Cursors.Default;
+            }
+        }
+
+        private static void CargarReporteSeguro(string nombre, Action cargar, List<string> errores)
+        {
+            try
+            {
+                cargar();
+            }
+            catch (Exception ex)
+            {
+                errores.Add($"{nombre}: {ex.Message}");
             }
         }
 

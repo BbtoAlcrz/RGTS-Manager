@@ -25,8 +25,8 @@ namespace RGTS.LogicaNegocio.Servicios
             // Verifica reglas de formato en Validaciones
             UsuarioValidacion.Validar(nombre, apellido, dni, email, idRol, contrasena, esNuevo: true);
 
-            // Hashea la contraseña con BCrypt
-            // string contrasenaHash = BCrypt.Net.BCrypt.HashPassword(contrasena.Trim());
+            // Hashea la contraseña con BCrypt: en la BD nunca se guarda en texto plano
+            string contrasenaHash = BCrypt.Net.BCrypt.HashPassword(contrasena.Trim());
 
             // Empaqueta una entidad y la envía al metodo en AccesoDatos->Repositorio
             Usuario nuevoUsuario = new Usuario
@@ -36,7 +36,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 Apellido = apellido.Trim(),
                 Email = email.Trim(),
                 IdRol = idRol,
-                ContrasenaHash = contrasena,
+                ContrasenaHash = contrasenaHash,
                 Activo = true
             };
 
@@ -52,11 +52,13 @@ namespace RGTS.LogicaNegocio.Servicios
             // Si escribe en el campo de contraseña, validamos que tenga mínimo 8 caracteres
             UsuarioValidacion.Validar(nombre, apellido, dni, email, idRol, contrasenaNueva, esNuevo: cambioContrasena);
 
-          //  string hash = string.Empty;
-          //  if (cambioContrasena)
-          //  {
-          //      hash = BCrypt.Net.BCrypt.HashPassword(contrasenaNueva.Trim());
-          //  }
+            // Solo se hashea si escribió una contraseña nueva; si no, el repositorio manda NULL
+            // y sp_ActualizarUsuario conserva la contraseña actual
+            string hash = string.Empty;
+            if (cambioContrasena)
+            {
+                hash = BCrypt.Net.BCrypt.HashPassword(contrasenaNueva.Trim());
+            }
 
             Usuario usuario = new Usuario
             {
@@ -65,7 +67,7 @@ namespace RGTS.LogicaNegocio.Servicios
                 Apellido = apellido.Trim(),
                 Email = email.Trim(),
                 IdRol = idRol,
-                ContrasenaHash = contrasenaNueva
+                ContrasenaHash = hash
             };
 
             _usuarioRepositorio.Actualizar(usuario, cambioContrasena);

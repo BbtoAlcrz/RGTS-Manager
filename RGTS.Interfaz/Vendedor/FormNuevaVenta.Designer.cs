@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             materialCard1 = new MaterialSkin.Controls.MaterialCard();
             btnBuscarProducto = new MaterialSkin.Controls.MaterialButton();
             labelMetodoPago = new MaterialSkin.Controls.MaterialLabel();
@@ -63,8 +64,12 @@
             Cantidad = new ColumnHeader();
             Precio = new ColumnHeader();
             Subtotal = new ColumnHeader();
+            menuCarrito = new ContextMenuStrip(components);
+            itemEditar = new MaterialSkin.Controls.MaterialToolStripMenuItem();
+            itemEliminar = new MaterialSkin.Controls.MaterialToolStripMenuItem();
             materialCard1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericCantidadProducto).BeginInit();
+            menuCarrito.SuspendLayout();
             SuspendLayout();
             // 
             // materialCard1
@@ -119,7 +124,7 @@
             btnBuscarProducto.Cursor = Cursors.Hand;
             btnBuscarProducto.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnBuscarProducto.Depth = 0;
-            btnBuscarProducto.HighEmphasis = true;
+            btnBuscarProducto.HighEmphasis = false;
             btnBuscarProducto.Icon = Properties.Resources.busqueda;
             btnBuscarProducto.Location = new Point(300, 259);
             btnBuscarProducto.Margin = new Padding(4, 6, 4, 6);
@@ -130,7 +135,7 @@
             btnBuscarProducto.TabIndex = 4;
             btnBuscarProducto.Text = "Producto";
             btnBuscarProducto.TextAlign = ContentAlignment.MiddleRight;
-            btnBuscarProducto.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBuscarProducto.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnBuscarProducto.UseAccentColor = false;
             btnBuscarProducto.UseVisualStyleBackColor = true;
             btnBuscarProducto.Click += btnBuscarProducto_Click;
@@ -420,6 +425,7 @@
             txtBuscarProducto.ShortcutsEnabled = true;
             txtBuscarProducto.Size = new Size(276, 48);
             txtBuscarProducto.TabIndex = 3;
+            txtBuscarProducto.TabStop = false;
             txtBuscarProducto.TextAlign = HorizontalAlignment.Left;
             txtBuscarProducto.TrailingIcon = null;
             txtBuscarProducto.UseSystemPasswordChar = false;
@@ -483,7 +489,7 @@
             BtnBuscarDniCliente.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             BtnBuscarDniCliente.Depth = 0;
             BtnBuscarDniCliente.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            BtnBuscarDniCliente.HighEmphasis = true;
+            BtnBuscarDniCliente.HighEmphasis = false;
             BtnBuscarDniCliente.Icon = Properties.Resources.busqueda;
             BtnBuscarDniCliente.Location = new Point(300, 78);
             BtnBuscarDniCliente.Margin = new Padding(4, 6, 4, 6);
@@ -494,7 +500,7 @@
             BtnBuscarDniCliente.TabIndex = 2;
             BtnBuscarDniCliente.Text = "Cliente";
             BtnBuscarDniCliente.TextAlign = ContentAlignment.MiddleRight;
-            BtnBuscarDniCliente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            BtnBuscarDniCliente.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             BtnBuscarDniCliente.UseAccentColor = false;
             BtnBuscarDniCliente.UseVisualStyleBackColor = true;
             BtnBuscarDniCliente.Click += BtnBuscarDniCliente_Click;
@@ -523,6 +529,7 @@
             txtBuscarDniCliente.ShortcutsEnabled = true;
             txtBuscarDniCliente.Size = new Size(276, 48);
             txtBuscarDniCliente.TabIndex = 1;
+            txtBuscarDniCliente.TabStop = false;
             txtBuscarDniCliente.TextAlign = HorizontalAlignment.Left;
             txtBuscarDniCliente.TrailingIcon = null;
             txtBuscarDniCliente.UseSystemPasswordChar = false;
@@ -588,6 +595,7 @@
             ListaDetalleVenta.BackColor = Color.FromArgb(255, 255, 255);
             ListaDetalleVenta.BorderStyle = BorderStyle.None;
             ListaDetalleVenta.Columns.AddRange(new ColumnHeader[] { Codigo, Producto, Cantidad, Precio, Subtotal });
+            ListaDetalleVenta.ContextMenuStrip = menuCarrito;
             ListaDetalleVenta.Depth = 0;
             ListaDetalleVenta.FullRowSelect = true;
             ListaDetalleVenta.Location = new Point(428, 47);
@@ -601,6 +609,7 @@
             ListaDetalleVenta.TabIndex = 0;
             ListaDetalleVenta.UseCompatibleStateImageBehavior = false;
             ListaDetalleVenta.View = View.Details;
+            ListaDetalleVenta.MouseDown += ListaDetalleVenta_MouseDown;
             // 
             // Codigo
             // 
@@ -627,10 +636,32 @@
             Subtotal.Text = "SubTotal";
             Subtotal.Width = 130;
             // 
+            // menuCarrito
+            // 
+            menuCarrito.Items.AddRange(new ToolStripItem[] { itemEditar, itemEliminar });
+            menuCarrito.Name = "menuCarrito";
+            menuCarrito.Size = new Size(181, 70);
+            // 
+            // itemEditar
+            // 
+            itemEditar.AutoSize = false;
+            itemEditar.Name = "itemEditar";
+            itemEditar.Size = new Size(180, 22);
+            itemEditar.Text = "Modificar cantidad";
+            itemEditar.Click += MenuEditarCantidad_Click;
+            // 
+            // itemEliminar
+            // 
+            itemEliminar.AutoSize = false;
+            itemEliminar.Name = "itemEliminar";
+            itemEliminar.Size = new Size(180, 22);
+            itemEliminar.Text = "Eliminar del carrito";
+            itemEliminar.Click += MenuEliminarItem_Click;
+            // 
             // FormNuevaVenta
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(974, 534);
             Controls.Add(materialCard1);
             FormStyle = FormStyles.StatusAndActionBar_None;
@@ -641,6 +672,7 @@
             materialCard1.ResumeLayout(false);
             materialCard1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericCantidadProducto).EndInit();
+            menuCarrito.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -681,5 +713,8 @@
         private MaterialSkin.Controls.MaterialLabel labelDetalleVenta;
         private MaterialSkin.Controls.MaterialLabel labelMetodoPago;
         private MaterialSkin.Controls.MaterialButton btnBuscarProducto;
+        private ContextMenuStrip menuCarrito;
+        private MaterialSkin.Controls.MaterialToolStripMenuItem itemEditar;
+        private MaterialSkin.Controls.MaterialToolStripMenuItem itemEliminar;
     }
 }

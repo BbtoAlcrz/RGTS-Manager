@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            ToolStripMenuItem itemEditar;
+            ToolStripMenuItem itemEliminar;
             panel2 = new MaterialSkin.Controls.MaterialCard();
             labelProducto = new MaterialSkin.Controls.MaterialLabel();
             labelProveedor = new MaterialSkin.Controls.MaterialLabel();
@@ -48,8 +51,26 @@
             Cantidad = new ColumnHeader();
             CostoUni = new ColumnHeader();
             SubTotal = new ColumnHeader();
+            menuCarrito = new ContextMenuStrip(components);
+            itemEditar = new ToolStripMenuItem();
+            itemEliminar = new ToolStripMenuItem();
             panel2.SuspendLayout();
+            menuCarrito.SuspendLayout();
             SuspendLayout();
+            // 
+            // itemEditar
+            // 
+            itemEditar.Name = "itemEditar";
+            itemEditar.Size = new Size(174, 22);
+            itemEditar.Text = "Modificar cantidad";
+            itemEditar.Click += MenuEditarCantidad_Click;
+            // 
+            // itemEliminar
+            // 
+            itemEliminar.Name = "itemEliminar";
+            itemEliminar.Size = new Size(174, 22);
+            itemEliminar.Text = "Eliminar del carrito";
+            itemEliminar.Click += MenuEliminarItem_Click;
             // 
             // panel2
             // 
@@ -308,6 +329,7 @@
             lstClientes.BackColor = Color.FromArgb(255, 255, 255);
             lstClientes.BorderStyle = BorderStyle.None;
             lstClientes.Columns.AddRange(new ColumnHeader[] { ID, Descripcion, Cantidad, CostoUni, SubTotal });
+            lstClientes.ContextMenuStrip = menuCarrito;
             lstClientes.Depth = 0;
             lstClientes.FullRowSelect = true;
             lstClientes.Location = new Point(336, 94);
@@ -322,11 +344,12 @@
             lstClientes.TabStop = false;
             lstClientes.UseCompatibleStateImageBehavior = false;
             lstClientes.View = View.Details;
+            lstClientes.MouseDown += ListaDetalleCompra_MouseDown;
             // 
             // ID
             // 
-            ID.Text = "Codigo";
-            ID.Width = 100;
+            ID.Text = "Nro";
+            ID.Width = 70;
             // 
             // Descripcion
             // 
@@ -348,10 +371,16 @@
             SubTotal.Text = "SubTotal";
             SubTotal.Width = 130;
             // 
+            // menuCarrito
+            // 
+            menuCarrito.Items.AddRange(new ToolStripItem[] { itemEditar, itemEliminar });
+            menuCarrito.Name = "contextMenuStrip1";
+            menuCarrito.Size = new Size(175, 48);
+            // 
             // FormNuevaCompra
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(903, 530);
             Controls.Add(panel2);
             FormStyle = FormStyles.StatusAndActionBar_None;
@@ -363,6 +392,7 @@
             Load += FormNuevaCompra_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            menuCarrito.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -395,5 +425,6 @@
         private MaterialSkin.Controls.MaterialTextBox TxtBuscarProveedor;
         private MaterialSkin.Controls.MaterialLabel labelProducto;
         private MaterialSkin.Controls.MaterialLabel labelProveedor;
+        private ContextMenuStrip menuCarrito;
     }
 }

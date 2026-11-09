@@ -206,7 +206,7 @@
             // FormCategoriaListado
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(938, 667);
             Controls.Add(panel2);
             FormStyle = FormStyles.StatusAndActionBar_None;

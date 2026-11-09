@@ -25,6 +25,11 @@ namespace RGTS.LogicaNegocio.Servicios
             return _repositorio.ObtenerPorFiltro(filtroTexto ?? "", idCategoria);
         }
 
+        public Producto? ObtenerPorId(int idProducto)
+        {
+            return _repositorio.ObtenerPorId(idProducto);
+        }
+
         public void RegistrarProducto(string codigo, string nombre, string descripcion,
             int idCategoria, decimal precio, int stockActual, int stockMinimo, int stockMaximo)
         {

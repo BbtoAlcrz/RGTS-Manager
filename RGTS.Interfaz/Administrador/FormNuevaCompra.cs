@@ -207,5 +207,79 @@ namespace RGTS.Interfaz.Administrador
 
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoCompras());
         }
+
+        private void MenuEditarCantidad_Click(object? sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count == 0) return;
+
+            // Obtener el detalle asignado a la fila
+            var detalle = (DetalleCompra)lstClientes.SelectedItems[0].Tag;
+
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"Ingrese la nueva cantidad para '{detalle.NombreProducto}':",
+                "Modificar Cantidad de Compra",
+                detalle.Cantidad.ToString()
+            );
+
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            if (!int.TryParse(input, out int nuevaCantidad))
+            {
+                MessageBox.Show("Debe ingresar un valor numérico entero válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // La Capa de Negocio se encarga de validar stock máximo y actualizar el detalle
+                _compraServicio.ModificarCantidadDetalle(detalle, nuevaCantidad);
+
+                // Refrescar el ListView del carrito y actualizar la etiqueta de Total
+                ActualizarGrillaDetalle();
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException)
+            {
+                MessageBox.Show(ex.Message, "Validación de Compra", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al intentar modificar el ítem: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void MenuEliminarItem_Click(object? sender, EventArgs e)
+        {
+            if (lstClientes.SelectedItems.Count == 0) return;
+
+            var detalle = (DetalleCompra)lstClientes.SelectedItems[0].Tag;
+
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Desea quitar '{detalle.NombreProducto}' de la orden de compra?",
+                "Quitar Producto",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
+            );
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                _compraServicio.EliminarDetalle(detalle, _detalle);
+                ActualizarGrillaDetalle();
+            }
+        }
+
+        private void ListaDetalleCompra_MouseDown(object? sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                // Obtiene la fila ubicada en las coordenadas exactas del puntero del mouse
+                var item = lstClientes.GetItemAt(e.X, e.Y);
+                if (item != null)
+                {
+                    item.Selected = true;
+                    item.Focused = true;
+                }
+            }
+        }
     }
 }

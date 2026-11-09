@@ -21,13 +21,26 @@ namespace RGTS.LogicaNegocio.Validaciones
 
             if (cantidad <= 0)
             {
-                throw new ArgumentException("La cantidad debe ser mayor a 0");
+                throw new ArgumentException("La cantidad debe ser mayor a cero");
             }
 
             int stockRestante = producto.StockActual - cantidadYaEnCarrito;
             if (cantidad > stockRestante)
             {
                 throw new InvalidOperationException($"Stock insuficiente. Solo quedan {Math.Max(0, stockRestante)} unidades disponibles.");
+            }
+        }
+
+        public static void ValidarModificacionCantidad(Producto producto, int nuevaCantidad, int stockDisponibleReal)
+        {
+            if (nuevaCantidad <= 0)
+            {
+                throw new ArgumentException("La cantidad debe ser mayor a cero");
+            }
+
+            if (nuevaCantidad > stockDisponibleReal)
+            {
+                throw new InvalidOperationException($"La cantidad solicitada ({nuevaCantidad}) supera el stock disponible para '{producto.Nombre}' ({stockDisponibleReal} unidades restantes).");
             }
         }
 

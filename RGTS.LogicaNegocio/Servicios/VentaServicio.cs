@@ -22,6 +22,25 @@ namespace RGTS.LogicaNegocio.Servicios
             return _productoServicio.BuscarActivoParaVenta(filtro);
         }
 
+        public void ModificarCantidadDetalle(DetalleVenta detalle, int nuevaCantidad, List<DetalleVenta> carrito)
+        {
+            var producto = _productoServicio.ObtenerPorId(detalle.IdProducto)
+                ?? throw new InvalidOperationException("El producto seleccionado ya no existe en el catálogo.");
+
+            int enOtrosItems = carrito.Where(d => d.IdProducto == detalle.IdProducto && d != detalle).Sum(d => d.Cantidad);
+            int stockDisponibleReal = producto.StockActual - enOtrosItems;
+
+            VentaValidacion.ValidarModificacionCantidad(producto, nuevaCantidad, stockDisponibleReal);
+
+            detalle.Cantidad = nuevaCantidad;
+            detalle.SubtotalDerivado = detalle.Cantidad * detalle.PrecioUnitario;
+        }
+
+        public void EliminarDetalle(DetalleVenta detalle, List<DetalleVenta> carrito)
+        {
+            carrito.Remove(detalle);
+        }
+
         public List<Producto> BuscarCoincidenciasProducto(string filtro, int maxResultados = 10)
         {
             return _productoServicio.BuscarCoincidenciasActivos(filtro, maxResultados);

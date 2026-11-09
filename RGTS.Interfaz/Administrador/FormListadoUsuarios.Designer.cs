@@ -91,6 +91,8 @@ namespace RGTS.Interfaz.Administrador
             // materialCard1
             // 
             materialCard1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            materialCard1.AutoScroll = true;
+            materialCard1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             materialCard1.BackColor = Color.FromArgb(255, 255, 255);
             materialCard1.Controls.Add(ListaUsuarios);
             materialCard1.Depth = 0;
@@ -328,8 +330,8 @@ namespace RGTS.Interfaz.Administrador
             // 
             // FormListadoUsuarios
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(882, 564);
             Controls.Add(panelListaUsuarios);
             Controls.Add(pnlEdicionContenedor);

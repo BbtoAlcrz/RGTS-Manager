@@ -141,7 +141,7 @@ namespace RGTS.Interfaz.Vendedor
             labelApellidoValor.Text = "-";
         }
 
-       
+
         private void TxtBuscarProducto_KeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -226,6 +226,57 @@ namespace RGTS.Interfaz.Vendedor
         private void btnCancelarAgregado_Click(object? sender, EventArgs e)
         {
             LimpiarSeccionProducto();
+        }
+
+        private void MenuEditarCantidad_Click(object? sender, EventArgs e)
+        {
+            if (ListaDetalleVenta.SelectedItems.Count == 0) return;
+
+            var detalle = (DetalleVenta)ListaDetalleVenta.SelectedItems[0].Tag;
+
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"Ingrese la nueva cantidad para '{detalle.Producto?.Nombre}':",
+                "Modificar Cantidad",
+                detalle.Cantidad.ToString()
+            );
+
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            if (!int.TryParse(input, out int nuevaCantidad))
+            {
+                MessageBox.Show("Debe ingresar un valor numérico entero válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                _ventaServicio.ModificarCantidadDetalle(detalle, nuevaCantidad, _carrito);
+                ActualizarCarrito();
+            }
+            catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException)
+            {
+                MessageBox.Show(ex.Message, "Stock / Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void MenuEliminarItem_Click(object? sender, EventArgs e)
+        {
+            if (ListaDetalleVenta.SelectedItems.Count == 0) return;
+
+            var detalle = (DetalleVenta)ListaDetalleVenta.SelectedItems[0].Tag;
+
+            var confirmacion = MessageBox.Show(
+                $"¿Desea quitar '{detalle.Producto?.Nombre}' del carrito?",
+                "Quitar Producto",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2
+            );
+
+            if (confirmacion == DialogResult.Yes)
+            {
+                _ventaServicio.EliminarDetalle(detalle, _carrito);
+                ActualizarCarrito();
+            }
         }
 
         private void LimpiarSeccionProducto()
@@ -357,7 +408,7 @@ namespace RGTS.Interfaz.Vendedor
                 );
 
                 if (rta != DialogResult.Yes) return;
-                LiberarReservasPendientes(); 
+                LiberarReservasPendientes();
             }
 
             FormPrincipal.InstanciaActual?.AbrirFormularioEnPanel(new FormListadoVentas());
@@ -567,5 +618,17 @@ namespace RGTS.Interfaz.Vendedor
             subFormulario.Show();
         }
 
+        private void ListaDetalleVenta_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var item = ListaDetalleVenta.GetItemAt(e.X, e.Y);
+                if (item != null)
+                {
+                    item.Selected = true;
+                    item.Focused = true;
+                }
+            }
+        }
     }
 }

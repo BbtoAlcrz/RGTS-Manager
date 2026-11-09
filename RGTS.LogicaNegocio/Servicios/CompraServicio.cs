@@ -10,13 +10,12 @@ namespace RGTS.LogicaNegocio.Servicios
     public class CompraServicio
     {
         private readonly CompraRepositorio _repositorio;
-        private readonly ProductoServicio _productoServicio = new();
-
-        private readonly UsuarioServicio _usuarioServicio = new();
+        private readonly ProductoServicio _productoServicio;
 
         public CompraServicio()
         {
             _repositorio = new CompraRepositorio();
+            _productoServicio = new ProductoServicio();
         }
 
         public List<Compra> ObtenerCompras(DateTime fechaDesde, DateTime fechaHasta, int? idProveedor = null)
@@ -29,25 +28,17 @@ namespace RGTS.LogicaNegocio.Servicios
             return _repositorio.ObtenerDetallesPorCompra(idCompra);
         }
 
-        // Confirmar recepción actualizando automáticamente el stock
+        // Confirmar recepción actualizando automáticamente el stock en BD
         public void CambiarEstadoCompra(int idCompra, string nuevoEstado)
         {
             var compra = _repositorio.ObtenerPorId(idCompra)
                 ?? throw new InvalidOperationException("No se encontró la compra especificada.");
 
-            if (compra.Estado != "Pendiente")
-            {
-                throw new InvalidOperationException($"Solo se pueden modificar compras en estado Pendiente. La compra actual está {compra.Estado}.");
-            }
+            CompraValidacion.ValidarEstadoCompra(compra, idCompra, nuevoEstado);
 
-            if (nuevoEstado != "Recibida" && nuevoEstado != "Cancelada")
-            {
-                throw new ArgumentException("El estado destino no es válido.");
-            }
-
-            // Si la compra se marca como recibida, impactamos el inventario
+            // Si la compra se marca como recibida, impactamos el inventario en BD transaccionalmente
             if (nuevoEstado == "Recibida")
-                _repositorio.RecibirCompra(idCompra);               // stock + estado, todo o nada
+                _repositorio.RecibirCompra(idCompra);               // stock + estado en SP
             else
                 _repositorio.CambiarEstado(idCompra, nuevoEstado);  // Cancelada
         }
@@ -55,7 +46,7 @@ namespace RGTS.LogicaNegocio.Servicios
         public DetalleCompra ValidarYArmarItem(int idProveedorSeleccionado, Producto producto,
             string busquedaProducto, decimal costoUnitario, int cantidad, int correlativo)
         {
-            CompraValidacion.ValidarItem(idProveedorSeleccionado, busquedaProducto, costoUnitario, cantidad);
+            CompraValidacion.ValidarItem(idProveedorSeleccionado, busquedaProducto, costoUnitario, cantidad, producto.StockMaximo);
 
             return new DetalleCompra
             {
@@ -79,6 +70,7 @@ namespace RGTS.LogicaNegocio.Servicios
 
             decimal totalCalculado = detalles!.Sum(d => d.Cantidad * d.CostoUnitario);
 
+            // Persistencia directa mediante Stored Procedure transaccional
             int nuevoId = _repositorio.RegistrarCompra(dniUsuario, proveedor!.IdProveedor, totalCalculado, detalles);
 
             return new Compra
@@ -91,6 +83,22 @@ namespace RGTS.LogicaNegocio.Servicios
                 Total = totalCalculado,
                 Estado = "Pendiente"
             };
+        }
+
+        public void ModificarCantidadDetalle(DetalleCompra detalle, int nuevaCantidad)
+        {
+            var producto = _productoServicio.ObtenerPorId(detalle.IdProducto)
+                ?? throw new InvalidOperationException("El producto seleccionado ya no existe en el catálogo.");
+
+            CompraValidacion.ValidarModificacionCantidad(nuevaCantidad, producto.StockMaximo);
+
+            // Preserva el costo previamente ingresado y actualiza la cantidad
+            detalle.Cantidad = nuevaCantidad;
+        }
+
+        public void EliminarDetalle(DetalleCompra detalle, List<DetalleCompra> carrito)
+        {
+            carrito.Remove(detalle);
         }
     }
 }

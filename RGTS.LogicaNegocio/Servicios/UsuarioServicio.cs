@@ -58,6 +58,15 @@ namespace RGTS.LogicaNegocio.Servicios
             };
         }
 
+        public bool PuedeGestionarCompras(string? rolActual)
+        {
+            return rolActual?.Trim() == "Encargado de Deposito";
+        }
+        public bool PuedeGestionarProductos(string? rolActual)
+        {
+            return rolActual?.Trim() == "Administrador";
+        }
+
         // funcion para registrar un usuario nuevo, recibe y valida los datos y usa el repositorio para insertar en la BD
         public void RegistrarUsuario(string dni, string nombre, string apellido, string email, int idRol, string contrasena)
         {

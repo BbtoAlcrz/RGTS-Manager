@@ -12,6 +12,7 @@ namespace RGTS.Interfaz.Administrador
     {
         private readonly CompraServicio _compraServicio;
         private readonly ProveedorServicio _proveedorServicio;
+        private readonly UsuarioServicio _usuarioServicio;
         private readonly BuscadorSugerencias _buscadorProveedor;
         private Proveedor? _proveedorFiltroSeleccionado;
         private readonly Panel pnlEdicionContenedor = new();
@@ -22,6 +23,7 @@ namespace RGTS.Interfaz.Administrador
 
             _compraServicio = new CompraServicio();
             _proveedorServicio = new ProveedorServicio();
+            _usuarioServicio = new UsuarioServicio();
 
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
@@ -35,7 +37,7 @@ namespace RGTS.Interfaz.Administrador
         private void FormListadoCompras_Load(object sender, EventArgs e)
         {
             ConfigurarListView();
-
+            ConfigurarPermisosPorRol();
             // Rango de fechas por defecto: últimos 30 días
             DtpHasta.Value = DateTime.Today;
             DtpDesde.Value = DateTime.Today.AddDays(-30);
@@ -55,7 +57,14 @@ namespace RGTS.Interfaz.Administrador
             lstClientes.HideSelection = false;
         }
 
-        
+
+        private void ConfigurarPermisosPorRol()
+        {
+            bool esEncargado = _usuarioServicio.PuedeGestionarCompras(FormPrincipal.RolSesion);
+
+            // El botón de Nueva Compra solo lo ve o puede presionar el Encargado de Depósito
+            BtnNuevaCompra.Visible = esEncargado;
+        }
 
         private void RefrescarGrilla()
         {
@@ -100,8 +109,10 @@ namespace RGTS.Interfaz.Administrador
 
                 // Solo se pueden recibir o cancelar compras en estado Pendiente
                 bool esPendiente = compraSeleccionada.Estado == "Pendiente";
-                BtnRecibido.Enabled = esPendiente;
-                BtnCancelarC.Enabled = esPendiente;
+                bool esEncargado = _usuarioServicio.PuedeGestionarCompras(FormPrincipal.RolSesion);
+
+                BtnRecibido.Enabled = esPendiente && esEncargado;
+                BtnCancelarC.Enabled = esPendiente && esEncargado;
             }
             else
             {

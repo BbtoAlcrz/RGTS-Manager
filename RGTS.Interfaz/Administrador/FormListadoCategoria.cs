@@ -10,12 +10,14 @@ namespace RGTS.Interfaz.Administrador
     public partial class FormListadoCategoria : MaterialForm
     {
         private readonly CategoriaServicio _categoriaServicio;
+        private readonly UsuarioServicio _usuarioServicio;
         private readonly Panel pnlEdicionContenedor = new();
 
         public FormListadoCategoria()
         {
             InitializeComponent();
             _categoriaServicio = new CategoriaServicio();
+            _usuarioServicio = new UsuarioServicio();
 
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
@@ -29,6 +31,7 @@ namespace RGTS.Interfaz.Administrador
         private void Form1_Load(object sender, EventArgs e)
         {
             ConfigurarListView();
+            ConfigurarPermisosRol();
             RefrescarGrilla();
         }
 
@@ -38,6 +41,15 @@ namespace RGTS.Interfaz.Administrador
             lstClientes.FullRowSelect = true;
             lstClientes.MultiSelect = false;
             lstClientes.GridLines = true;
+        }
+
+        private void ConfigurarPermisosRol()
+        {
+            bool esAdmin = _usuarioServicio.PuedeGestionarProductos(FormPrincipal.RolSesion);
+
+            BtnNuevo.Enabled = esAdmin;
+            BtnEditar.Enabled = esAdmin;
+            BtnCambiarEstado.Enabled = esAdmin;
         }
 
         // Carga la grilla delegando la obtención y el filtro en CategoriaServicio

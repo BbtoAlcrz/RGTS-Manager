@@ -12,6 +12,7 @@ namespace RGTS.Interfaz
     {
         private readonly ProductoServicio _productoServicio;
         private readonly CategoriaServicio _categoriaServicio;
+        private readonly UsuarioServicio _usuarioServicio;
         private List<Categoria> _categorias = new();
 
         private readonly Panel pnlEdicionContenedor = new();
@@ -21,6 +22,7 @@ namespace RGTS.Interfaz
             InitializeComponent();
             _productoServicio = new ProductoServicio();
             _categoriaServicio = new CategoriaServicio();
+            _usuarioServicio = new UsuarioServicio();
 
             pnlEdicionContenedor.Dock = DockStyle.Fill;
             pnlEdicionContenedor.Visible = false;
@@ -107,13 +109,12 @@ namespace RGTS.Interfaz
         // pueden gestionarlos por completo (alta, edición, habilitar/deshabilitar)
         private void ConfigurarPermisosPorRol()
         {
-            bool puedeGestionar = FormPrincipal.RolSesion == "Administrador"
-                                || FormPrincipal.RolSesion == "Encargado de Deposito";
+            bool esAdmin = _usuarioServicio.PuedeGestionarProductos(FormPrincipal.RolSesion);
 
-            BtnNuevo.Visible = puedeGestionar;
-            BtnEditar.Visible = puedeGestionar;
-            BtnEliminar.Visible = puedeGestionar;
-            BtnGestionarCat.Visible = puedeGestionar;
+            BtnNuevo.Visible = esAdmin;
+            BtnEditar.Visible = esAdmin;
+            BtnEliminar.Visible = esAdmin;
+            BtnGestionarCat.Visible = esAdmin;
         }
 
         // Filtra al escribir en el buscador

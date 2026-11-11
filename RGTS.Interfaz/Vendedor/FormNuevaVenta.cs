@@ -16,19 +16,15 @@ namespace RGTS.Interfaz.Vendedor
         private readonly Panel pnlEdicionContenedor = new();
         private readonly VentaServicio _ventaServicio;
         private readonly ClienteServicio _clienteServicio;
+
+        private readonly BuscadorSugerencias _buscadorCliente;
+        private readonly BuscadorSugerencias _buscadorProducto;
+
         private Cliente? _clienteSeleccionado;
-        private readonly List<DetalleVenta> _carrito = new();
         private Producto? _productoSeleccionado;
-
-        // Controles para sugerencias flotantes
-        private ListBox? _listaSugerencias;
-        private EventHandler? _listaClickHandler;
-        private KeyEventHandler? _listaKeyHandler;
-        private EventHandler? _listaLostFocusHandler;
+        private readonly List<DetalleVenta> _carrito = new();
         private bool _evitarReentrada = false;
-        private Action<int>? _callbackSeleccionActual;
 
-        // Datos del usuario logueado tomados de la sesión central
         private readonly string _dniUsuarioSesion;
         private readonly Usuario? _usuarioSesion;
         private readonly System.Windows.Forms.Timer _timerReservas = new() { Interval = 60_000 };
@@ -46,17 +42,20 @@ namespace RGTS.Interfaz.Vendedor
             _ventaServicio = new VentaServicio();
 
             _usuarioSesion = FormPrincipal.UsuarioSesion;
-            _dniUsuarioSesion = _usuarioSesion?.Dni ?? "41234567";
+            _dniUsuarioSesion = _usuarioSesion.Dni;
+
+            _buscadorCliente = new BuscadorSugerencias(this);
+            _buscadorProducto = new BuscadorSugerencias(this);
 
             ConfigurarControles();
-            // Una venta nueva empieza con el carrito vacío: se limpian restos de una sesión anterior que se cerró mal
+            SuscribirEventos();
+
             try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); } catch { }
 
-            // Mientras el carrito esté abierto, se renueva la reserva cada minuto
             _timerReservas.Tick += (_, _) =>
             {
                 if (_carrito.Count == 0) return;
-                try { _ventaServicio.RenovarReservas(_dniUsuarioSesion); } catch { /* se reintenta al minuto siguiente */ }
+                try { _ventaServicio.RenovarReservas(_dniUsuarioSesion); } catch { }
             };
             _timerReservas.Start();
         }
@@ -68,7 +67,6 @@ namespace RGTS.Interfaz.Vendedor
             ListaDetalleVenta.MultiSelect = false;
             ListaDetalleVenta.GridLines = true;
 
-            // Métodos de pago disponibles
             comboBoxMetodoPago.Items.Clear();
             comboBoxMetodoPago.Items.AddRange(new string[] { "Efectivo", "Tarjeta de Débito", "Tarjeta de Crédito", "Transferencia" });
             comboBoxMetodoPago.SelectedIndex = 0;
@@ -78,6 +76,76 @@ namespace RGTS.Interfaz.Vendedor
             ActualizarCarrito();
         }
 
+        private void SuscribirEventos()
+        {
+            txtBuscarDniCliente.TextChanged += TxtBuscarDniCliente_TextChanged;
+            txtBuscarDniCliente.KeyDown += (s, e) => _buscadorCliente.ProcesarTeclaNavegacion(e);
+
+            txtBuscarProducto.TextChanged += TxtBuscarProducto_TextChanged;
+            txtBuscarProducto.KeyDown += TxtBuscarProducto_KeyDown;
+        }
+
+        private void TxtBuscarDniCliente_TextChanged(object? sender, EventArgs e)
+        {
+            if (_evitarReentrada) return;
+
+            string texto = txtBuscarDniCliente.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                _buscadorCliente.Ocultar();
+                return;
+            }
+
+            var coincidencias = _clienteServicio.ObtenerTodos(texto).Where(c => c.Estado).ToList();
+            var textos = coincidencias.Select(c => $"{c.Nombre} {c.Apellido} - DNI {c.DNI}").ToList();
+
+            _buscadorCliente.Mostrar(txtBuscarDniCliente, textos, indice =>
+            {
+                var seleccionado = coincidencias[indice];
+                _evitarReentrada = true;
+                txtBuscarDniCliente.Text = seleccionado.DNI;
+                _evitarReentrada = false;
+
+                BtnBuscarDniCliente_Click(this, EventArgs.Empty);
+            });
+        }
+
+        private void TxtBuscarProducto_TextChanged(object? sender, EventArgs e)
+        {
+            if (_evitarReentrada) return;
+
+            string texto = txtBuscarProducto.Text.Trim();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                _buscadorProducto.Ocultar();
+                return;
+            }
+
+            var coincidencias = _ventaServicio.BuscarCoincidenciasProducto(texto);
+            var textos = coincidencias.Select(p => $"{p.Nombre} ({p.Codigo}) - {p.Precio:C2}").ToList();
+
+            _buscadorProducto.Mostrar(txtBuscarProducto, textos, indice =>
+            {
+                var seleccionado = coincidencias[indice];
+                _evitarReentrada = true;
+                txtBuscarProducto.Text = seleccionado.Codigo;
+                _evitarReentrada = false;
+
+                btnBuscarProducto_Click(this, EventArgs.Empty);
+            });
+        }
+
+        private void TxtBuscarProducto_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (_buscadorProducto.ProcesarTeclaNavegacion(e)) return;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnBuscarProducto_Click(sender, EventArgs.Empty);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
 
         private void BtnBuscarDniCliente_Click(object? sender, EventArgs e)
         {
@@ -108,12 +176,10 @@ namespace RGTS.Interfaz.Vendedor
 
                 if (respuesta == DialogResult.Yes)
                 {
-                    // Abre FormAltaEdicionClientes incrustado en el panel, pasándole el DNI
                     var formAlta = new RGTS.Interfaz.Administrador.FormAltaEdicionClientes(null, dni);
 
                     MostrarSubVentana(formAlta, () =>
                     {
-                        // Al volver, se busca si se completó el registro
                         _clienteSeleccionado = _clienteServicio.BuscarPorDni(dni);
 
                         if (_clienteSeleccionado != null)
@@ -133,25 +199,6 @@ namespace RGTS.Interfaz.Vendedor
                 }
             }
         }
-
-        private void LimpiarSeccionCliente()
-        {
-            _clienteSeleccionado = null;
-            labelNombreValor.Text = "-";
-            labelApellidoValor.Text = "-";
-        }
-
-
-        private void TxtBuscarProducto_KeyDown(object? sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnBuscarProducto_Click(sender, EventArgs.Empty);
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
 
         private void btnBuscarProducto_Click(object? sender, EventArgs e)
         {
@@ -258,6 +305,7 @@ namespace RGTS.Interfaz.Vendedor
                 MessageBox.Show(ex.Message, "Stock / Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private void MenuEliminarItem_Click(object? sender, EventArgs e)
         {
             if (ListaDetalleVenta.SelectedItems.Count == 0) return;
@@ -279,6 +327,13 @@ namespace RGTS.Interfaz.Vendedor
             }
         }
 
+        private void LimpiarSeccionCliente()
+        {
+            _clienteSeleccionado = null;
+            labelNombreValor.Text = "-";
+            labelApellidoValor.Text = "-";
+        }
+
         private void LimpiarSeccionProducto()
         {
             _productoSeleccionado = null;
@@ -293,8 +348,6 @@ namespace RGTS.Interfaz.Vendedor
             numericCantidadProducto.Enabled = false;
             btnAgregarProducto.Enabled = false;
         }
-
-
 
         private void ActualizarCarrito()
         {
@@ -317,22 +370,19 @@ namespace RGTS.Interfaz.Vendedor
             labelTotalCompraValor.Text = _carrito.Sum(d => d.SubtotalDerivado).ToString("C2");
         }
 
-
-
         private void BtnConfirmarCompra_Click(object? sender, EventArgs e)
         {
             string metodoPago = comboBoxMetodoPago.SelectedItem?.ToString() ?? "Efectivo";
             Venta ventaRegistrada;
 
-            // 1) El registro es todo o nada: si falla, no se guardó nada y el carrito queda intacto para reintentar
             try
             {
-                if (sender is Control boton) boton.Enabled = false; // evita doble clic mientras procesa
+                if (sender is Control boton) boton.Enabled = false;
 
                 ventaRegistrada = _ventaServicio.RegistrarVenta(
                     _dniUsuarioSesion, _clienteSeleccionado, _carrito, metodoPago, _usuarioSesion);
 
-                _carrito.Clear(); // la venta ya está confirmada: evita liberar de más o duplicarla
+                _carrito.Clear();
             }
             catch (Exception ex)
             {
@@ -358,7 +408,6 @@ namespace RGTS.Interfaz.Vendedor
                 $"- Total: {ventaRegistrada.TotalDerivado:C2}",
                 "Venta Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // 2) Desde acá la venta ya no se puede deshacer: un fallo del PDF no la afecta
             try
             {
                 if (MessageBox.Show("¿Quiere generar el comprobante en formato PDF?", "Emitir Factura PDF",
@@ -387,7 +436,6 @@ namespace RGTS.Interfaz.Vendedor
                     "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            // Limpia la ventana y vuelve al listado
             txtBuscarDniCliente.Clear();
             LimpiarSeccionCliente();
             LimpiarSeccionProducto();
@@ -419,7 +467,7 @@ namespace RGTS.Interfaz.Vendedor
             if (_carrito.Count == 0) return;
 
             try { _ventaServicio.LiberarReservasUsuario(_dniUsuarioSesion); }
-            catch { /* si no se pudo, la reserva vence sola a los 5 minutos */ }
+            catch { }
             finally { _carrito.Clear(); }
         }
 
@@ -429,173 +477,6 @@ namespace RGTS.Interfaz.Vendedor
             _timerReservas.Dispose();
             LiberarReservasPendientes();
             base.OnFormClosing(e);
-        }
-
-
-        private void TxtBuscarDniCliente_TextChanged(object? sender, EventArgs e)
-        {
-            if (_evitarReentrada) return;
-
-            string texto = txtBuscarDniCliente.Text.Trim();
-            if (string.IsNullOrWhiteSpace(texto))
-            {
-                OcultarSugerenciasFlotantes();
-                return;
-            }
-
-            var coincidencias = _clienteServicio.ObtenerTodos(texto).Where(c => c.Estado).ToList();
-            var textos = coincidencias.Select(c => $"{c.Nombre} {c.Apellido} - DNI {c.DNI}").ToList();
-
-            MostrarSugerencias(txtBuscarDniCliente, textos, indice =>
-            {
-                var seleccionado = coincidencias[indice];
-                _evitarReentrada = true;
-                txtBuscarDniCliente.Text = seleccionado.DNI;
-                _evitarReentrada = false;
-
-                BtnBuscarDniCliente_Click(this, EventArgs.Empty);
-            });
-        }
-
-
-        private void TxtBuscarProducto_TextChanged(object? sender, EventArgs e)
-        {
-            if (_evitarReentrada) return;
-
-            string texto = txtBuscarProducto.Text.Trim();
-            if (string.IsNullOrWhiteSpace(texto))
-            {
-                OcultarSugerenciasFlotantes();
-                return;
-            }
-
-            var coincidencias = _ventaServicio.BuscarCoincidenciasProducto(texto);
-            var textos = coincidencias.Select(p => $"{p.Nombre} ({p.Codigo}) - {p.Precio:C2}").ToList();
-
-            MostrarSugerencias(txtBuscarProducto, textos, indice =>
-            {
-                var seleccionado = coincidencias[indice];
-                _evitarReentrada = true;
-                txtBuscarProducto.Text = seleccionado.Codigo;
-                _evitarReentrada = false;
-
-                btnBuscarProducto_Click(this, EventArgs.Empty);
-            });
-        }
-
-        private void MostrarSugerencias(MaterialTextBox2 buscador, List<string> itemsCoincidentes, Action<int> alSeleccionarItem)
-        {
-            if (itemsCoincidentes == null || itemsCoincidentes.Count == 0 || string.IsNullOrWhiteSpace(buscador.Text))
-            {
-                OcultarSugerenciasFlotantes();
-                return;
-            }
-
-            _callbackSeleccionActual = alSeleccionarItem;
-
-            if (_listaSugerencias == null)
-            {
-                _listaSugerencias = new ListBox
-                {
-                    BorderStyle = BorderStyle.None,
-                    Font = new Font("Roboto", 10F, FontStyle.Regular, GraphicsUnit.Point),
-                    BackColor = Color.FromArgb(242, 242, 242),
-                    ForeColor = Color.FromArgb(33, 33, 33),
-                    SelectionMode = SelectionMode.One,
-                    IntegralHeight = false,
-                    TabStop = false
-                };
-
-                _listaClickHandler = (s, e) =>
-                {
-                    if (_listaSugerencias?.SelectedIndex >= 0)
-                    {
-                        _callbackSeleccionActual?.Invoke(_listaSugerencias.SelectedIndex);
-                        OcultarSugerenciasFlotantes();
-                    }
-                };
-
-                _listaKeyHandler = (s, ke) =>
-                {
-                    if (_listaSugerencias == null) return;
-                    if (ke.KeyCode == Keys.Down)
-                    {
-                        if (_listaSugerencias.SelectedIndex < _listaSugerencias.Items.Count - 1)
-                            _listaSugerencias.SelectedIndex++;
-                        ke.Handled = true;
-                    }
-                    else if (ke.KeyCode == Keys.Up)
-                    {
-                        if (_listaSugerencias.SelectedIndex > 0)
-                            _listaSugerencias.SelectedIndex--;
-                        ke.Handled = true;
-                    }
-                    else if (ke.KeyCode == Keys.Enter)
-                    {
-                        if (_listaSugerencias.SelectedIndex >= 0)
-                        {
-                            _callbackSeleccionActual?.Invoke(_listaSugerencias.SelectedIndex);
-                            OcultarSugerenciasFlotantes();
-                        }
-                        ke.Handled = true;
-                    }
-                    else if (ke.KeyCode == Keys.Escape)
-                    {
-                        OcultarSugerenciasFlotantes();
-                        ke.Handled = true;
-                    }
-                };
-
-                _listaLostFocusHandler = (s, e) =>
-                {
-                    OcultarSugerenciasFlotantes();
-                };
-            }
-
-            _listaSugerencias.Items.Clear();
-            _listaSugerencias.Items.AddRange(itemsCoincidentes.ToArray());
-
-            Control parent = buscador.Parent ?? this;
-            if (_listaSugerencias.Parent != parent)
-            {
-                _listaSugerencias.Parent?.Controls.Remove(_listaSugerencias);
-                parent.Controls.Add(_listaSugerencias);
-            }
-
-            var screenPt = buscador.PointToScreen(Point.Empty);
-            var clientPt = parent.PointToClient(screenPt);
-            _listaSugerencias.Location = new Point(clientPt.X, clientPt.Y + buscador.Height);
-
-            int altoFila = 26;
-            _listaSugerencias.Height = Math.Min(itemsCoincidentes.Count, 3) * altoFila + 2;
-            _listaSugerencias.Width = buscador.Width;
-
-            try { if (_listaClickHandler != null) _listaSugerencias.Click -= _listaClickHandler; } catch { }
-            try { if (_listaKeyHandler != null) _listaSugerencias.KeyDown -= _listaKeyHandler; } catch { }
-            try { if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus -= _listaLostFocusHandler; } catch { }
-
-            if (_listaClickHandler != null) _listaSugerencias.Click += _listaClickHandler;
-            if (_listaKeyHandler != null) _listaSugerencias.KeyDown += _listaKeyHandler;
-            if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus += _listaLostFocusHandler;
-
-            _listaSugerencias.BringToFront();
-            _listaSugerencias.Visible = true;
-        }
-
-        private void OcultarSugerenciasFlotantes()
-        {
-            if (_listaSugerencias != null)
-            {
-                try
-                {
-                    _listaSugerencias.Visible = false;
-                    _listaSugerencias.Items.Clear();
-                    if (_listaKeyHandler != null) _listaSugerencias.KeyDown -= _listaKeyHandler;
-                    if (_listaClickHandler != null) _listaSugerencias.Click -= _listaClickHandler;
-                    if (_listaLostFocusHandler != null) _listaSugerencias.LostFocus -= _listaLostFocusHandler;
-                }
-                catch { }
-            }
         }
 
         private void MostrarSubVentana(Form subFormulario, Action alCerrar)

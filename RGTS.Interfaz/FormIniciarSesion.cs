@@ -32,12 +32,6 @@ namespace RGTS.Interfaz
                 Usuario usuarioAutenticado = _autenticacionServicio.IniciarSesion(email, contrasena);
 
                 // Si no arrojó excepciones, las credenciales son válidas
-                MessageBox.Show(
-                    $"¡Bienvenido, {usuarioAutenticado.NombreCompleto}!\nRol: {usuarioAutenticado.Rol?.NombreRol}",
-                    "Inicio de Sesión Exitoso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
 
                 // Ocultamos el login (no lo cerramos: este form sigue siendo el
                 // MainForm de Application.Run, así que si se cierra del todo la app termina)

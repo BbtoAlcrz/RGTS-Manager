@@ -431,6 +431,7 @@
             txtBuscarProducto.UseSystemPasswordChar = false;
             txtBuscarProducto.KeyDown += TxtBuscarProducto_KeyDown;
             txtBuscarProducto.TextChanged += TxtBuscarProducto_TextChanged;
+
             // 
             // labelApellidoValor
             // 

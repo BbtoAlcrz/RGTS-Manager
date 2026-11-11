@@ -13,11 +13,50 @@ namespace RGTS.LogicaNegocio.Servicios
         private static readonly Random _random = new();
         private readonly UsuarioRepositorio _usuarioRepositorio;
 
+        public enum ModuloSistema
+        {
+            Usuarios, Productos, Proveedores, Clientes, Ventas, Compras, Reportes, Respaldo
+        }
+
         public UsuarioServicio()
         {
             _usuarioRepositorio = new UsuarioRepositorio();
         }
 
+        // Devuelve la lista de módulos a los que un rol específico tiene acceso (Regla de Negocio)
+        public List<ModuloSistema> ObtenerModulosPermitidos(string? nombreRol)
+        {
+            return (nombreRol?.Trim()) switch
+            {
+                "Administrador" => new List<ModuloSistema>
+                {
+                    ModuloSistema.Usuarios,
+                    ModuloSistema.Productos,
+                    ModuloSistema.Proveedores,
+                    ModuloSistema.Clientes,
+                    ModuloSistema.Ventas,
+                    ModuloSistema.Compras,
+                    ModuloSistema.Reportes,
+                    ModuloSistema.Respaldo
+                },
+
+                "Vendedor" => new List<ModuloSistema>
+                {
+                    ModuloSistema.Ventas,
+                    ModuloSistema.Clientes,
+                    ModuloSistema.Productos
+                },
+
+                "Encargado de Deposito" => new List<ModuloSistema>
+                {
+                    ModuloSistema.Proveedores,
+                    ModuloSistema.Productos,
+                    ModuloSistema.Compras
+                },
+
+                _ => new List<ModuloSistema>()
+            };
+        }
 
         // funcion para registrar un usuario nuevo, recibe y valida los datos y usa el repositorio para insertar en la BD
         public void RegistrarUsuario(string dni, string nombre, string apellido, string email, int idRol, string contrasena)
@@ -136,7 +175,5 @@ namespace RGTS.LogicaNegocio.Servicios
 
             return true;
         }
-
-
     }
 }

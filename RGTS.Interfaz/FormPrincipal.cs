@@ -1,18 +1,19 @@
-﻿using System;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
+using RGTS.AccesoDatos;
+using RGTS.Entidades;
+using RGTS.Interfaz.Administrador;
+using RGTS.Interfaz.EncargadoDeposito;
+using RGTS.Interfaz.Vendedor;
+using RGTS.LogicaNegocio.Servicios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using RGTS.Entidades;
-using RGTS.AccesoDatos;
-using RGTS.Interfaz.Administrador;
-using RGTS.Interfaz.EncargadoDeposito;
-using RGTS.Interfaz.Vendedor;
-using RGTS.LogicaNegocio.Servicios;
+using static RGTS.LogicaNegocio.Servicios.UsuarioServicio;
 
 namespace RGTS.Interfaz
 {
@@ -94,48 +95,20 @@ namespace RGTS.Interfaz
         // configura la navegacion de los botones del menu para sus formularios por rol
         private void ConfigurarNavegacionPorRol(string? rolActual)
         {
-            rolActual = rolActual?.Trim();
-            // ocultams todos los botones primero (para resetear el panel)
             OcultarTodosLosBotones();
 
-            // definimos que botones le corresponden a cada rol (es ampliable)
-            Button[] botonesPermitidos = rolActual switch
-            {
-                "Administrador" => new[]
-                {
-                    BotonModuloUsuarios,
-                    BotonModuloProductos,
-                    BotonModuloProveedores,
-                    BotonModuloClientes,
-                    BotonModuloVentas,
-                    BotonModuloCompras,
-                    BotonModuloReportes,
-                    BotonModuloRespaldo
-                },
+            // Obtiene los modulos que el rol actual tiene permitido ver y habilita sus botones
+            var modulosPermitidos = _usuarioServicio.ObtenerModulosPermitidos(rolActual);
 
-                "Vendedor" => new[]
-                {
-                    BotonModuloVentas,
-                    BotonModuloClientes,
-                    BotonModuloProductos
-                },
+            BotonModuloUsuarios.Visible = modulosPermitidos.Contains(ModuloSistema.Usuarios);
+            BotonModuloProductos.Visible = modulosPermitidos.Contains(ModuloSistema.Productos);
+            BotonModuloProveedores.Visible = modulosPermitidos.Contains(ModuloSistema.Proveedores);
+            BotonModuloClientes.Visible = modulosPermitidos.Contains(ModuloSistema.Clientes);
+            BotonModuloVentas.Visible = modulosPermitidos.Contains(ModuloSistema.Ventas);
+            BotonModuloCompras.Visible = modulosPermitidos.Contains(ModuloSistema.Compras);
+            BotonModuloReportes.Visible = modulosPermitidos.Contains(ModuloSistema.Reportes);
+            BotonModuloRespaldo.Visible = modulosPermitidos.Contains(ModuloSistema.Respaldo);
 
-                "Encargado de Deposito" => new[]
-                {
-                    BotonModuloProveedores,
-                    BotonModuloProductos,
-                    BotonModuloCompras
-                },
-
-                // un Rol no reconocido, y por ende no muestra ningun boton
-                _ => Array.Empty<Button>()
-            };
-
-            // hacemos visibles unicamente los asignados al rol
-            foreach (Button boton in botonesPermitidos)
-            {
-                boton.Visible = true;
-            }
             PanelBotones.PerformLayout();
             PanelBotones.Refresh();
         }

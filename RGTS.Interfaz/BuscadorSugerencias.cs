@@ -5,12 +5,12 @@ using System.Windows.Forms;
 
 namespace RGTS.Interfaz
 {
-    // Componente reutilizable: ListBox flotante de sugerencias (máx. 3 filas visibles, con scroll)
-    // que se posiciona debajo de un control de búsqueda. Se instancia una vez por campo.
+    // Componente reutilizable: ListBox flotante de sugerencias
     public class BuscadorSugerencias
     {
         private readonly ListBox _lista;
         private Action<int>? _callbackActual;
+        private Control? _controlBusquedaActual;
 
         public BuscadorSugerencias(Control formularioContenedor)
         {
@@ -28,12 +28,13 @@ namespace RGTS.Interfaz
 
             _lista.Click += (s, e) => SeleccionarActual();
             _lista.KeyDown += Lista_KeyDown;
-            _lista.LostFocus += (s, e) => Ocultar();
+            _lista.LostFocus += Lista_LostFocus;
 
             formularioContenedor.Controls.Add(_lista);
         }
 
-        // Muestra las coincidencias debajo del control de búsqueda indicado
+        public bool EsVisible => _lista.Visible;
+
         public void Mostrar(Control controlBusqueda, List<string> items, Action<int> alSeleccionar)
         {
             if (items == null || items.Count == 0)
@@ -42,6 +43,7 @@ namespace RGTS.Interfaz
                 return;
             }
 
+            _controlBusquedaActual = controlBusqueda;
             _callbackActual = alSeleccionar;
 
             _lista.Items.Clear();
@@ -52,7 +54,7 @@ namespace RGTS.Interfaz
             var clientPt = parent.PointToClient(screenPt);
             _lista.Location = new Point(clientPt.X, clientPt.Y + controlBusqueda.Height);
 
-            int altoFila = 22;
+            int altoFila = 24;
             _lista.Height = Math.Min(items.Count, 3) * altoFila + 4;
             _lista.Width = controlBusqueda.Width;
 
@@ -64,14 +66,41 @@ namespace RGTS.Interfaz
         {
             _lista.Visible = false;
             _lista.Items.Clear();
+            _callbackActual = null;
+        }
+
+        // Permite interceptar la navegación desde el evento KeyDown / PreviewKeyDown del TextBox de búsqueda
+        public bool ProcesarTeclaNavegacion(KeyEventArgs ke)
+        {
+            if (!EsVisible || _lista.Items.Count == 0) return false;
+
+            if (ke.KeyCode == Keys.Down)
+            {
+                _lista.Focus();
+                _lista.SelectedIndex = 0;
+                ke.Handled = true;
+                ke.SuppressKeyPress = true;
+                return true;
+            }
+            else if (ke.KeyCode == Keys.Escape)
+            {
+                Ocultar();
+                ke.Handled = true;
+                ke.SuppressKeyPress = true;
+                return true;
+            }
+
+            return false;
         }
 
         private void SeleccionarActual()
         {
             if (_lista.SelectedIndex >= 0)
             {
-                _callbackActual?.Invoke(_lista.SelectedIndex);
+                int indice = _lista.SelectedIndex;
+                var callback = _callbackActual;
                 Ocultar();
+                callback?.Invoke(indice);
             }
         }
 
@@ -79,23 +108,44 @@ namespace RGTS.Interfaz
         {
             if (ke.KeyCode == Keys.Down)
             {
-                if (_lista.SelectedIndex < _lista.Items.Count - 1) _lista.SelectedIndex++;
+                if (_lista.SelectedIndex < _lista.Items.Count - 1)
+                    _lista.SelectedIndex++;
                 ke.Handled = true;
             }
             else if (ke.KeyCode == Keys.Up)
             {
-                if (_lista.SelectedIndex > 0) _lista.SelectedIndex--;
+                if (_lista.SelectedIndex > 0)
+                {
+                    _lista.SelectedIndex--;
+                }
+                else if (_lista.SelectedIndex == 0 && _controlBusquedaActual != null)
+                {
+                    // Al subir desde el primer ítem, devuelve el foco al campo de búsqueda
+                    _controlBusquedaActual.Focus();
+                }
                 ke.Handled = true;
             }
             else if (ke.KeyCode == Keys.Enter)
             {
                 SeleccionarActual();
                 ke.Handled = true;
+                ke.SuppressKeyPress = true;
             }
             else if (ke.KeyCode == Keys.Escape)
             {
                 Ocultar();
+                _controlBusquedaActual?.Focus();
                 ke.Handled = true;
+                ke.SuppressKeyPress = true;
+            }
+        }
+
+        private void Lista_LostFocus(object? sender, EventArgs e)
+        {
+            // Oculta la lista únicamente si el foco no volvió al campo de texto original
+            if (_controlBusquedaActual != null && !_controlBusquedaActual.Focused)
+            {
+                Ocultar();
             }
         }
     }

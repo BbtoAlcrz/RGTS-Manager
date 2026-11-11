@@ -189,15 +189,15 @@
             btnCancelarCompra.Depth = 0;
             btnCancelarCompra.HighEmphasis = true;
             btnCancelarCompra.Icon = Properties.Resources.cancelar;
-            btnCancelarCompra.Location = new Point(561, 423);
+            btnCancelarCompra.Location = new Point(589, 423);
             btnCancelarCompra.Margin = new Padding(4, 6, 4, 6);
             btnCancelarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             btnCancelarCompra.Name = "btnCancelarCompra";
             btnCancelarCompra.NoAccentTextColor = Color.Empty;
-            btnCancelarCompra.Size = new Size(189, 36);
+            btnCancelarCompra.Size = new Size(175, 36);
             btnCancelarCompra.TabIndex = 23;
             btnCancelarCompra.TabStop = false;
-            btnCancelarCompra.Text = "Cancelar compra";
+            btnCancelarCompra.Text = "Cancelar Venta";
             btnCancelarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnCancelarCompra.UseAccentColor = false;
             btnCancelarCompra.UseVisualStyleBackColor = true;
@@ -212,15 +212,15 @@
             btnConfirmarCompra.Depth = 0;
             btnConfirmarCompra.HighEmphasis = true;
             btnConfirmarCompra.Icon = Properties.Resources.confirmar;
-            btnConfirmarCompra.Location = new Point(758, 423);
+            btnConfirmarCompra.Location = new Point(772, 423);
             btnConfirmarCompra.Margin = new Padding(4, 6, 4, 6);
             btnConfirmarCompra.MouseState = MaterialSkin.MouseState.HOVER;
             btnConfirmarCompra.Name = "btnConfirmarCompra";
             btnConfirmarCompra.NoAccentTextColor = Color.Empty;
-            btnConfirmarCompra.Size = new Size(198, 36);
+            btnConfirmarCompra.Size = new Size(184, 36);
             btnConfirmarCompra.TabIndex = 22;
             btnConfirmarCompra.TabStop = false;
-            btnConfirmarCompra.Text = "Confirmar compra";
+            btnConfirmarCompra.Text = "Confirmar Venta";
             btnConfirmarCompra.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnConfirmarCompra.UseAccentColor = false;
             btnConfirmarCompra.UseVisualStyleBackColor = true;
@@ -513,7 +513,7 @@
             txtBuscarDniCliente.Depth = 0;
             txtBuscarDniCliente.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtBuscarDniCliente.HideSelection = true;
-            txtBuscarDniCliente.Hint = "Ingrese DNI del Cliente";
+            txtBuscarDniCliente.Hint = "DNI o nombre del Cliente";
             txtBuscarDniCliente.LeadingIcon = Properties.Resources.clientes;
             txtBuscarDniCliente.Location = new Point(17, 78);
             txtBuscarDniCliente.MaxLength = 32767;
@@ -640,7 +640,7 @@
             // 
             menuCarrito.Items.AddRange(new ToolStripItem[] { itemEditar, itemEliminar });
             menuCarrito.Name = "menuCarrito";
-            menuCarrito.Size = new Size(181, 70);
+            menuCarrito.Size = new Size(175, 48);
             // 
             // itemEditar
             // 

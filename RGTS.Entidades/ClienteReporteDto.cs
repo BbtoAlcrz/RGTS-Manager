@@ -12,7 +12,7 @@ namespace RGTS.Entidades
         public int ComprasEnPeriodo { get; set; }
         public int ComprasHistoricas { get; set; }
         public decimal TotalGastadoPeriodo { get; set; }
-        public bool Activo { get; set; } = true; // los inactivos solo aparecen si compraron en el período
+        public bool Activo { get; set; } // = true; // los inactivos solo aparecen si compraron en el período
     }
 
     public class ClientesMetricasDto

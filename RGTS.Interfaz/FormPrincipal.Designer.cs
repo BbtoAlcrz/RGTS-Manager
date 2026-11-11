@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             PanelContenedorVistas = new MaterialSkin.Controls.MaterialCard();
             labelBienvenida = new MaterialSkin.Controls.MaterialLabel();
             PanelPerfilInfo = new MaterialSkin.Controls.MaterialCard();
@@ -44,6 +45,8 @@
             BotonModuloReportes = new MaterialSkin.Controls.MaterialButton();
             BotonModuloRespaldo = new MaterialSkin.Controls.MaterialButton();
             PanelContenedorMenu = new MaterialSkin.Controls.MaterialCard();
+            BotonAyuda = new MaterialSkin.Controls.MaterialFloatingActionButton();
+            TooltipBotonAyuda = new ToolTip(components);
             PanelContenedorVistas.SuspendLayout();
             PanelPerfilInfo.SuspendLayout();
             PanelBotones.SuspendLayout();
@@ -64,22 +67,21 @@
             PanelContenedorVistas.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorVistas.Name = "PanelContenedorVistas";
             PanelContenedorVistas.Padding = new Padding(15);
-            PanelContenedorVistas.Size = new Size(759, 540);
+            PanelContenedorVistas.Size = new Size(800, 629);
             PanelContenedorVistas.TabIndex = 2;
             // 
             // labelBienvenida
             // 
-            labelBienvenida.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            labelBienvenida.AutoSize = true;
             labelBienvenida.Depth = 0;
+            labelBienvenida.Dock = DockStyle.Fill;
             labelBienvenida.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
             labelBienvenida.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
             labelBienvenida.ForeColor = Color.Silver;
-            labelBienvenida.Location = new Point(337, 257);
+            labelBienvenida.Location = new Point(15, 15);
             labelBienvenida.Margin = new Padding(0);
             labelBienvenida.MouseState = MaterialSkin.MouseState.HOVER;
             labelBienvenida.Name = "labelBienvenida";
-            labelBienvenida.Size = new Size(100, 24);
+            labelBienvenida.Size = new Size(770, 599);
             labelBienvenida.TabIndex = 0;
             labelBienvenida.Text = "Bienvenido";
             labelBienvenida.TextAlign = ContentAlignment.MiddleCenter;
@@ -94,7 +96,7 @@
             PanelPerfilInfo.Controls.Add(BotonCerrarSesion);
             PanelPerfilInfo.Depth = 0;
             PanelPerfilInfo.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            PanelPerfilInfo.Location = new Point(10, 423);
+            PanelPerfilInfo.Location = new Point(10, 512);
             PanelPerfilInfo.Margin = new Padding(14);
             PanelPerfilInfo.MouseState = MaterialSkin.MouseState.HOVER;
             PanelPerfilInfo.Name = "PanelPerfilInfo";
@@ -374,6 +376,7 @@
             // 
             PanelContenedorMenu.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             PanelContenedorMenu.BackColor = Color.FromArgb(255, 255, 255);
+            PanelContenedorMenu.Controls.Add(BotonAyuda);
             PanelContenedorMenu.Controls.Add(PanelBotones);
             PanelContenedorMenu.Controls.Add(PanelPerfilInfo);
             PanelContenedorMenu.Depth = 0;
@@ -383,8 +386,36 @@
             PanelContenedorMenu.MouseState = MaterialSkin.MouseState.HOVER;
             PanelContenedorMenu.Name = "PanelContenedorMenu";
             PanelContenedorMenu.Padding = new Padding(10);
-            PanelContenedorMenu.Size = new Size(208, 538);
+            PanelContenedorMenu.Size = new Size(208, 627);
             PanelContenedorMenu.TabIndex = 0;
+            // 
+            // BotonAyuda
+            // 
+            BotonAyuda.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            BotonAyuda.AnimateShowHideButton = true;
+            BotonAyuda.AutoSize = true;
+            BotonAyuda.Cursor = Cursors.Help;
+            BotonAyuda.Depth = 0;
+            BotonAyuda.DrawShadows = false;
+            BotonAyuda.Icon = Properties.Resources.pregunta;
+            BotonAyuda.Location = new Point(10, 466);
+            BotonAyuda.Mini = true;
+            BotonAyuda.MouseState = MaterialSkin.MouseState.HOVER;
+            BotonAyuda.Name = "BotonAyuda";
+            BotonAyuda.Size = new Size(40, 40);
+            BotonAyuda.TabIndex = 4;
+            TooltipBotonAyuda.SetToolTip(BotonAyuda, "Presiona para abrir el manual de usuario.");
+            BotonAyuda.UseVisualStyleBackColor = true;
+            BotonAyuda.Click += BotonAyuda_Click;
+            // 
+            // TooltipBotonAyuda
+            // 
+            TooltipBotonAyuda.AutomaticDelay = 100;
+            TooltipBotonAyuda.AutoPopDelay = 10000;
+            TooltipBotonAyuda.InitialDelay = 200;
+            TooltipBotonAyuda.ReshowDelay = 20;
+            TooltipBotonAyuda.ToolTipIcon = ToolTipIcon.Info;
+            TooltipBotonAyuda.ToolTipTitle = "¿Necesitas Ayuda?";
             // 
             // FormPrincipal
             // 
@@ -392,7 +423,7 @@
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(982, 614);
+            ClientSize = new Size(1023, 703);
             Controls.Add(PanelContenedorVistas);
             Controls.Add(PanelContenedorMenu);
             Name = "FormPrincipal";
@@ -403,11 +434,11 @@
             WindowState = FormWindowState.Maximized;
             FormClosed += FormPrincipal_FormClosed;
             PanelContenedorVistas.ResumeLayout(false);
-            PanelContenedorVistas.PerformLayout();
             PanelPerfilInfo.ResumeLayout(false);
             PanelPerfilInfo.PerformLayout();
             PanelBotones.ResumeLayout(false);
             PanelContenedorMenu.ResumeLayout(false);
+            PanelContenedorMenu.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -428,5 +459,7 @@
         private MaterialSkin.Controls.MaterialLabel labelBienvenida;
         private MaterialSkin.Controls.MaterialButton BotonModuloReportes;
         private MaterialSkin.Controls.MaterialButton BotonModuloRespaldo;
+        private MaterialSkin.Controls.MaterialFloatingActionButton BotonAyuda;
+        private ToolTip TooltipBotonAyuda;
     }
 }

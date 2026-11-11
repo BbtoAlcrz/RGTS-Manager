@@ -82,7 +82,14 @@ namespace RGTS.Interfaz.Administrador
 
             _buscadorProducto.Mostrar(TxtBuscarCoN, textos, indice =>
             {
-                TxtBuscarCoN.Text = coincidencias[indice].Codigo;
+                var prodSeleccionado = coincidencias[indice];
+
+                TxtBuscarCoN.Text = prodSeleccionado.Codigo;
+
+                TxtCostoUni.Text = prodSeleccionado.Precio.ToString("F2");
+
+                TxtCantidad.Focus();
+                TxtCantidad.SelectAll();
             });
         }
 

@@ -24,10 +24,14 @@ namespace RGTS.Interfaz
         public static string? RolSesion { get; private set; }
         public static FormPrincipal? InstanciaActual { get; private set; }
         private Form? _formularioActivo = null;
+        private readonly ManualUsuarioServicio _manualUsuarioServicio;
 
         public FormPrincipal()
         {
             InitializeComponent();
+
+            _manualUsuarioServicio = new ManualUsuarioServicio();
+
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             InstanciaActual = this;
@@ -145,6 +149,25 @@ namespace RGTS.Interfaz
                 {
                     boton.Visible = false;
                 }
+            }
+        }
+
+
+        private void BotonAyuda_Click(object? sender, EventArgs e)
+        {
+            // Obtiene la vista alojada en el contenedor del FormPrincipal
+            Control? vistaActiva = PanelContenedorVistas.Controls.Count > 0
+                ? PanelContenedorVistas.Controls[0]
+                : null;
+
+            try
+            {
+                // Se realiza la apertura del PDF
+                _manualUsuarioServicio.AbrirManualPorVistaActiva(vistaActiva);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Manual de Usuario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

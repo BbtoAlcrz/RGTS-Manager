@@ -29,7 +29,7 @@ namespace RGTS.Interfaz.Administrador
         private void Form1_Load(object sender, EventArgs e)
         {
             ConfigurarListView();
-            CargarGrilla();
+            RefrescarGrilla();
         }
 
         private void ConfigurarListView()
@@ -41,7 +41,7 @@ namespace RGTS.Interfaz.Administrador
         }
 
         // Carga la grilla delegando la obtención y el filtro en CategoriaServicio
-        private void CargarGrilla(string filtroNombre = "")
+        private void RefrescarGrilla(string filtroNombre = "")
         {
             lstClientes.BeginUpdate();
             lstClientes.Items.Clear();
@@ -69,7 +69,7 @@ namespace RGTS.Interfaz.Administrador
         // Filtra la grilla mientras se escribe
         private void TxtBuscarNombre_TextChanged(object? sender, EventArgs e)
         {
-            CargarGrilla(TxtBuscarNombre.Text.Trim());
+            RefrescarGrilla(TxtBuscarNombre.Text.Trim());
         }
 
         // Habilita botones y actualiza el texto según el estado de la selección
@@ -101,7 +101,7 @@ namespace RGTS.Interfaz.Administrador
             {
                 pnlEdicionContenedor.Visible = false;
                 pnlEdicionContenedor.Controls.Clear();
-                CargarGrilla(TxtBuscarNombre.Text.Trim());
+                RefrescarGrilla(TxtBuscarNombre.Text.Trim());
             };
             pnlEdicionContenedor.Controls.Add(subFormulario);
             pnlEdicionContenedor.Visible = true;
@@ -152,7 +152,7 @@ namespace RGTS.Interfaz.Administrador
                 }
                 finally
                 {
-                    CargarGrilla(TxtBuscarNombre.Text.Trim());
+                    RefrescarGrilla(TxtBuscarNombre.Text.Trim());
                 }
             }
         }

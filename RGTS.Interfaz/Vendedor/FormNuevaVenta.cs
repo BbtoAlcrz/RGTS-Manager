@@ -300,6 +300,7 @@ namespace RGTS.Interfaz.Vendedor
                 // Ajusta la reserva en la BD y, si sale bien, la cantidad del carrito
                 _ventaServicio.ModificarCantidadDetalle(detalle, nuevaCantidad, _dniUsuarioSesion);
                 ActualizarCarrito();
+                ActualizarStockVisible(detalle.IdProducto);
             }
             catch (Exception ex)
             {
@@ -328,6 +329,7 @@ namespace RGTS.Interfaz.Vendedor
                     // Libera la reserva del producto y lo quita del carrito
                     _ventaServicio.EliminarDetalle(detalle, _carrito, _dniUsuarioSesion);
                     ActualizarCarrito();
+                    ActualizarStockVisible(detalle.IdProducto);
                 }
                 catch (Exception ex)
                 {
@@ -377,6 +379,45 @@ namespace RGTS.Interfaz.Vendedor
 
             ListaDetalleVenta.EndUpdate();
             labelTotalCompraValor.Text = _carrito.Sum(d => d.SubtotalDerivado).ToString("C2");
+        }
+
+        private void ActualizarStockVisible(int idProductoAfectado)
+        {
+            // Si no hay producto seleccionado o no coincide con el que cambió en el carrito, no hacemos nada
+            if (_productoSeleccionado == null || _productoSeleccionado.IdProducto != idProductoAfectado)
+                return;
+
+            int enCarrito = _carrito.Where(d => d.IdProducto == _productoSeleccionado.IdProducto).Sum(d => d.Cantidad);
+            int stockRestante = _ventaServicio.ObtenerStockDisponibleReal(_productoSeleccionado.IdProducto, enCarrito);
+
+            labelStockDisponibleValor.Text = stockRestante.ToString();
+
+            if (stockRestante > 0)
+            {
+                numericCantidadProducto.Minimum = 1;
+                numericCantidadProducto.Maximum = stockRestante;
+                numericCantidadProducto.Enabled = true;
+
+                // Ajustamos el Value si el valor actual quedó desfasado respecto al nuevo máximo
+                if (numericCantidadProducto.Value > stockRestante)
+                {
+                    numericCantidadProducto.Value = stockRestante;
+                }
+                else if (numericCantidadProducto.Value < 1)
+                {
+                    numericCantidadProducto.Value = 1;
+                }
+
+                btnAgregarProducto.Enabled = true;
+            }
+            else
+            {
+                numericCantidadProducto.Minimum = 0;
+                numericCantidadProducto.Maximum = 0;
+                numericCantidadProducto.Value = 0;
+                numericCantidadProducto.Enabled = false;
+                btnAgregarProducto.Enabled = false;
+            }
         }
 
         private void BtnConfirmarCompra_Click(object? sender, EventArgs e)

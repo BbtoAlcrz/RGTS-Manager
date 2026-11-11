@@ -1,23 +1,38 @@
 # RGTS-Manager
+
 RGTS-Manager es un sistema de escritorio independiente para la gestión interna del personal de la tienda Retro Gaming Tech Store.
 
-## Base de datos
+---
 
-Los scripts están en la carpeta `BD/` y se ejecutan en SQL Server Management Studio, en este orden:
+## 📥 Descarga de la Aplicación
 
-1. `01_esquema_rgts.sql`: crea la base `RGTS_Manager_BD`, sus 11 tablas y los 49 procedimientos almacenados. No carga datos. Si la base ya tiene el esquema, se detiene sin modificar nada.
-2. `02_datos_precargados.sql`: carga roles, usuarios, categorías, proveedores, clientes y productos de ejemplo. Se puede ejecutar más de una vez (solo inserta en tablas vacías).
+Puedes descargar la versión ejecutable lista para usar desde la sección de **Releases**:
 
-Cada script termina con una consulta de verificación (11 tablas y 49 procedimientos; y la cantidad de filas cargadas).
+👉 **[Descargar la última versión de RGTS Manager (.zip)](https://github.com/BbtoAlcrz/RGTS-Manager/releases/latest)**
 
-La aplicación se conecta a `localhost\SQLEXPRESS`. Si la instancia tiene otro nombre, hay que ajustar la cadena de conexión.
+**Nota:** Para ejecutar la aplicación es **necesario** contar con una instancia local de SQL Server (`localhost\SQLEXPRESS`) y haber corrido **los scripts de la base de datos** que se detallan a continuación.
 
-## Usuarios de prueba
+
+## 🗄️ Base de datos
+
+Los scripts de creación e inicialización se encuentran en la carpeta `BD/` del repositorio y deben ejecutarse en **SQL Server Management Studio (SSMS)** en el siguiente orden estricto:
+
+1. [01_esquema_rgts.sql](https://github.com/BbtoAlcrz/RGTS-Manager/blob/main/BD/01_esquema_rgts.sql): Crea la base de datos `RGTS_Manager_BD`, sus 11 tablas y los 49 procedimientos almacenados. No carga datos. Si la base ya tiene el esquema, se detiene sin modificar nada.
+2. [02_datos_precargados.sql](https://github.com/BbtoAlcrz/RGTS-Manager/blob/main/BD/02_datos_precargados.sql): Carga roles, usuarios, categorías, proveedores, clientes y productos de ejemplo. Se puede ejecutar más de una vez (solo inserta en tablas vacías).
+
+> Cada script finaliza con una consulta de verificación automática (11 tablas, 49 procedimientos y conteo de filas cargadas).
+
+La aplicación se conecta por defecto a `localhost\SQLEXPRESS`. Si tu instancia de SQL Server tiene otro nombre, debes ajustar la cadena de conexión.
+
+
+## 🔑 Usuarios de prueba
+
+El sistema cuenta con las siguientes cuentas de prueba precargadas:
 
 | Rol | Email | Contraseña |
 |---|---|---|
-| Administrador | admin@a.com | admin123 |
-| Vendedor | vendedor@v.com | vendedor123 |
-| Encargado de Depósito | deposito@d.com | deposito123 |
+| Administrador | `admin@a.com` | `admin123` |
+| Vendedor | `vendedor@v.com` | `vendedor123` |
+| Encargado de Depósito | `deposito@d.com` | `deposito123` |
 
-Las contraseñas se guardan cifradas con BCrypt.
+> las contraseñas se almacenan cifradas mediante **BCrypt**

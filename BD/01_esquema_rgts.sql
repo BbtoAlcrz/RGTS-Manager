@@ -1121,6 +1121,7 @@ BEGIN
         c.nombre AS Nombre,
         c.apellido AS Apellido,
         ISNULL(c.nombre + ' ' + c.apellido, 'Consumidor Final') AS NombreCompleto,
+        c.activo AS Activo,
         COUNT(v_periodo.id_venta) AS ComprasEnPeriodo,
         COUNT(v_historico.id_venta) AS ComprasHistoricas,
         ISNULL(SUM(v_periodo.total_derivado), 0.00) AS TotalGastadoPeriodo
@@ -1130,7 +1131,7 @@ BEGIN
                              AND v_periodo.fecha <= @HastaAjustado
     LEFT JOIN VENTA v_historico ON c.id_cliente = v_historico.id_cliente
     WHERE c.activo = 1
-    GROUP BY c.id_cliente, c.dni, c.nombre, c.apellido
+    GROUP BY c.id_cliente, c.dni, c.nombre, c.apellido, c.activo
 
     UNION ALL
 
@@ -1141,6 +1142,7 @@ BEGIN
         'Consumidor' AS Nombre,
         'Final' AS Apellido,
         'Consumidor Final' AS NombreCompleto,
+        CAST(1 AS BIT) AS Activo,
         COUNT(v.id_venta) AS ComprasEnPeriodo,
         COUNT(v.id_venta) AS ComprasHistoricas,
         ISNULL(SUM(v.total_derivado), 0.00) AS TotalGastadoPeriodo
@@ -1151,7 +1153,6 @@ BEGIN
 
     ORDER BY ComprasEnPeriodo DESC, TotalGastadoPeriodo DESC;
 END
-GO
 
 CREATE OR ALTER PROCEDURE [dbo].[sp_ReporteProductos]
     @FechaDesde DATETIME,

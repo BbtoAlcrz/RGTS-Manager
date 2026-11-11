@@ -31,16 +31,12 @@ namespace RGTS.LogicaNegocio.Validaciones
             }
         }
 
-        public static void ValidarModificacionCantidad(Producto producto, int nuevaCantidad, int stockDisponibleReal)
+        // El stock disponible lo controla la BD al reservar (sp_ReservarStockProducto); acá solo se valida el valor ingresado
+        public static void ValidarModificacionCantidad(int nuevaCantidad)
         {
             if (nuevaCantidad <= 0)
             {
                 throw new ArgumentException("La cantidad debe ser mayor a cero");
-            }
-
-            if (nuevaCantidad > stockDisponibleReal)
-            {
-                throw new InvalidOperationException($"La cantidad solicitada ({nuevaCantidad}) supera el stock disponible para '{producto.Nombre}' ({stockDisponibleReal} unidades restantes).");
             }
         }
 

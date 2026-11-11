@@ -22,22 +22,32 @@ namespace RGTS.LogicaNegocio.Servicios
             return _productoServicio.BuscarActivoParaVenta(filtro);
         }
 
-        public void ModificarCantidadDetalle(DetalleVenta detalle, int nuevaCantidad, List<DetalleVenta> carrito)
+        // Cambia la cantidad de un ítem del carrito ajustando la reserva en la BD por la diferencia
+        public void ModificarCantidadDetalle(DetalleVenta detalle, int nuevaCantidad, string dniUsuario)
         {
-            var producto = _productoServicio.ObtenerPorId(detalle.IdProducto)
-                ?? throw new InvalidOperationException("El producto seleccionado ya no existe en el catálogo.");
+            VentaValidacion.ValidarModificacionCantidad(nuevaCantidad);
 
-            int enOtrosItems = carrito.Where(d => d.IdProducto == detalle.IdProducto && d != detalle).Sum(d => d.Cantidad);
-            int stockDisponibleReal = producto.StockActual - enOtrosItems;
+            int diferencia = nuevaCantidad - detalle.Cantidad;
 
-            VentaValidacion.ValidarModificacionCantidad(producto, nuevaCantidad, stockDisponibleReal);
+            if (diferencia > 0)
+            {
+                // Reserva las unidades extra; si otro vendedor las tiene reservadas, lanza excepción y el carrito no cambia
+                _productoServicio.ReservarStock(detalle.IdProducto, dniUsuario, diferencia);
+            }
+            else if (diferencia < 0)
+            {
+                // Devuelve las unidades que ya no se van a vender, para que otros vendedores puedan usarlas
+                _productoServicio.ReducirReserva(detalle.IdProducto, dniUsuario, -diferencia);
+            }
 
             detalle.Cantidad = nuevaCantidad;
             detalle.SubtotalDerivado = detalle.Cantidad * detalle.PrecioUnitario;
         }
 
-        public void EliminarDetalle(DetalleVenta detalle, List<DetalleVenta> carrito)
+        // Quita un ítem del carrito liberando primero su reserva en la BD
+        public void EliminarDetalle(DetalleVenta detalle, List<DetalleVenta> carrito, string dniUsuario)
         {
+            _productoServicio.ReducirReserva(detalle.IdProducto, dniUsuario, detalle.Cantidad);
             carrito.Remove(detalle);
         }
 

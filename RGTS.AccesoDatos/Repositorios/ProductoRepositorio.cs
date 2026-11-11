@@ -198,6 +198,21 @@ namespace RGTS.AccesoDatos.Repositorios
             }
         }
 
+        // Devuelve parte de la reserva de un usuario sobre un producto (si queda en 0, se elimina)
+        public void ReducirReservaUsuario(int idProducto, string dniUsuario, int cantidad)
+        {
+            using (var con = _conexion.ObtenerConexion())
+            using (var cmd = new SqlCommand("dbo.sp_ReducirReservaProducto", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@IdProducto", SqlDbType.Int) { Value = idProducto });
+                cmd.Parameters.Add(new SqlParameter("@DniUsuario", SqlDbType.VarChar, 20) { Value = dniUsuario });
+                cmd.Parameters.Add(new SqlParameter("@Cantidad", SqlDbType.Int) { Value = cantidad });
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         // Extiende el vencimiento de las reservas vigentes de un usuario
         public void RenovarReservasUsuario(string dniUsuario, int minutos)
         {

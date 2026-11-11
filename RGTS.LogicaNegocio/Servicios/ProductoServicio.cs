@@ -163,6 +163,8 @@ namespace RGTS.LogicaNegocio.Servicios
 
         public void LiberarReservasUsuario(string dniUsuario) => _repositorio.LiberarReservasUsuario(dniUsuario);
 
+        public void ReducirReserva(int idProducto, string dniUsuario, int cantidad) => _repositorio.ReducirReservaUsuario(idProducto, dniUsuario, cantidad);
+
         public void RenovarReservas(string dniUsuario) => _repositorio.RenovarReservasUsuario(dniUsuario, MinutosReserva);
     }
 }

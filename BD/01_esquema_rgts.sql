@@ -3,7 +3,7 @@
    Base de datos: RGTS_Manager_BD  (SQL Server / SQL Server Express)
 
    Qué hace: crea la base (si no existe), las 11 tablas con sus claves y
-   restricciones, y los 48 procedimientos almacenados del sistema.
+   restricciones, y los 49 procedimientos almacenados del sistema.
    NO inserta ningún dato (para eso está 02_datos_precargados.sql).
 
    Cómo usarlo: ejecutarlo COMPLETO sobre un servidor donde todavía no exista
@@ -607,6 +607,32 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE [dbo].[sp_ReducirReservaProducto]
+    @IdProducto INT,
+    @DniUsuario VARCHAR(20),
+    @Cantidad INT
+AS
+BEGIN
+    -- Devuelve parte de la reserva de un vendedor (al bajar la cantidad o quitar un producto del carrito).
+    -- Si la reserva queda en 0, se elimina. Misma lógica que usa sp_ConfirmarStockProducto.
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+
+    IF @Cantidad <= 0 RETURN;
+
+    BEGIN TRANSACTION;
+
+    UPDATE RESERVA_STOCK
+    SET cantidad = CASE WHEN cantidad > @Cantidad THEN cantidad - @Cantidad ELSE 0 END
+    WHERE id_producto = @IdProducto AND dni_usuario = @DniUsuario;
+
+    DELETE FROM RESERVA_STOCK
+    WHERE id_producto = @IdProducto AND dni_usuario = @DniUsuario AND cantidad = 0;
+
+    COMMIT TRANSACTION;
+END
+GO
+
 CREATE OR ALTER PROCEDURE [dbo].[sp_RenovarReservasUsuario]
     @DniUsuario VARCHAR(20),
     @Minutos INT = 5
@@ -1111,48 +1137,62 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- @FechaHasta incluye el día completo (hasta las 23:59:59)
     DECLARE @HastaAjustado DATETIME;
     SET @HastaAjustado = DATEADD(SECOND, -1, DATEADD(DAY, 1, CAST(CAST(@FechaHasta AS DATE) AS DATETIME)));
 
-    -- Detalle por cliente registrado (incluye activos sin compras o con compras)
-    SELECT 
-        c.id_cliente AS IdCliente,
-        c.dni AS Dni,
-        c.nombre AS Nombre,
-        c.apellido AS Apellido,
-        ISNULL(c.nombre + ' ' + c.apellido, 'Consumidor Final') AS NombreCompleto,
-        c.activo AS Activo,
-        COUNT(v_periodo.id_venta) AS ComprasEnPeriodo,
-        COUNT(v_historico.id_venta) AS ComprasHistoricas,
-        ISNULL(SUM(v_periodo.total_derivado), 0.00) AS TotalGastadoPeriodo
+    -- 1) Las ventas se resumen UNA sola vez por cliente, antes de unirlas con CLIENTE.
+    --    Así cada cliente queda en una sola fila y los conteos no se multiplican.
+    --    "Históricas" = compras hasta el fin del período (el reporte de un mes pasado no cambia
+    --    con ventas posteriores, y "cliente nuevo" = su primera compra fue en este período).
+    ;WITH VentasPorCliente AS (
+        SELECT
+            v.id_cliente,
+            SUM(CASE WHEN v.fecha >= @FechaDesde AND v.fecha <= @HastaAjustado THEN 1 ELSE 0 END)                AS ComprasEnPeriodo,
+            SUM(CASE WHEN v.fecha <= @HastaAjustado THEN 1 ELSE 0 END)                                          AS ComprasHistoricas,
+            SUM(CASE WHEN v.fecha >= @FechaDesde AND v.fecha <= @HastaAjustado THEN v.total_derivado ELSE 0 END) AS TotalGastadoPeriodo
+        FROM VENTA v
+        WHERE v.id_cliente IS NOT NULL
+        GROUP BY v.id_cliente
+    )
+    -- 2) Clientes registrados: los activos, y los inactivos solo si compraron en el período
+    --    (así la facturación del reporte coincide con el reporte de ventas)
+    SELECT
+        c.id_cliente                              AS IdCliente,
+        c.dni                                     AS Dni,
+        c.nombre                                  AS Nombre,
+        c.apellido                                AS Apellido,
+        c.nombre + ' ' + c.apellido               AS NombreCompleto,
+        ISNULL(vc.ComprasEnPeriodo, 0)            AS ComprasEnPeriodo,
+        ISNULL(vc.ComprasHistoricas, 0)           AS ComprasHistoricas,
+        CAST(ISNULL(vc.TotalGastadoPeriodo, 0) AS DECIMAL(12, 2)) AS TotalGastadoPeriodo,
+        c.activo                                  AS Activo
     FROM CLIENTE c
-    LEFT JOIN VENTA v_periodo ON c.id_cliente = v_periodo.id_cliente 
-                             AND v_periodo.fecha >= @FechaDesde 
-                             AND v_periodo.fecha <= @HastaAjustado
-    LEFT JOIN VENTA v_historico ON c.id_cliente = v_historico.id_cliente
+    LEFT JOIN VentasPorCliente vc ON vc.id_cliente = c.id_cliente
     WHERE c.activo = 1
-    GROUP BY c.id_cliente, c.dni, c.nombre, c.apellido, c.activo
+       OR ISNULL(vc.ComprasEnPeriodo, 0) > 0
 
     UNION ALL
 
-    -- 2. Fila acumulada para ventas a Consumidor Final (id_cliente NULL) en el período
-    SELECT 
-        0 AS IdCliente,
-        '000' AS Dni,
-        'Consumidor' AS Nombre,
-        'Final' AS Apellido,
+    -- 3) Una fila acumulada para las ventas a Consumidor Final (id_cliente NULL).
+    --    Sin GROUP BY, siempre devuelve exactamente una fila (con ceros si no hubo ventas).
+    SELECT
+        0                  AS IdCliente,
+        '000'              AS Dni,
+        'Consumidor'       AS Nombre,
+        'Final'            AS Apellido,
         'Consumidor Final' AS NombreCompleto,
-        CAST(1 AS BIT) AS Activo,
-        COUNT(v.id_venta) AS ComprasEnPeriodo,
-        COUNT(v.id_venta) AS ComprasHistoricas,
-        ISNULL(SUM(v.total_derivado), 0.00) AS TotalGastadoPeriodo
+        ISNULL(SUM(CASE WHEN v.fecha >= @FechaDesde THEN 1 ELSE 0 END), 0)                AS ComprasEnPeriodo,
+        COUNT(*)                                                                          AS ComprasHistoricas,
+        CAST(ISNULL(SUM(CASE WHEN v.fecha >= @FechaDesde THEN v.total_derivado ELSE 0 END), 0) AS DECIMAL(12, 2)) AS TotalGastadoPeriodo,
+        CAST(1 AS BIT)     AS Activo
     FROM VENTA v
-    WHERE v.id_cliente IS NULL 
-      AND v.fecha >= @FechaDesde 
+    WHERE v.id_cliente IS NULL
       AND v.fecha <= @HastaAjustado
 
     ORDER BY ComprasEnPeriodo DESC, TotalGastadoPeriodo DESC;
 END
+GO
 
 CREATE OR ALTER PROCEDURE [dbo].[sp_ReporteProductos]
     @FechaDesde DATETIME,
@@ -1366,7 +1406,7 @@ END
 GO
 
 -- ----------------------------------------------------------------------
--- Verificación: debe devolver tablas = 11 y procedimientos = 48
+-- Verificación: debe devolver tablas = 11 y procedimientos = 49
 -- ----------------------------------------------------------------------
 SELECT
     (SELECT COUNT(*) FROM sys.tables WHERE schema_id = SCHEMA_ID('dbo'))     AS tablas,

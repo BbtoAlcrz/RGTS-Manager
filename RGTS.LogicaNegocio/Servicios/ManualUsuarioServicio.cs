@@ -69,7 +69,7 @@ namespace RGTS.LogicaNegocio.Servicios
 
                 "FormListadoProductos" => 9,
                 "FormAltaEdicionProducto" => 10,
-                "FormListadoCategorias" => 12,
+                "FormListadoCategoria" => 12,
                 "FormAltaEdicionCategoria" => 13,
 
                 "FormListadoProveedores" => 15,

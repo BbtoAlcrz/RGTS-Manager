@@ -297,10 +297,11 @@ namespace RGTS.Interfaz.Vendedor
 
             try
             {
-                _ventaServicio.ModificarCantidadDetalle(detalle, nuevaCantidad, _carrito);
+                // Ajusta la reserva en la BD y, si sale bien, la cantidad del carrito
+                _ventaServicio.ModificarCantidadDetalle(detalle, nuevaCantidad, _dniUsuarioSesion);
                 ActualizarCarrito();
             }
-            catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Stock / Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -322,8 +323,16 @@ namespace RGTS.Interfaz.Vendedor
 
             if (confirmacion == DialogResult.Yes)
             {
-                _ventaServicio.EliminarDetalle(detalle, _carrito);
-                ActualizarCarrito();
+                try
+                {
+                    // Libera la reserva del producto y lo quita del carrito
+                    _ventaServicio.EliminarDetalle(detalle, _carrito, _dniUsuarioSesion);
+                    ActualizarCarrito();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Quitar Producto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

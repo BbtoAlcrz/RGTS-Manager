@@ -61,10 +61,10 @@ GO
 IF NOT EXISTS (SELECT 1 FROM PROVEEDOR)
 BEGIN
     INSERT INTO PROVEEDOR (razon_social, nombre_comercial, tipo_proveedor, nombre_contacto, apellido_contacto, telefono, correo, direccion, activo) VALUES
-    ('Distribuidora Gamer S.R.L', 'Gamer distribuidora', 'Mandos y Accesorios', 'Gonzalo',  'Montiel',  '1143-090807', 'ventas@gamerdistribuidora.com', 'Belgrano 387, Buenos Aires', 1),
-    ('TechImport S.A',            'TechImport',          'Sobremesa',           'Emiliano', 'Martinez', '3414-323258', 'contacto@techimport.com',       'Av. Siempre Viva 742, Rosario', 1),
-    ('RetroShop S.R.L',           'Retro Shop',          'Portatiles y juegos', 'Lucía',    'Benítez',  '1117-650837', 'RetroShop@shopp.com',           '12 de Octubre 1100, Resistencia', 1),
-    ('Cartuchos del Sur S.A',     'Cartuchos del Sur',   'Juegos',              'Martín',   'Duarte',   '3794-445566', 'pedidos@cartuchosdelsur.com',   'Av. 9 de Julio 850, Corrientes', 1);
+    ('Distribuidora Gamer S.R.L', 'Gamer distribuidora', 'Mandos',               'Gonzalo',  'Montiel',  '1143-090807', 'ventas@gamerdistribuidora.com', 'Belgrano 387, Buenos Aires', 1),
+    ('TechImport S.A',            'TechImport',          'Consolas de Mesa',     'Emiliano', 'Martinez', '3414-323258', 'contacto@techimport.com',       'Av. Siempre Viva 742, Rosario', 1),
+    ('RetroShop S.R.L',           'Retro Shop',          'Consolas Portátiles',  'Lucía',    'Benítez',  '1117-650837', 'RetroShop@shopp.com',           '12 de Octubre 1100, Resistencia', 1),
+    ('Cartuchos del Sur S.A',     'Cartuchos del Sur',   'Otros',                'Martín',   'Duarte',   '3794-445566', 'pedidos@cartuchosdelsur.com',   'Av. 9 de Julio 850, Corrientes', 1);
 END
 GO
 
